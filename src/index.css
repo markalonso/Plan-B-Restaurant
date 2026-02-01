@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.section-padding {
+  @apply px-6 py-16 md:px-10 lg:px-16;
+}
+
+.section-title {
+  @apply text-3xl font-semibold text-slate-900 md:text-4xl;
+}
+
+.glass-card {
+  @apply rounded-3xl border border-white/60 bg-white/70 p-6 shadow-soft backdrop-blur;
+}
