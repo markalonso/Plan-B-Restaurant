@@ -1,8 +1,20 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import Reveal from "../components/Reveal.jsx";
+import Stagger, { StaggerItem } from "../components/Stagger.jsx";
+import Button from "../components/ui/Button.jsx";
+import Card from "../components/ui/Card.jsx";
+import GlassPanel from "../components/ui/GlassPanel.jsx";
+import SectionHeading from "../components/ui/SectionHeading.jsx";
 import { supabase } from "../lib/supabaseClient.js";
 
 const whatsappNumber = "201005260787";
+
+const miniGallery = [
+  "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=600&q=80",
+  "https://images.unsplash.com/photo-1481931098730-318b6f776db0?auto=format&fit=crop&w=600&q=80",
+  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
+];
 
 const formatWhatsAppMessage = ({
   id,
@@ -83,6 +95,15 @@ const Booking = () => {
     formData.guests &&
     formData.date &&
     (isReservation ? formData.time : true);
+
+  const helperText = {
+    name: !formData.name.trim() ? "Full name is required." : "",
+    phone: !formData.phone.trim()
+      ? "Phone or WhatsApp is required."
+      : "",
+    date: !formData.date ? "Please select a date." : "",
+    time: isReservation && !formData.time ? "Please select a time." : ""
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -219,174 +240,221 @@ const Booking = () => {
   return (
     <div className="section-padding">
       <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="space-y-6">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.4em] text-skywash-600">
-              Booking
-            </p>
-            <h1 className="mt-2 text-4xl font-semibold text-slate-900 md:text-5xl">
-              Reserve your table
-            </h1>
-            <p className="mt-4 max-w-2xl text-slate-600">
-              Daily 09:00 – 02:00. Group requests (9+ guests) receive a tailored
-              response from our team.
-            </p>
-          </div>
-
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div className="grid gap-4 md:grid-cols-2">
-              <input
-                type="text"
-                name="name"
-                placeholder="Full Name"
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3"
-                required
-              />
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Phone / WhatsApp"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3"
-                required
-              />
-            </div>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email (optional)"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+        <Reveal>
+          <div className="space-y-6">
+            <SectionHeading
+              eyebrow="BOOKING"
+              title="Request a table"
+              subtitle="Send your details — we’ll confirm personally on WhatsApp."
             />
-            <div className="grid gap-4 md:grid-cols-3">
-              <input
-                type="number"
-                name="guests"
-                min="1"
-                value={formData.guests}
-                onChange={handleChange}
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3"
-                required
-              />
-              <input
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3"
-                required
-              />
-              {isReservation ? (
-                <select
-                  name="time"
-                  value={formData.time}
-                  onChange={handleChange}
-                  className="w-full rounded-2xl border border-slate-200 px-4 py-3"
-                  required
-                >
-                  <option value="">Select time</option>
-                  {timeSlots.map((slot) => (
-                    <option key={slot} value={slot}>
-                      {slot}
-                    </option>
-                  ))}
-                </select>
-              ) : (
+            <Card>
+              <form className="space-y-4" onSubmit={handleSubmit}>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Full Name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                      required
+                    />
+                    {helperText.name && (
+                      <p className="text-xs text-rose-500">{helperText.name}</p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="Phone / WhatsApp"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                      required
+                    />
+                    {helperText.phone && (
+                      <p className="text-xs text-rose-500">{helperText.phone}</p>
+                    )}
+                  </div>
+                </div>
                 <input
-                  type="text"
-                  name="timeWindow"
-                  placeholder="Preferred time window (optional)"
-                  value={formData.timeWindow}
+                  type="email"
+                  name="email"
+                  placeholder="Email (optional)"
+                  value={formData.email}
                   onChange={handleChange}
-                  className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+                  className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
                 />
-              )}
-            </div>
-            {isGroupRequest && (
-              <div className="grid gap-4 md:grid-cols-2">
-                <select
-                  name="eventType"
-                  value={formData.eventType}
+                <div className="grid gap-4 md:grid-cols-3">
+                  <input
+                    type="number"
+                    name="guests"
+                    min="1"
+                    value={formData.guests}
+                    onChange={handleChange}
+                    className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                    required
+                  />
+                  <div className="space-y-2">
+                    <input
+                      type="date"
+                      name="date"
+                      value={formData.date}
+                      onChange={handleChange}
+                      className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                      required
+                    />
+                    {helperText.date && (
+                      <p className="text-xs text-rose-500">{helperText.date}</p>
+                    )}
+                  </div>
+                  {isReservation ? (
+                    <div className="space-y-2">
+                      <select
+                        name="time"
+                        value={formData.time}
+                        onChange={handleChange}
+                        className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                        required
+                      >
+                        <option value="">Select time</option>
+                        {timeSlots.map((slot) => (
+                          <option key={slot} value={slot}>
+                            {slot}
+                          </option>
+                        ))}
+                      </select>
+                      {helperText.time && (
+                        <p className="text-xs text-rose-500">
+                          {helperText.time}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="timeWindow"
+                      placeholder="Preferred time window (optional)"
+                      value={formData.timeWindow}
+                      onChange={handleChange}
+                      className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                    />
+                  )}
+                </div>
+                {isGroupRequest && (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <select
+                      name="eventType"
+                      value={formData.eventType}
+                      onChange={handleChange}
+                      className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                    >
+                      <option value="">Event type (optional)</option>
+                      <option value="Birthday">Birthday</option>
+                      <option value="Corporate">Corporate</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    <input
+                      type="text"
+                      name="budgetRange"
+                      placeholder="Budget range (optional)"
+                      value={formData.budgetRange}
+                      onChange={handleChange}
+                      className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                    />
+                  </div>
+                )}
+                <textarea
+                  name="notes"
+                  placeholder={
+                    isGroupRequest
+                      ? "Tell us about the event, seating, and preferences."
+                      : "Notes (optional)"
+                  }
+                  value={formData.notes}
                   onChange={handleChange}
-                  className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+                  rows="4"
+                  className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                />
+                {status.error && (
+                  <p className="text-sm font-semibold text-rose-500">
+                    {status.error}
+                  </p>
+                )}
+                <Button
+                  type="submit"
+                  disabled={!isValid || status.loading}
+                  className="w-full justify-center"
                 >
-                  <option value="">Event type (optional)</option>
-                  <option value="Birthday">Birthday</option>
-                  <option value="Corporate">Corporate</option>
-                  <option value="Other">Other</option>
-                </select>
-                <input
-                  type="text"
-                  name="budgetRange"
-                  placeholder="Budget range (optional)"
-                  value={formData.budgetRange}
-                  onChange={handleChange}
-                  className="w-full rounded-2xl border border-slate-200 px-4 py-3"
-                />
-              </div>
-            )}
-            <textarea
-              name="notes"
-              placeholder={
-                isGroupRequest
-                  ? "Tell us about the event, seating, and preferences."
-                  : "Notes (optional)"
-              }
-              value={formData.notes}
-              onChange={handleChange}
-              rows="4"
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3"
-            />
-            {status.error && (
-              <p className="text-sm font-semibold text-rose-500">
-                {status.error}
-              </p>
-            )}
-            <button
-              type="submit"
-              disabled={!isValid || status.loading}
-              className="w-full rounded-full bg-skywash-600 px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-skywash-700 disabled:cursor-not-allowed disabled:bg-slate-300"
-            >
-              {status.loading
-                ? "Sending..."
-                : isGroupRequest
-                ? "Request a group booking"
-                : "Send reservation"}
-            </button>
-            {successMessage && (
-              <p className="text-sm font-semibold text-emerald-600">
-                {successMessage}
-              </p>
-            )}
-          </form>
-        </div>
+                  {status.loading
+                    ? "Sending..."
+                    : isGroupRequest
+                    ? "Request a group booking"
+                    : "Send request on WhatsApp"}
+                </Button>
+              </form>
+            </Card>
+          </div>
+        </Reveal>
 
-        <aside className="space-y-6">
-          <div className="glass-card">
-            <h3 className="text-lg font-semibold text-slate-900">
-              Booking details
-            </h3>
-            <ul className="mt-3 space-y-2 text-sm text-slate-600">
-              <li>Daily service: 09:00 – 02:00</li>
-              <li>Group/party: 9+ guests</li>
-              <li>Requests saved in our CRM</li>
-            </ul>
+        <Reveal delay={0.1}>
+          <div className="space-y-6">
+            <GlassPanel className="space-y-4">
+              <h3 className="text-lg font-semibold text-slate-900">
+                What happens next
+              </h3>
+              <Stagger className="space-y-3">
+                {[
+                  "You send a request",
+                  "We confirm on WhatsApp",
+                  "You arrive and enjoy"
+                ].map((step) => (
+                  <StaggerItem key={step}>
+                    <div className="flex items-center gap-3 text-sm text-slate-600">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-light text-brand-deep">
+                        ✓
+                      </span>
+                      {step}
+                    </div>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </GlassPanel>
+
+            <GlassPanel className="space-y-3">
+              <h3 className="text-lg font-semibold text-slate-900">Good to know</h3>
+              <ul className="space-y-2 text-sm text-slate-600">
+                <li>Daily 09:00–02:00</li>
+                <li>Time slots every 30 minutes</li>
+                <li>Groups (9+): tailored reply</li>
+              </ul>
+            </GlassPanel>
+
+            <div className="grid grid-cols-3 gap-3">
+              {miniGallery.map((image) => (
+                <div
+                  key={image}
+                  className="overflow-hidden rounded-2xl shadow-soft"
+                >
+                  <img
+                    src={image}
+                    alt="Plan B atmosphere"
+                    className="h-24 w-full object-cover transition duration-300 hover:scale-105"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="glass-card">
-            <h3 className="text-lg font-semibold text-slate-900">
-              Looking for an event?
-            </h3>
-            <p className="mt-2 text-sm text-slate-600">
-              Let us craft a custom menu, seating layout, and ambience for your
-              celebration.
-            </p>
-          </div>
-        </aside>
+        </Reveal>
       </div>
+
+      {successMessage && (
+        <div className="fixed bottom-6 right-6 z-50 rounded-2xl bg-white/90 px-4 py-3 text-sm font-semibold text-emerald-600 shadow-layered">
+          {successMessage}
+        </div>
+      )}
     </div>
   );
 };
