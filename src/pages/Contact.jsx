@@ -1,0 +1,111 @@
+import { useState } from "react";
+
+const whatsappNumber = "201005260787";
+
+const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    message: ""
+  });
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const text = encodeURIComponent(
+      `Plan B Contact\nName: ${formData.name}\nPhone: ${formData.phone}\nMessage: ${formData.message}`
+    );
+    window.open(`https://wa.me/${whatsappNumber}?text=${text}`, "_blank");
+    setSuccessMessage("Message sent on WhatsApp");
+  };
+
+  const isValid = formData.name.trim() && formData.phone.trim();
+
+  return (
+    <div className="section-padding">
+      <div className="mx-auto max-w-6xl space-y-10">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-skywash-600">
+            Contact
+          </p>
+          <h1 className="mt-2 text-4xl font-semibold text-slate-900 md:text-5xl">
+            Let’s connect
+          </h1>
+        </div>
+
+        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="glass-card space-y-4">
+            <h2 className="text-xl font-semibold text-slate-900">Visit Us</h2>
+            <p className="text-sm text-slate-600">
+              Hurghada, Cornish Street, Gold Star Mall
+            </p>
+            <p className="text-sm text-slate-600">Daily 09:00 – 02:00</p>
+            <div>
+              <a
+                className="inline-flex items-center gap-2 rounded-full bg-skywash-600 px-5 py-2 text-sm font-semibold text-white"
+                href="https://wa.me/201005260787"
+                target="_blank"
+                rel="noreferrer"
+              >
+                WhatsApp +20 100 526 0787
+              </a>
+            </div>
+            <p className="text-sm text-slate-500">Map coming soon</p>
+          </div>
+
+          <form className="glass-card space-y-4" onSubmit={handleSubmit}>
+            <h2 className="text-xl font-semibold text-slate-900">Message Us</h2>
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+              required
+            />
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone / WhatsApp"
+              value={formData.phone}
+              onChange={handleChange}
+              className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+              required
+            />
+            <textarea
+              name="message"
+              placeholder="Message (optional)"
+              value={formData.message}
+              onChange={handleChange}
+              rows="4"
+              className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+            />
+            <button
+              type="submit"
+              disabled={!isValid}
+              className="w-full rounded-full bg-skywash-600 px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-skywash-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+            >
+              Send via WhatsApp
+            </button>
+            {successMessage && (
+              <p className="text-sm font-semibold text-emerald-600">
+                {successMessage}
+              </p>
+            )}
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Contact;
