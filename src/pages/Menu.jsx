@@ -1,4 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
+import Reveal from "../components/Reveal.jsx";
+import Stagger, { StaggerItem } from "../components/Stagger.jsx";
+import Button from "../components/ui/Button.jsx";
+import Card from "../components/ui/Card.jsx";
+import GlassPanel from "../components/ui/GlassPanel.jsx";
+import SectionHeading from "../components/ui/SectionHeading.jsx";
 import { supabase } from "../lib/supabaseClient.js";
 
 const Menu = () => {
@@ -70,95 +76,101 @@ const Menu = () => {
   return (
     <div className="section-padding">
       <div className="mx-auto max-w-6xl space-y-10">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-skywash-600">
-            Menu
-          </p>
-          <h1 className="mt-2 text-4xl font-semibold text-slate-900 md:text-5xl">
-            Our signature favorites
-          </h1>
-          <p className="mt-4 max-w-2xl text-slate-600">
-            From sunrise brunch to late-night bites, discover a calm, curated
-            menu with light coastal flavors.
-          </p>
-        </div>
+        <Reveal>
+          <SectionHeading
+            eyebrow="Menu"
+            title="House Comfort Picks"
+            subtitle="Curated favorites for slow evenings and easy mornings."
+          />
+        </Reveal>
 
-        <section className="space-y-6">
-          <h2 className="section-title">Popular Picks</h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            {loading ? (
-              <p className="text-sm text-slate-500">Loading menu…</p>
-            ) : (
-              popularItems.map((item) => (
-                <div key={item.id} className="glass-card flex gap-4">
+        <Stagger className="grid gap-6 md:grid-cols-2">
+          {loading ? (
+            <p className="text-sm text-slate-500">Loading menu…</p>
+          ) : (
+            popularItems.map((item) => (
+              <StaggerItem key={item.id}>
+                <Card className="group flex gap-4 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
                   <img
                     src={item.image_url}
                     alt={item.name}
                     className="h-24 w-24 rounded-2xl object-cover"
                   />
-                  <div>
+                  <div className="flex-1 space-y-2">
                     <div className="flex items-center justify-between gap-4">
                       <h3 className="text-lg font-semibold text-slate-900">
                         {item.name}
                       </h3>
-                      <span className="text-sm font-semibold text-skywash-600">
+                      <span className="text-sm font-semibold text-brand-primary">
                         EGP {item.price}
                       </span>
                     </div>
-                    <p className="mt-2 text-sm text-slate-600">
+                    <p className="text-sm text-slate-600">
                       {item.description}
                     </p>
                   </div>
-                </div>
-              ))
-            )}
-          </div>
-        </section>
+                </Card>
+              </StaggerItem>
+            ))
+          )}
+        </Stagger>
 
-        <section className="space-y-6">
-          <div className="flex flex-wrap gap-3">
+        <Reveal delay={0.1}>
+          <GlassPanel className="space-y-3">
+            <h3 className="text-xl font-semibold text-slate-900">
+              Comfort, made with care.
+            </h3>
+            <p className="text-sm text-slate-600">
+              Familiar flavors, clean ingredients, and a calm coastal mood — day
+              to night.
+            </p>
+          </GlassPanel>
+        </Reveal>
+
+        <Reveal delay={0.15}>
+          <div className="flex flex-wrap gap-2">
             {categoryOptions.map((category) => (
-              <button
+              <Button
                 key={category}
                 type="button"
+                variant={activeCategory === category ? "primary" : "secondary"}
+                size="sm"
                 onClick={() => setActiveCategory(category)}
-                className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                  activeCategory === category
-                    ? "border-skywash-500 bg-skywash-500 text-white"
-                    : "border-slate-200 text-slate-600 hover:border-skywash-200"
-                }`}
               >
                 {category}
-              </button>
+              </Button>
             ))}
           </div>
-          <div className="grid gap-6 md:grid-cols-2">
-            {loading ? (
-              <p className="text-sm text-slate-500">Loading menu…</p>
-            ) : (
-              displayItems.map((item) => (
-                <div key={item.id} className="glass-card">
+        </Reveal>
+
+        <Stagger className="grid gap-6 md:grid-cols-2">
+          {loading ? (
+            <p className="text-sm text-slate-500">Loading menu…</p>
+          ) : (
+            displayItems.map((item) => (
+              <StaggerItem key={item.id}>
+                <Card className="group space-y-3 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
                   <img
                     src={item.image_url}
                     alt={item.name}
                     className="h-44 w-full rounded-2xl object-cover"
                   />
-                  <div className="mt-4 flex items-center justify-between">
+                  <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold text-slate-900">
                       {item.name}
                     </h3>
-                    <span className="text-sm font-semibold text-skywash-600">
+                    <span className="text-sm font-semibold text-brand-primary">
                       EGP {item.price}
                     </span>
                   </div>
-                  <p className="mt-2 text-sm text-slate-600">
+                  <p className="text-sm text-slate-600">
                     {item.description}
                   </p>
-                </div>
-              ))
-            )}
-          </div>
-        </section>
+                </Card>
+              </StaggerItem>
+            ))
+          )}
+        </Stagger>
       </div>
     </div>
   );

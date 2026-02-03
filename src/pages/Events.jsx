@@ -1,55 +1,125 @@
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Reveal from "../components/Reveal.jsx";
+import Stagger, { StaggerItem } from "../components/Stagger.jsx";
+import Button from "../components/ui/Button.jsx";
+import Card from "../components/ui/Card.jsx";
+import GlassPanel from "../components/ui/GlassPanel.jsx";
+import SectionHeading from "../components/ui/SectionHeading.jsx";
+
+const scenarios = [
+  {
+    title: "Birthday dinner",
+    description: "A calm space, candlelight, and a menu that feels personal."
+  },
+  {
+    title: "Small celebration",
+    description: "Intimate gatherings with a relaxed, premium rhythm."
+  },
+  {
+    title: "Private dining",
+    description: "A curated table for milestones and meaningful moments."
+  }
+];
+
+const steps = [
+  "Tell us your guest count and date",
+  "We reply on WhatsApp",
+  "We plan the details together"
+];
 
 const Events = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="section-padding">
-      <div className="mx-auto max-w-6xl space-y-10">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-skywash-600">
-            Events
-          </p>
-          <h1 className="mt-2 text-4xl font-semibold text-slate-900 md:text-5xl">
-            Private dining & celebrations
-          </h1>
-          <p className="mt-4 max-w-2xl text-slate-600">
-            Plan B hosts birthdays, intimate gatherings, and stylish private
-            dining with curated menus.
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-3">
-          {[
-            "Private dining",
-            "Birthdays",
-            "Small parties"
-          ].map((item) => (
-            <div key={item} className="glass-card">
-              <h3 className="text-lg font-semibold text-slate-900">{item}</h3>
-              <p className="mt-2 text-sm text-slate-600">
-                Tailored menus, calming ambience, and attentive service.
-              </p>
+    <div className="bg-neutral-offwhite">
+      <section className="section-padding">
+        <div className="mx-auto max-w-6xl">
+          <Reveal>
+            <div className="overflow-hidden rounded-3xl shadow-layered">
+              <div className="relative h-64 w-full md:h-80">
+                <img
+                  src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1400&q=80"
+                  alt="Plan B events"
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-brand-deep/65" />
+                <div className="absolute inset-0 flex flex-col justify-end p-8 text-white">
+                  <span className="text-xs font-semibold uppercase tracking-[0.4em] text-white/70">
+                    Events
+                  </span>
+                  <h1 className="mt-3 text-3xl font-semibold md:text-4xl">
+                    Celebrations with a calm glow.
+                  </h1>
+                  <p className="mt-2 max-w-2xl text-sm text-white/80 md:text-base">
+                    An elegant, welcoming space for birthdays, private dining, and
+                    small gatherings.
+                  </p>
+                  <div className="mt-5">
+                    <Button
+                      onClick={() => navigate("/booking?mode=event")}
+                      className="bg-white text-brand-deep"
+                    >
+                      Request an event
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
-          ))}
+          </Reveal>
         </div>
+      </section>
 
-        <section className="glass-card flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h2 className="text-2xl font-semibold text-slate-900">
-              Request an event
-            </h2>
-            <p className="mt-2 text-sm text-slate-600">
-              Share your guest count and preferred date. We will follow up on
-              WhatsApp with details.
-            </p>
-          </div>
-          <NavLink
-            to="/booking?type=group"
-            className="rounded-full bg-skywash-600 px-6 py-3 text-sm font-semibold text-white"
-          >
-            Request an event
-          </NavLink>
-        </section>
-      </div>
+      <section className="section-padding">
+        <div className="mx-auto max-w-6xl space-y-8">
+          <Reveal>
+            <SectionHeading
+              eyebrow="Occasions"
+              title="Thoughtful details, effortless hosting."
+              subtitle=""
+            />
+          </Reveal>
+          <Stagger className="grid gap-6 md:grid-cols-3">
+            {scenarios.map((scenario) => (
+              <StaggerItem key={scenario.title}>
+                <Card className="space-y-3">
+                  <h3 className="text-lg font-semibold text-slate-900">
+                    {scenario.title}
+                  </h3>
+                  <p className="text-sm text-slate-600">
+                    {scenario.description}
+                  </p>
+                </Card>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+      </section>
+
+      <section className="section-padding">
+        <div className="mx-auto max-w-6xl">
+          <Reveal>
+            <GlassPanel className="space-y-6">
+              <SectionHeading
+                eyebrow="How it works"
+                title="A simple, personal process."
+                subtitle=""
+              />
+              <Stagger className="grid gap-4 md:grid-cols-3">
+                {steps.map((step) => (
+                  <StaggerItem key={step}>
+                    <div className="flex items-start gap-3 text-sm text-slate-600">
+                      <span className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-brand-light text-brand-deep">
+                        ✓
+                      </span>
+                      {step}
+                    </div>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </GlassPanel>
+          </Reveal>
+        </div>
+      </section>
     </div>
   );
 };

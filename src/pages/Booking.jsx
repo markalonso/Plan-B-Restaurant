@@ -69,7 +69,8 @@ const generateTimeSlots = () => {
 
 const Booking = () => {
   const [searchParams] = useSearchParams();
-  const groupRequested = searchParams.get("type") === "group";
+  const eventMode = searchParams.get("mode") === "event";
+  const groupRequested = searchParams.get("type") === "group" || eventMode;
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
