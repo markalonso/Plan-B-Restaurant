@@ -1,0 +1,77 @@
+{
+  "categories": ["Brunch", "All Day", "Desserts", "Signature Drinks"],
+  "items": [
+    {
+      "id": 1,
+      "name": "Skyline Avocado Toast",
+      "price": "145 EGP",
+      "description": "Sourdough, avocado mousse, citrus labneh, micro greens.",
+      "image": "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=800&q=80",
+      "category": "Brunch",
+      "popular": true
+    },
+    {
+      "id": 2,
+      "name": "Plan B Benedict",
+      "price": "185 EGP",
+      "description": "Poached eggs, smoked turkey, lemon hollandaise, greens.",
+      "image": "https://images.unsplash.com/photo-1481931098730-318b6f776db0?auto=format&fit=crop&w=800&q=80",
+      "category": "Brunch",
+      "popular": false
+    },
+    {
+      "id": 3,
+      "name": "Corniche Bowl",
+      "price": "175 EGP",
+      "description": "Quinoa, roasted veg, citrus tahini, herbs.",
+      "image": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80",
+      "category": "All Day",
+      "popular": true
+    },
+    {
+      "id": 4,
+      "name": "Blue Horizon Pasta",
+      "price": "230 EGP",
+      "description": "Creamy herb sauce, parmesan, spinach, toasted pine nuts.",
+      "image": "https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format&fit=crop&w=800&q=80",
+      "category": "All Day",
+      "popular": false
+    },
+    {
+      "id": 5,
+      "name": "Vanilla Sky Pavlova",
+      "price": "120 EGP",
+      "description": "Crisp meringue, vanilla cream, fresh berries.",
+      "image": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=800&q=80",
+      "category": "Desserts",
+      "popular": true
+    },
+    {
+      "id": 6,
+      "name": "Cloud Nine Cheesecake",
+      "price": "135 EGP",
+      "description": "Silky vanilla cheesecake, blueberry compote.",
+      "image": "https://images.unsplash.com/photo-1504708706948-13d6cbba4062?auto=format&fit=crop&w=800&q=80",
+      "category": "Desserts",
+      "popular": false
+    },
+    {
+      "id": 7,
+      "name": "Azure Matcha",
+      "price": "95 EGP",
+      "description": "Creamy matcha latte with oat milk, light sweetness.",
+      "image": "https://images.unsplash.com/photo-1507133750040-4a8f57021571?auto=format&fit=crop&w=800&q=80",
+      "category": "Signature Drinks",
+      "popular": true
+    },
+    {
+      "id": 8,
+      "name": "Sea Breeze Spritz",
+      "price": "110 EGP",
+      "description": "Citrus fizz, basil, elderflower, sparkling soda.",
+      "image": "https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=800&q=80",
+      "category": "Signature Drinks",
+      "popular": false
+    }
+  ]
+}
