@@ -6,7 +6,8 @@ const navItems = [
   { to: "/admin/reservations", label: "Reservations" },
   { to: "/admin/events", label: "Events" },
   { to: "/admin/customers", label: "Customers" },
-  { to: "/admin/menu", label: "Menu" }
+  { to: "/admin/menu", label: "Menu" },
+  { to: "/admin/gallery", label: "Gallery" }
 ];
 
 const AdminLayout = ({ children, onSignOut }) => {

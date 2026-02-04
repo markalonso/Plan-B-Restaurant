@@ -32,6 +32,25 @@ VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
 3. Create your admin user by signing up on `/admin/login` and then insert the user ID into the `admin_users` table.
 4. Add your Supabase URL and anon key to environment variables locally and in Netlify.
 
+### Gallery Setup
+
+1. Create a **public** Storage bucket named `gallery`.
+2. Add a `gallery_images` table with columns:
+   - `id` uuid primary key default `gen_random_uuid()`
+   - `created_at` timestamptz default `now()`
+   - `category` text not null
+   - `title` text
+   - `description` text
+   - `alt_text` text
+   - `image_url` text not null
+   - `storage_path` text
+3. Enable RLS and allow:
+   - **Public (anon)**: `SELECT` on `gallery_images`
+   - **Admin (authenticated in admin_users)**: `SELECT/INSERT/UPDATE/DELETE` on `gallery_images`
+4. Set Storage policies for the `gallery` bucket:
+   - **Public** read access
+   - **Admin** insert/delete access
+
 ## Admin Setup
 
 - After signing up, locate your `user_id` in Supabase → Authentication → Users.

@@ -15,6 +15,7 @@ import AdminReservations from "./pages/admin/AdminReservations.jsx";
 import AdminEvents from "./pages/admin/AdminEvents.jsx";
 import AdminCustomers from "./pages/admin/AdminCustomers.jsx";
 import AdminMenu from "./pages/admin/AdminMenu.jsx";
+import AdminGallery from "./pages/admin/AdminGallery.jsx";
 
 const App = () => {
   const location = useLocation();
@@ -69,6 +70,14 @@ const App = () => {
             element={
               <AdminRoute>
                 <AdminMenu />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/gallery"
+            element={
+              <AdminRoute>
+                <AdminGallery />
               </AdminRoute>
             }
           />

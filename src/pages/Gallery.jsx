@@ -1,98 +1,12 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Reveal from "../components/Reveal.jsx";
 import Stagger, { StaggerItem } from "../components/Stagger.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import SectionHeading from "../components/ui/SectionHeading.jsx";
+import { supabase } from "../lib/supabaseClient.js";
 
 const tabs = ["All", "Space", "Food", "Moments"];
-
-const allImages = [
-  {
-    id: 1,
-    category: "Space",
-    caption: "Evening glow",
-    image:
-      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: 2,
-    category: "Food",
-    caption: "Comfort plates",
-    image:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: 3,
-    category: "Moments",
-    caption: "Late-night calm",
-    image:
-      "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: 4,
-    category: "Space",
-    caption: "Soft interiors",
-    image:
-      "https://images.unsplash.com/photo-1481833761820-0509d3217039?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: 5,
-    category: "Food",
-    caption: "Signature bites",
-    image:
-      "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: 6,
-    category: "Moments",
-    caption: "Golden hour",
-    image:
-      "https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: 7,
-    category: "Space",
-    caption: "Quiet corners",
-    image:
-      "https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: 8,
-    category: "Food",
-    caption: "Fresh plates",
-    image:
-      "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: 9,
-    category: "Moments",
-    caption: "Soft gatherings",
-    image:
-      "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: 10,
-    category: "Space",
-    caption: "Clean lines",
-    image:
-      "https://images.unsplash.com/photo-1481833761820-0509d3217039?auto=format&fit=crop&w=1100&q=80"
-  },
-  {
-    id: 11,
-    category: "Food",
-    caption: "Warm plates",
-    image:
-      "https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format&fit=crop&w=900&q=80"
-  },
-  {
-    id: 12,
-    category: "Moments",
-    caption: "Night rhythm",
-    image:
-      "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=900&q=80"
-  }
-];
 
 const normalizeValue = (value) => value.toLowerCase().trim();
 const fallbackImage =
@@ -101,15 +15,46 @@ const fallbackImage =
 const Gallery = () => {
   const [activeTab, setActiveTab] = useState("All");
   const [activeImage, setActiveImage] = useState(null);
+  const [images, setImages] = useState([]);
+  const [status, setStatus] = useState({ loading: true, error: "" });
 
   const filteredImages = useMemo(() => {
     if (normalizeValue(activeTab) === "all") {
-      return allImages;
+      return images;
     }
-    return allImages.filter(
+    return images.filter(
       (item) => normalizeValue(item.category) === normalizeValue(activeTab)
     );
-  }, [activeTab]);
+  }, [activeTab, images]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadImages = async () => {
+      setStatus({ loading: true, error: "" });
+      const { data, error } = await supabase
+        .from("gallery_images")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (!isMounted) {
+        return;
+      }
+
+      if (error) {
+        setStatus({ loading: false, error: error.message });
+        return;
+      }
+
+      setImages(data ?? []);
+      setStatus({ loading: false, error: "" });
+    };
+
+    loadImages();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div className="section-padding">
@@ -139,7 +84,15 @@ const Gallery = () => {
           </div>
         </Reveal>
 
-        {filteredImages.length === 0 ? (
+        {status.loading ? (
+          <Card>
+            <p className="text-sm text-slate-600">Loading gallery…</p>
+          </Card>
+        ) : status.error ? (
+          <Card>
+            <p className="text-sm text-rose-500">{status.error}</p>
+          </Card>
+        ) : filteredImages.length === 0 ? (
           <Card>
             <p className="text-sm text-slate-600">
               No images yet for this category.
@@ -157,14 +110,14 @@ const Gallery = () => {
                       className="relative block w-full"
                     >
                       <img
-                        src={item.image || fallbackImage}
-                        alt={item.caption}
+                        src={item.image_url || fallbackImage}
+                        alt={item.alt_text || item.title || "Plan B gallery"}
                         className="w-full object-cover transition duration-300 group-hover:scale-[1.02]"
                         loading="lazy"
                       />
                       <div className="absolute inset-0 flex items-end bg-gradient-to-t from-brand-deep/70 via-brand-deep/10 to-transparent opacity-0 transition duration-300 group-hover:opacity-100">
                         <p className="p-4 text-sm font-semibold text-white">
-                          {item.caption}
+                          {item.title || item.description || "Plan B moments"}
                         </p>
                       </div>
                     </button>
@@ -186,12 +139,12 @@ const Gallery = () => {
           />
           <div className="relative max-w-4xl">
             <img
-              src={activeImage.image || fallbackImage}
-              alt={activeImage.caption}
+              src={activeImage.image_url || fallbackImage}
+              alt={activeImage.alt_text || activeImage.title || "Plan B gallery"}
               className="max-h-[85vh] w-full rounded-3xl object-cover shadow-layered"
             />
             <p className="mt-4 text-center text-sm text-white/80">
-              {activeImage.caption}
+              {activeImage.title || activeImage.description || "Plan B moments"}
             </p>
           </div>
         </div>
