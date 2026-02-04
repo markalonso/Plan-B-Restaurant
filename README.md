@@ -34,22 +34,8 @@ VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
 
 ### Gallery Setup
 
-1. Create a **public** Storage bucket named `gallery`.
-2. Add a `gallery_images` table with columns:
-   - `id` uuid primary key default `gen_random_uuid()`
-   - `created_at` timestamptz default `now()`
-   - `category` text not null
-   - `title` text
-   - `description` text
-   - `alt_text` text
-   - `image_url` text not null
-   - `storage_path` text
-3. Enable RLS and allow:
-   - **Public (anon)**: `SELECT` on `gallery_images`
-   - **Admin (authenticated in admin_users)**: `SELECT/INSERT/UPDATE/DELETE` on `gallery_images`
-4. Set Storage policies for the `gallery` bucket:
-   - **Public** read access
-   - **Admin** insert/delete access
+Run the SQL in `supabase/gallery.sql` to create the `gallery_images` table,
+enable RLS policies, and set up the `gallery` storage bucket/policies.
 
 ## Admin Setup
 
