@@ -1,77 +1,45 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Reveal from "../components/Reveal.jsx";
 import Stagger, { StaggerItem } from "../components/Stagger.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import GlassPanel from "../components/ui/GlassPanel.jsx";
 import SectionHeading from "../components/ui/SectionHeading.jsx";
-import { supabase } from "../lib/supabaseClient.js";
+import menuData from "../data/menu.json";
+
+const normalizeValue = (value) => value.trim().toLowerCase();
+
+const formatPrice = (price) => {
+  if (typeof price === "string") {
+    return price.includes("EGP") ? price : `EGP ${price}`;
+  }
+  if (typeof price === "number") {
+    return `EGP ${price}`;
+  }
+  return "EGP";
+};
 
 const Menu = () => {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [categories, setCategories] = useState([]);
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const loadMenu = async () => {
-      setLoading(true);
-      const [categoryRes, itemRes] = await Promise.all([
-        supabase
-          .from("menu_categories")
-          .select("*")
-          .order("sort_order", { ascending: true })
-          .order("name", { ascending: true }),
-        supabase
-          .from("menu_items")
-          .select("*")
-          .eq("is_available", true)
-          .order("sort_order", { ascending: true })
-      ]);
-
-      if (isMounted) {
-        setCategories(categoryRes.data ?? []);
-        setItems(itemRes.data ?? []);
-        setLoading(false);
-      }
-    };
-
-    loadMenu();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   const categoryOptions = useMemo(
-    () => ["All", ...categories.map((category) => category.name)],
-    [categories]
+    () => ["All", ...menuData.categories],
+    []
   );
 
-  const popularItems = items.filter((item) => item.is_popular);
+  const normalizedCategory = normalizeValue(activeCategory);
 
-  const itemsWithCategory = useMemo(() => {
-    const lookup = categories.reduce((acc, category) => {
-      acc[category.id] = category.name;
-      return acc;
-    }, {});
+  const popularItems = menuData.items.filter((item) => item.popular);
 
-    return items.map((item) => ({
-      ...item,
-      category_name: lookup[item.category_id]
-    }));
-  }, [categories, items]);
-
-  const displayItems = useMemo(() => {
-    if (activeCategory === "All") {
-      return itemsWithCategory;
+  const filteredItems = useMemo(() => {
+    if (normalizedCategory === "all") {
+      return menuData.items;
     }
-    return itemsWithCategory.filter(
-      (item) => item.category_name === activeCategory
-    );
-  }, [activeCategory, itemsWithCategory]);
+    return menuData.items.filter((item) => {
+      const itemCategory = normalizeValue(item.category || "");
+      return itemCategory === normalizedCategory;
+    });
+  }, [normalizedCategory]);
 
   return (
     <div className="section-padding">
@@ -85,34 +53,28 @@ const Menu = () => {
         </Reveal>
 
         <Stagger className="grid gap-6 md:grid-cols-2">
-          {loading ? (
-            <p className="text-sm text-slate-500">Loading menu…</p>
-          ) : (
-            popularItems.map((item) => (
-              <StaggerItem key={item.id}>
-                <Card className="group flex gap-4 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
-                  <img
-                    src={item.image_url}
-                    alt={item.name}
-                    className="h-24 w-24 rounded-2xl object-cover"
-                  />
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center justify-between gap-4">
-                      <h3 className="text-lg font-semibold text-slate-900">
-                        {item.name}
-                      </h3>
-                      <span className="text-sm font-semibold text-brand-primary">
-                        EGP {item.price}
-                      </span>
-                    </div>
-                    <p className="text-sm text-slate-600">
-                      {item.description}
-                    </p>
+          {popularItems.map((item) => (
+            <StaggerItem key={item.id}>
+              <Card className="group flex gap-4 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="h-24 w-24 rounded-2xl object-cover"
+                />
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center justify-between gap-4">
+                    <h3 className="text-lg font-semibold text-slate-900">
+                      {item.name}
+                    </h3>
+                    <span className="text-sm font-semibold text-brand-primary">
+                      {formatPrice(item.price)}
+                    </span>
                   </div>
-                </Card>
-              </StaggerItem>
-            ))
-          )}
+                  <p className="text-sm text-slate-600">{item.description}</p>
+                </div>
+              </Card>
+            </StaggerItem>
+          ))}
         </Stagger>
 
         <Reveal delay={0.1}>
@@ -143,15 +105,22 @@ const Menu = () => {
           </div>
         </Reveal>
 
-        <Stagger className="grid gap-6 md:grid-cols-2">
-          {loading ? (
-            <p className="text-sm text-slate-500">Loading menu…</p>
-          ) : (
-            displayItems.map((item) => (
+        {filteredItems.length === 0 ? (
+          <Card className="flex flex-col gap-3">
+            <p className="text-sm text-slate-600">
+              No items match this category yet.
+            </p>
+            <Button variant="secondary" onClick={() => setActiveCategory("All")}>
+              Show all items
+            </Button>
+          </Card>
+        ) : (
+          <Stagger className="grid gap-6 md:grid-cols-2">
+            {filteredItems.map((item) => (
               <StaggerItem key={item.id}>
                 <Card className="group space-y-3 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
                   <img
-                    src={item.image_url}
+                    src={item.image}
                     alt={item.name}
                     className="h-44 w-full rounded-2xl object-cover"
                   />
@@ -160,17 +129,15 @@ const Menu = () => {
                       {item.name}
                     </h3>
                     <span className="text-sm font-semibold text-brand-primary">
-                      EGP {item.price}
+                      {formatPrice(item.price)}
                     </span>
                   </div>
-                  <p className="text-sm text-slate-600">
-                    {item.description}
-                  </p>
+                  <p className="text-sm text-slate-600">{item.description}</p>
                 </Card>
               </StaggerItem>
-            ))
-          )}
-        </Stagger>
+            ))}
+          </Stagger>
+        )}
       </div>
     </div>
   );

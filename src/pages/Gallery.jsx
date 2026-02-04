@@ -7,7 +7,7 @@ import SectionHeading from "../components/ui/SectionHeading.jsx";
 
 const tabs = ["All", "Space", "Food", "Moments"];
 
-const galleryItems = [
+const allImages = [
   {
     id: 1,
     category: "Space",
@@ -94,15 +94,19 @@ const galleryItems = [
   }
 ];
 
+const normalizeValue = (value) => value.toLowerCase().trim();
+
 const Gallery = () => {
   const [activeTab, setActiveTab] = useState("All");
   const [activeImage, setActiveImage] = useState(null);
 
-  const filteredItems = useMemo(() => {
-    if (activeTab === "All") {
-      return galleryItems;
+  const filteredImages = useMemo(() => {
+    if (normalizeValue(activeTab) === "all") {
+      return allImages;
     }
-    return galleryItems.filter((item) => item.category === activeTab);
+    return allImages.filter(
+      (item) => normalizeValue(item.category) === normalizeValue(activeTab)
+    );
   }, [activeTab]);
 
   return (
@@ -125,6 +129,7 @@ const Gallery = () => {
                 variant={activeTab === tab ? "primary" : "secondary"}
                 size="sm"
                 onClick={() => setActiveTab(tab)}
+                className="transition duration-200 hover:-translate-y-0.5"
               >
                 {tab}
               </Button>
@@ -132,33 +137,41 @@ const Gallery = () => {
           </div>
         </Reveal>
 
-        <Stagger>
-          <div className="columns-1 gap-6 space-y-6 sm:columns-2 lg:columns-3">
-            {filteredItems.map((item) => (
-              <StaggerItem key={item.id}>
-                <Card className="group break-inside-avoid overflow-hidden p-0">
-                  <button
-                    type="button"
-                    onClick={() => setActiveImage(item)}
-                    className="relative block w-full"
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.caption}
-                      className="w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-brand-deep/70 via-brand-deep/10 to-transparent opacity-0 transition duration-300 group-hover:opacity-100">
-                      <p className="p-4 text-sm font-semibold text-white">
-                        {item.caption}
-                      </p>
-                    </div>
-                  </button>
-                </Card>
-              </StaggerItem>
-            ))}
-          </div>
-        </Stagger>
+        {filteredImages.length === 0 ? (
+          <Card>
+            <p className="text-sm text-slate-600">
+              No images yet for this category.
+            </p>
+          </Card>
+        ) : (
+          <Stagger>
+            <div className="columns-1 gap-6 space-y-6 sm:columns-2 lg:columns-3">
+              {filteredImages.map((item) => (
+                <StaggerItem key={item.id}>
+                  <Card className="group break-inside-avoid overflow-hidden p-0">
+                    <button
+                      type="button"
+                      onClick={() => setActiveImage(item)}
+                      className="relative block w-full"
+                    >
+                      <img
+                        src={item.image}
+                        alt={item.caption}
+                        className="w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-brand-deep/70 via-brand-deep/10 to-transparent opacity-0 transition duration-300 group-hover:opacity-100">
+                        <p className="p-4 text-sm font-semibold text-white">
+                          {item.caption}
+                        </p>
+                      </div>
+                    </button>
+                  </Card>
+                </StaggerItem>
+              ))}
+            </div>
+          </Stagger>
+        )}
       </div>
 
       {activeImage && (

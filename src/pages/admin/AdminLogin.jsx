@@ -40,7 +40,7 @@ const AdminLogin = () => {
     <div className="section-padding">
       <div className="mx-auto max-w-lg space-y-6">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-skywash-600">
+          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-primary">
             Admin Access
           </p>
           <h1 className="mt-2 text-3xl font-semibold text-slate-900 md:text-4xl">
@@ -79,7 +79,7 @@ const AdminLogin = () => {
           <button
             type="submit"
             disabled={status.loading}
-            className="w-full rounded-full bg-skywash-600 px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-skywash-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+            className="w-full rounded-full bg-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-brand-primary disabled:cursor-not-allowed disabled:bg-slate-300"
           >
             {status.loading
               ? "Working..."
@@ -92,7 +92,7 @@ const AdminLogin = () => {
         <button
           type="button"
           onClick={() => setMode(mode === "sign-in" ? "sign-up" : "sign-in")}
-          className="text-sm font-semibold text-skywash-600"
+          className="text-sm font-semibold text-brand-primary"
         >
           {mode === "sign-in"
             ? "Need to create an admin account?"

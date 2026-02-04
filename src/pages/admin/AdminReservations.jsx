@@ -130,7 +130,7 @@ const AdminReservations = () => {
                     <button
                       type="button"
                       onClick={() => setActiveReservation(reservation)}
-                      className="text-xs font-semibold text-skywash-600"
+                      className="text-xs font-semibold text-brand-primary"
                     >
                       View details
                     </button>

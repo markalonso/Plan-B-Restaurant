@@ -14,7 +14,7 @@ const Footer = () => {
           <p className="font-semibold text-slate-900">Location</p>
           <p className="mt-2">Hurghada, Cornish Street, Gold Star Mall</p>
           <a
-            className="mt-3 inline-flex items-center gap-2 text-skywash-600"
+            className="mt-3 inline-flex items-center gap-2 text-brand-primary"
             href="https://wa.me/201005260787"
             target="_blank"
             rel="noreferrer"

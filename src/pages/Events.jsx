@@ -29,6 +29,12 @@ const steps = [
 
 const Events = () => {
   const navigate = useNavigate();
+  const handleSeeOptions = () => {
+    const section = document.getElementById("event-options");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
     <div className="bg-neutral-offwhite">
@@ -54,12 +60,12 @@ const Events = () => {
                     An elegant, welcoming space for birthdays, private dining, and
                     small gatherings.
                   </p>
-                  <div className="mt-5">
-                    <Button
-                      onClick={() => navigate("/booking?mode=event")}
-                      className="bg-white text-brand-deep"
-                    >
-                      Request an event
+                  <div className="mt-5 flex flex-wrap gap-3">
+                    <Button onClick={() => navigate("/booking?mode=event")}>
+                      Plan an event
+                    </Button>
+                    <Button variant="secondary" onClick={handleSeeOptions}>
+                      See options
                     </Button>
                   </div>
                 </div>
@@ -69,7 +75,7 @@ const Events = () => {
         </div>
       </section>
 
-      <section className="section-padding">
+      <section className="section-padding" id="event-options">
         <div className="mx-auto max-w-6xl space-y-8">
           <Reveal>
             <SectionHeading

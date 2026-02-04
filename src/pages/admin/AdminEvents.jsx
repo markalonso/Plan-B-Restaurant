@@ -127,7 +127,7 @@ const AdminEvents = () => {
                     <button
                       type="button"
                       onClick={() => setActiveRequest(request)}
-                      className="text-xs font-semibold text-skywash-600"
+                      className="text-xs font-semibold text-brand-primary"
                     >
                       View details
                     </button>

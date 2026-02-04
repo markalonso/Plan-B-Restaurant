@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const navLinkClasses = ({ isActive }) =>
   `transition-colors ${
-    isActive ? "text-skywash-700" : "text-slate-700 hover:text-skywash-600"
+    isActive ? "text-brand-primary" : "text-slate-700 hover:text-brand-primary"
   }`;
 
 const Navbar = () => {

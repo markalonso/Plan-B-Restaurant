@@ -120,7 +120,7 @@ const AdminMenu = () => {
           />
           <button
             type="submit"
-            className="rounded-full bg-skywash-600 px-4 py-2 text-xs font-semibold text-white"
+            className="rounded-full bg-brand-primary px-4 py-2 text-xs font-semibold text-white"
           >
             Save category
           </button>
@@ -233,7 +233,7 @@ const AdminMenu = () => {
           />
           <button
             type="submit"
-            className="rounded-full bg-skywash-600 px-4 py-2 text-xs font-semibold text-white"
+            className="rounded-full bg-brand-primary px-4 py-2 text-xs font-semibold text-white"
           >
             Save item
           </button>

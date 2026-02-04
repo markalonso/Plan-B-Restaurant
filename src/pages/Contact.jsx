@@ -33,7 +33,7 @@ const Contact = () => {
     <div className="section-padding">
       <div className="mx-auto max-w-6xl space-y-10">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-skywash-600">
+          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-primary">
             Contact
           </p>
           <h1 className="mt-2 text-4xl font-semibold text-slate-900 md:text-5xl">
@@ -50,7 +50,7 @@ const Contact = () => {
             <p className="text-sm text-slate-600">Daily 09:00 – 02:00</p>
             <div>
               <a
-                className="inline-flex items-center gap-2 rounded-full bg-skywash-600 px-5 py-2 text-sm font-semibold text-white"
+                className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
                 href="https://wa.me/201005260787"
                 target="_blank"
                 rel="noreferrer"
@@ -92,7 +92,7 @@ const Contact = () => {
             <button
               type="submit"
               disabled={!isValid}
-              className="w-full rounded-full bg-skywash-600 px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-skywash-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+              className="w-full rounded-ui-default bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-layered transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
             >
               Send via WhatsApp
             </button>

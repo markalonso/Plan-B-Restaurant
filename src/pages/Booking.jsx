@@ -246,7 +246,7 @@ const Booking = () => {
             <SectionHeading
               eyebrow="BOOKING"
               title="Request a table"
-              subtitle="Send your details — we’ll confirm personally on WhatsApp."
+              subtitle="Send your request — we confirm personally on WhatsApp."
             />
             <Card>
               <form className="space-y-4" onSubmit={handleSubmit}>
@@ -262,7 +262,9 @@ const Booking = () => {
                       required
                     />
                     {helperText.name && (
-                      <p className="text-xs text-rose-500">{helperText.name}</p>
+                      <p className="text-xs text-slate-500">
+                        {helperText.name}
+                      </p>
                     )}
                   </div>
                   <div className="space-y-2">
@@ -276,7 +278,9 @@ const Booking = () => {
                       required
                     />
                     {helperText.phone && (
-                      <p className="text-xs text-rose-500">{helperText.phone}</p>
+                      <p className="text-xs text-slate-500">
+                        {helperText.phone}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -308,7 +312,9 @@ const Booking = () => {
                       required
                     />
                     {helperText.date && (
-                      <p className="text-xs text-rose-500">{helperText.date}</p>
+                      <p className="text-xs text-slate-500">
+                        {helperText.date}
+                      </p>
                     )}
                   </div>
                   {isReservation ? (
@@ -328,7 +334,7 @@ const Booking = () => {
                         ))}
                       </select>
                       {helperText.time && (
-                        <p className="text-xs text-rose-500">
+                        <p className="text-xs text-slate-500">
                           {helperText.time}
                         </p>
                       )}
@@ -380,7 +386,7 @@ const Booking = () => {
                   className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
                 />
                 {status.error && (
-                  <p className="text-sm font-semibold text-rose-500">
+                  <p className="text-xs font-medium text-rose-400">
                     {status.error}
                   </p>
                 )}
@@ -391,10 +397,11 @@ const Booking = () => {
                 >
                   {status.loading
                     ? "Sending..."
-                    : isGroupRequest
-                    ? "Request a group booking"
                     : "Send request on WhatsApp"}
                 </Button>
+                <p className="text-xs text-slate-500">
+                  Typical reply time: 10–30 minutes.
+                </p>
               </form>
             </Card>
           </div>
@@ -408,16 +415,16 @@ const Booking = () => {
               </h3>
               <Stagger className="space-y-3">
                 {[
-                  "You send a request",
-                  "We confirm on WhatsApp",
-                  "You arrive and enjoy"
+                  { icon: "📝", label: "You send a request" },
+                  { icon: "💬", label: "We confirm on WhatsApp" },
+                  { icon: "✨", label: "You arrive and enjoy" }
                 ].map((step) => (
-                  <StaggerItem key={step}>
+                  <StaggerItem key={step.label}>
                     <div className="flex items-center gap-3 text-sm text-slate-600">
                       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-light text-brand-deep">
-                        ✓
+                        {step.icon}
                       </span>
-                      {step}
+                      {step.label}
                     </div>
                   </StaggerItem>
                 ))}

@@ -3,10 +3,12 @@ const baseStyles =
 
 const variants = {
   primary:
-    "bg-brand-primary text-white shadow-layered hover:-translate-y-0.5 hover:shadow-soft",
+    "bg-slate-900 text-white shadow-layered hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-soft",
   secondary:
-    "bg-white/80 text-neutral-slate border border-white/70 shadow-soft hover:-translate-y-0.5",
-  ghost: "text-neutral-slate hover:bg-white/60"
+    "bg-white text-slate-900 border border-slate-200 shadow-soft hover:-translate-y-0.5 hover:bg-slate-50",
+  outline:
+    "border border-slate-300 text-slate-900 hover:-translate-y-0.5 hover:bg-slate-50",
+  ghost: "text-slate-900 hover:bg-slate-100"
 };
 
 const sizes = {
