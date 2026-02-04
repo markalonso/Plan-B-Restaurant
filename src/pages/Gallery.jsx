@@ -95,6 +95,8 @@ const allImages = [
 ];
 
 const normalizeValue = (value) => value.toLowerCase().trim();
+const fallbackImage =
+  "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=900&q=80";
 
 const Gallery = () => {
   const [activeTab, setActiveTab] = useState("All");
@@ -144,7 +146,7 @@ const Gallery = () => {
             </p>
           </Card>
         ) : (
-          <Stagger>
+          <Stagger animateOnView={false}>
             <div className="columns-1 gap-6 space-y-6 sm:columns-2 lg:columns-3">
               {filteredImages.map((item) => (
                 <StaggerItem key={item.id}>
@@ -155,7 +157,7 @@ const Gallery = () => {
                       className="relative block w-full"
                     >
                       <img
-                        src={item.image}
+                        src={item.image || fallbackImage}
                         alt={item.caption}
                         className="w-full object-cover transition duration-300 group-hover:scale-[1.02]"
                         loading="lazy"
@@ -184,7 +186,7 @@ const Gallery = () => {
           />
           <div className="relative max-w-4xl">
             <img
-              src={activeImage.image}
+              src={activeImage.image || fallbackImage}
               alt={activeImage.caption}
               className="max-h-[85vh] w-full rounded-3xl object-cover shadow-layered"
             />

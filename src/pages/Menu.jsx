@@ -19,6 +19,9 @@ const formatPrice = (price) => {
   return "EGP";
 };
 
+const fallbackImage =
+  "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=900&q=80";
+
 const Menu = () => {
   const [activeCategory, setActiveCategory] = useState("All");
 
@@ -52,12 +55,12 @@ const Menu = () => {
           />
         </Reveal>
 
-        <Stagger className="grid gap-6 md:grid-cols-2">
+        <Stagger className="grid gap-6 md:grid-cols-2" animateOnView={false}>
           {popularItems.map((item) => (
             <StaggerItem key={item.id}>
               <Card className="group flex gap-4 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
                 <img
-                  src={item.image}
+                  src={item.image || fallbackImage}
                   alt={item.name}
                   className="h-24 w-24 rounded-2xl object-cover"
                 />
@@ -115,12 +118,12 @@ const Menu = () => {
             </Button>
           </Card>
         ) : (
-          <Stagger className="grid gap-6 md:grid-cols-2">
+          <Stagger className="grid gap-6 md:grid-cols-2" animateOnView={false}>
             {filteredItems.map((item) => (
               <StaggerItem key={item.id}>
                 <Card className="group space-y-3 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
                   <img
-                    src={item.image}
+                    src={item.image || fallbackImage}
                     alt={item.name}
                     className="h-44 w-full rounded-2xl object-cover"
                   />

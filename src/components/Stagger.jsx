@@ -19,14 +19,17 @@ const itemVariants = {
   }
 };
 
-const Stagger = ({ children, className = "" }) => {
+const Stagger = ({ children, className = "", animateOnView = true }) => {
+  const motionProps = animateOnView
+    ? { whileInView: "show", viewport: { once: true, amount: 0.2 } }
+    : { animate: "show" };
+
   return (
     <motion.div
       className={className}
       variants={containerVariants}
       initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.2 }}
+      {...motionProps}
     >
       {children}
     </motion.div>
