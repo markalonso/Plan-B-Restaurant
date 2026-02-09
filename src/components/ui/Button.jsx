@@ -1,14 +1,14 @@
 const baseStyles =
-  "inline-flex items-center justify-center gap-2 rounded-ui-default px-5 py-2.5 text-sm font-semibold transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/50";
+  "inline-flex items-center justify-center gap-2 rounded-ui-default px-5 py-2.5 text-sm font-sans font-medium transition-all duration-normal ease-gentle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/40";
 
 const variants = {
   primary:
-    "bg-slate-900 text-white shadow-layered hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-soft",
+    "bg-brand-primary text-white shadow-soft hover:-translate-y-0.5 hover:shadow-hover",
   secondary:
-    "bg-white text-slate-900 border border-slate-200 shadow-soft hover:-translate-y-0.5 hover:bg-slate-50",
+    "bg-white text-neutral-slate border border-accent-sand/50 shadow-soft hover:-translate-y-0.5 hover:bg-brand-light/50",
   outline:
-    "border border-slate-300 text-slate-900 hover:-translate-y-0.5 hover:bg-slate-50",
-  ghost: "text-slate-900 hover:bg-slate-100"
+    "border border-accent-sand text-neutral-slate hover:-translate-y-0.5 hover:bg-brand-light/30",
+  ghost: "text-neutral-slate hover:bg-brand-light/50"
 };
 
 const sizes = {

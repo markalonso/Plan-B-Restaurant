@@ -1,7 +1,7 @@
 const Divider = ({ className = "" }) => {
   return (
     <div
-      className={`h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent ${className}`}
+      className={`h-px w-full bg-gradient-to-r from-transparent via-accent-sand/50 to-transparent ${className}`}
     />
   );
 };

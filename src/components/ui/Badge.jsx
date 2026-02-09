@@ -1,13 +1,13 @@
 const variants = {
-  info: "bg-brand-light/50 text-brand-deep",
-  accent: "bg-white/70 text-brand-primary",
-  subtle: "bg-slate-100 text-slate-600"
+  info: "bg-brand-light text-brand-primary",
+  accent: "bg-accent-caramel/20 text-accent-caramel",
+  subtle: "bg-accent-sand/30 text-neutral-slate/70"
 };
 
 const Badge = ({ children, variant = "info", className = "" }) => {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
+      className={`inline-flex items-center rounded-full px-3 py-1 font-sans text-xs font-medium ${
         variants[variant]
       } ${className}`}
     >
