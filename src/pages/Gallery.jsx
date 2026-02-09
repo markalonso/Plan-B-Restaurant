@@ -76,7 +76,7 @@ const Gallery = () => {
                 variant={activeTab === tab ? "primary" : "secondary"}
                 size="sm"
                 onClick={() => setActiveTab(tab)}
-                className="transition duration-200 hover:-translate-y-0.5"
+                className="transition-all duration-normal ease-gentle hover:-translate-y-0.5"
               >
                 {tab}
               </Button>
@@ -86,7 +86,7 @@ const Gallery = () => {
 
         {status.loading ? (
           <Card>
-            <p className="text-sm text-slate-600">Loading gallery…</p>
+            <p className="text-sm text-neutral-slate/70">Loading gallery…</p>
           </Card>
         ) : status.error ? (
           <Card>
@@ -94,7 +94,7 @@ const Gallery = () => {
           </Card>
         ) : filteredImages.length === 0 ? (
           <Card>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-neutral-slate/70">
               No images yet for this category.
             </p>
           </Card>
@@ -112,10 +112,10 @@ const Gallery = () => {
                       <img
                         src={item.image_url || fallbackImage}
                         alt={item.alt_text || item.title || "Plan B gallery"}
-                        className="w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                        className="w-full object-cover transition-all duration-normal ease-gentle group-hover:scale-[1.02]"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-brand-deep/70 via-brand-deep/10 to-transparent opacity-0 transition duration-300 group-hover:opacity-100">
+                      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-brand-deep/70 via-brand-deep/10 to-transparent opacity-0 transition-all duration-normal ease-gentle group-hover:opacity-100">
                         <p className="p-4 text-sm font-semibold text-white">
                           {item.title || item.description || "Plan B moments"}
                         </p>
@@ -141,7 +141,7 @@ const Gallery = () => {
             <img
               src={activeImage.image_url || fallbackImage}
               alt={activeImage.alt_text || activeImage.title || "Plan B gallery"}
-              className="max-h-[85vh] w-full rounded-3xl object-cover shadow-layered"
+              className="max-h-[85vh] w-full rounded-xl object-cover shadow-soft"
             />
             <p className="mt-4 text-center text-sm text-white/80">
               {activeImage.title || activeImage.description || "Plan B moments"}

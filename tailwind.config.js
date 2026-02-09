@@ -9,6 +9,11 @@ export default {
           primary: "rgb(var(--brand-primary) / <alpha-value>)",
           deep: "rgb(var(--brand-deep) / <alpha-value>)"
         },
+        accent: {
+          olive: "rgb(var(--accent-olive) / <alpha-value>)",
+          caramel: "rgb(var(--accent-caramel) / <alpha-value>)",
+          sand: "rgb(var(--accent-sand) / <alpha-value>)"
+        },
         neutral: {
           white: "rgb(var(--neutral-white) / <alpha-value>)",
           offwhite: "rgb(var(--neutral-offwhite) / <alpha-value>)",
@@ -16,21 +21,31 @@ export default {
         }
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"]
+        serif: ["Lora", "Georgia", "serif"],
+        sans: ["Open Sans", "Segoe UI", "system-ui", "sans-serif"]
       },
       boxShadow: {
-        soft: "0 20px 45px rgba(15, 23, 42, 0.08)",
+        soft: "0 8px 32px rgba(45, 35, 28, 0.06)",
+        hover: "0 12px 40px rgba(45, 35, 28, 0.1)",
         layered:
-          "0 12px 30px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.08)"
+          "0 4px 20px rgba(45, 35, 28, 0.08), 0 1px 4px rgba(45, 35, 28, 0.04)"
       },
       borderRadius: {
-        "ui-default": "1.25rem"
+        "ui-default": "0.875rem"
       },
       backgroundImage: {
         "soft-radial":
-          "radial-gradient(circle at top, rgba(77, 141, 255, 0.12), transparent 55%)",
+          "radial-gradient(circle at top, rgba(194, 139, 87, 0.08), transparent 55%)",
         "soft-linear":
-          "linear-gradient(120deg, rgba(233, 242, 255, 0.9), rgba(255, 255, 255, 0.7))"
+          "linear-gradient(180deg, rgba(250, 247, 242, 0.95), rgba(245, 241, 235, 0.9))"
+      },
+      transitionTimingFunction: {
+        gentle: "cubic-bezier(0.4, 0, 0.2, 1)"
+      },
+      transitionDuration: {
+        fast: "150ms",
+        normal: "250ms",
+        slow: "400ms"
       }
     }
   },

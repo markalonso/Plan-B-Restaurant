@@ -49,8 +49,8 @@ const AdminOverview = () => {
   return (
     <AdminLayout>
       <div>
-        <h1 className="text-3xl font-semibold text-slate-900">Overview</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <h1 className="text-3xl font-semibold text-neutral-slate">Overview</h1>
+        <p className="mt-2 text-sm text-neutral-slate/70">
           Live status of new requests and total customers.
         </p>
       </div>
@@ -64,8 +64,8 @@ const AdminOverview = () => {
             ];
             return (
               <div key={label} className="glass-card">
-                <p className="text-sm text-slate-500">{label}</p>
-                <p className="mt-3 text-3xl font-semibold text-slate-900">
+                <p className="text-sm text-neutral-slate/60">{label}</p>
+                <p className="mt-3 text-3xl font-semibold text-neutral-slate">
                   {loading ? "…" : values[index]}
                 </p>
               </div>

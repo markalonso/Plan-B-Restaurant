@@ -22,7 +22,7 @@ const App = () => {
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-neutral-offwhite text-neutral-slate">
       {!isAdminRoute && <Navbar />}
       <main className={isAdminRoute ? "pt-0" : "pt-20"}>
         <Routes>

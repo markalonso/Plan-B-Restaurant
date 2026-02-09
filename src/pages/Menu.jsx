@@ -58,22 +58,22 @@ const Menu = () => {
         <Stagger className="grid gap-6 md:grid-cols-2" animateOnView={false}>
           {popularItems.map((item) => (
             <StaggerItem key={item.id}>
-              <Card className="group flex gap-4 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
+              <Card className="group flex gap-4 transition-all duration-normal ease-gentle hover:-translate-y-1 hover:shadow-hover">
                 <img
                   src={item.image || fallbackImage}
                   alt={item.name}
-                  className="h-24 w-24 rounded-2xl object-cover"
+                  className="h-24 w-24 rounded-lg object-cover"
                 />
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-lg font-semibold text-slate-900">
+                    <h3 className="text-lg font-semibold text-neutral-slate">
                       {item.name}
                     </h3>
                     <span className="text-sm font-semibold text-brand-primary">
                       {formatPrice(item.price)}
                     </span>
                   </div>
-                  <p className="text-sm text-slate-600">{item.description}</p>
+                  <p className="text-sm text-neutral-slate/70">{item.description}</p>
                 </div>
               </Card>
             </StaggerItem>
@@ -82,10 +82,10 @@ const Menu = () => {
 
         <Reveal delay={0.1}>
           <GlassPanel className="space-y-3">
-            <h3 className="text-xl font-semibold text-slate-900">
+            <h3 className="text-xl font-semibold text-neutral-slate">
               Comfort, made with care.
             </h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-neutral-slate/70">
               Familiar flavors, clean ingredients, and a calm coastal mood — day
               to night.
             </p>
@@ -110,7 +110,7 @@ const Menu = () => {
 
         {filteredItems.length === 0 ? (
           <Card className="flex flex-col gap-3">
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-neutral-slate/70">
               No items match this category yet.
             </p>
             <Button variant="secondary" onClick={() => setActiveCategory("All")}>
@@ -121,21 +121,21 @@ const Menu = () => {
           <Stagger className="grid gap-6 md:grid-cols-2" animateOnView={false}>
             {filteredItems.map((item) => (
               <StaggerItem key={item.id}>
-                <Card className="group space-y-3 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
+                <Card className="group space-y-3 transition-all duration-normal ease-gentle hover:-translate-y-1 hover:shadow-hover">
                   <img
                     src={item.image || fallbackImage}
                     alt={item.name}
-                    className="h-44 w-full rounded-2xl object-cover"
+                    className="h-44 w-full rounded-lg object-cover"
                   />
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-slate-900">
+                    <h3 className="text-lg font-semibold text-neutral-slate">
                       {item.name}
                     </h3>
                     <span className="text-sm font-semibold text-brand-primary">
                       {formatPrice(item.price)}
                     </span>
                   </div>
-                  <p className="text-sm text-slate-600">{item.description}</p>
+                  <p className="text-sm text-neutral-slate/70">{item.description}</p>
                 </Card>
               </StaggerItem>
             ))}

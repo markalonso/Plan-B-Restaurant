@@ -22,19 +22,19 @@ const AdminLayout = ({ children, onSignOut }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="border-b border-slate-200 bg-white">
+    <div className="min-h-screen bg-neutral-offwhite">
+      <header className="border-b border-accent-sand/40 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div>
-            <p className="text-lg font-semibold text-slate-900">Plan B Admin</p>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+            <p className="text-lg font-semibold text-neutral-slate">Plan B Admin</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-neutral-slate/50">
               Dashboard
             </p>
           </div>
           <button
             type="button"
             onClick={handleSignOut}
-            className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600"
+            className="rounded-lg border border-accent-sand/40 px-4 py-2 text-sm font-semibold text-neutral-slate/70"
           >
             Sign out
           </button>
@@ -48,10 +48,10 @@ const AdminLayout = ({ children, onSignOut }) => {
               to={item.to}
               end={item.end}
               className={({ isActive }) =>
-                `block rounded-2xl px-4 py-2 text-sm font-semibold transition ${
+                `block rounded-lg px-4 py-2 text-sm font-semibold transition ${
                   isActive
                     ? "bg-brand-primary text-white"
-                    : "text-slate-600 hover:bg-slate-100"
+                    : "text-neutral-slate/70 hover:bg-brand-light/50"
                 }`
               }
             >

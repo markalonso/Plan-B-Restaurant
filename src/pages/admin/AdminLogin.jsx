@@ -43,10 +43,10 @@ const AdminLogin = () => {
           <p className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-primary">
             Admin Access
           </p>
-          <h1 className="mt-2 text-3xl font-semibold text-slate-900 md:text-4xl">
+          <h1 className="mt-2 text-3xl font-semibold text-neutral-slate md:text-4xl">
             {mode === "sign-in" ? "Sign in" : "Create admin login"}
           </h1>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-neutral-slate/70">
             Use your owner email and password. Access is granted after your
             account is added to the admin_users table.
           </p>
@@ -59,7 +59,7 @@ const AdminLogin = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+            className="w-full rounded-lg border border-accent-sand/40 px-4 py-3"
             required
           />
           <input
@@ -68,7 +68,7 @@ const AdminLogin = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+            className="w-full rounded-lg border border-accent-sand/40 px-4 py-3"
             required
           />
           {status.error && (
@@ -79,7 +79,7 @@ const AdminLogin = () => {
           <button
             type="submit"
             disabled={status.loading}
-            className="w-full rounded-full bg-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-brand-primary disabled:cursor-not-allowed disabled:bg-slate-300"
+            className="w-full rounded-lg bg-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-brand-primary disabled:cursor-not-allowed disabled:bg-neutral-slate/30"
           >
             {status.loading
               ? "Working..."

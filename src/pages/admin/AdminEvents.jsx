@@ -45,8 +45,8 @@ const AdminEvents = () => {
   return (
     <AdminLayout>
       <div>
-        <h1 className="text-3xl font-semibold text-slate-900">Event Requests</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <h1 className="text-3xl font-semibold text-neutral-slate">Event Requests</h1>
+        <p className="mt-2 text-sm text-neutral-slate/70">
           Track group and party requests with customized details.
         </p>
       </div>
@@ -57,7 +57,7 @@ const AdminEvents = () => {
           onChange={(event) =>
             setFilters((prev) => ({ ...prev, status: event.target.value }))
           }
-          className="rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+          className="rounded-lg border border-accent-sand/40 px-4 py-2 text-sm"
         >
           <option value="">All statuses</option>
           {statusOptions.map((status) => (
@@ -72,12 +72,12 @@ const AdminEvents = () => {
           onChange={(event) =>
             setFilters((prev) => ({ ...prev, date: event.target.value }))
           }
-          className="rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+          className="rounded-lg border border-accent-sand/40 px-4 py-2 text-sm"
         />
         <button
           type="button"
           onClick={() => setFilters({ status: "", date: "" })}
-          className="rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+          className="rounded-lg border border-accent-sand/40 px-4 py-2 text-sm"
         >
           Reset
         </button>
@@ -85,10 +85,10 @@ const AdminEvents = () => {
 
       <div className="glass-card overflow-hidden">
         {loading ? (
-          <p className="text-sm text-slate-500">Loading event requests…</p>
+          <p className="text-sm text-neutral-slate/60">Loading event requests…</p>
         ) : (
           <table className="w-full text-left text-sm">
-            <thead className="text-slate-400">
+            <thead className="text-neutral-slate/50">
               <tr>
                 <th className="pb-4">Host</th>
                 <th className="pb-4">Date</th>
@@ -101,10 +101,10 @@ const AdminEvents = () => {
               {filteredRequests.map((request) => (
                 <tr key={request.id}>
                   <td className="py-4">
-                    <p className="font-semibold text-slate-900">
+                    <p className="font-semibold text-neutral-slate">
                       {request.full_name}
                     </p>
-                    <p className="text-slate-500">{request.phone}</p>
+                    <p className="text-neutral-slate/60">{request.phone}</p>
                   </td>
                   <td className="py-4">{request.date}</td>
                   <td className="py-4">{request.guests}</td>
@@ -114,7 +114,7 @@ const AdminEvents = () => {
                       onChange={(event) =>
                         handleStatusChange(request.id, event.target.value)
                       }
-                      className="rounded-xl border border-slate-200 px-3 py-1 text-xs"
+                      className="rounded-xl border border-accent-sand/40 px-3 py-1 text-xs"
                     >
                       {statusOptions.map((status) => (
                         <option key={status} value={status}>
@@ -140,24 +140,24 @@ const AdminEvents = () => {
       </div>
 
       {activeRequest && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-brand-primary/60 p-6">
           <div className="glass-card max-w-lg">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-neutral-slate">
                   Event request details
                 </h2>
-                <p className="text-sm text-slate-500">ID: {activeRequest.id}</p>
+                <p className="text-sm text-neutral-slate/60">ID: {activeRequest.id}</p>
               </div>
               <button
                 type="button"
                 onClick={() => setActiveRequest(null)}
-                className="text-sm text-slate-500"
+                className="text-sm text-neutral-slate/60"
               >
                 Close
               </button>
             </div>
-            <div className="mt-4 space-y-2 text-sm text-slate-600">
+            <div className="mt-4 space-y-2 text-sm text-neutral-slate/70">
               <p>
                 <strong>Name:</strong> {activeRequest.full_name}
               </p>

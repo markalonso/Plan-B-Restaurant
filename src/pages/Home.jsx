@@ -64,13 +64,13 @@ const Home = () => {
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <Reveal>
             <div className="space-y-6">
-              <span className="text-xs font-semibold uppercase tracking-[0.4em] text-brand-primary">
+              <span className="font-sans text-xs font-medium uppercase tracking-[0.3em] text-accent-olive">
                 PLAN B · RESTAURANT & CAFE
               </span>
-              <h1 className="text-balance text-4xl font-semibold text-slate-900 md:text-5xl lg:text-6xl">
+              <h1 className="text-balance font-serif text-4xl font-semibold text-neutral-slate md:text-5xl lg:text-6xl">
                 Chill nights. Comfort food. Good company.
               </h1>
-              <p className="text-balance text-base text-slate-600 md:text-lg">
+              <p className="text-balance font-sans text-base text-neutral-slate/70 md:text-lg">
                 A modern spot on Hurghada’s Cornish Street for calm evenings,
                 signature plates, and an easy atmosphere.
               </p>
@@ -85,19 +85,19 @@ const Home = () => {
                   Explore menu
                 </Button>
               </div>
-              <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500">
+              <div className="flex flex-wrap items-center gap-3 font-sans text-xs font-medium text-neutral-slate/60">
                 <span className="inline-flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-brand-primary" />
+                  <span className="h-2 w-2 rounded-full bg-accent-caramel" />
                   Daily 09:00–02:00
                 </span>
                 <Divider className="hidden h-3 w-6 md:block" />
                 <span className="inline-flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-brand-primary" />
+                  <span className="h-2 w-2 rounded-full bg-accent-caramel" />
                   Cornish Street
                 </span>
                 <Divider className="hidden h-3 w-6 md:block" />
                 <span className="inline-flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-brand-primary" />
+                  <span className="h-2 w-2 rounded-full bg-accent-caramel" />
                   WhatsApp confirmation
                 </span>
               </div>
@@ -106,28 +106,28 @@ const Home = () => {
 
           <Reveal delay={0.1}>
             <div className="relative grid gap-4 sm:grid-cols-2">
-              <div className="group relative overflow-hidden rounded-3xl">
+              <div className="group relative overflow-hidden rounded-xl">
                 <img
                   src={heroImages[0]}
                   alt="Plan B interior"
-                  className="h-56 w-full object-cover transition duration-500 group-hover:-translate-y-1"
+                  className="h-56 w-full object-cover transition-all duration-slow ease-gentle group-hover:-translate-y-1"
                 />
               </div>
-              <div className="group relative overflow-hidden rounded-3xl">
+              <div className="group relative overflow-hidden rounded-xl">
                 <img
                   src={heroImages[1]}
                   alt="Plan B plates"
-                  className="h-56 w-full object-cover transition duration-500 group-hover:-translate-y-1"
+                  className="h-56 w-full object-cover transition-all duration-slow ease-gentle group-hover:-translate-y-1"
                 />
               </div>
-              <div className="group relative overflow-hidden rounded-3xl sm:col-span-2">
+              <div className="group relative overflow-hidden rounded-xl sm:col-span-2">
                 <img
                   src={heroImages[2]}
                   alt="Plan B night atmosphere"
-                  className="h-60 w-full object-cover transition duration-500 group-hover:-translate-y-1"
+                  className="h-60 w-full object-cover transition-all duration-slow ease-gentle group-hover:-translate-y-1"
                 />
               </div>
-              <div className="pointer-events-none absolute inset-0 rounded-3xl border border-white/70" />
+              <div className="pointer-events-none absolute inset-0 rounded-xl border border-white/70" />
             </div>
           </Reveal>
         </div>
@@ -145,10 +145,10 @@ const Home = () => {
         <div className="relative section-padding">
           <div className="mx-auto max-w-4xl text-center text-white">
             <Reveal>
-              <h2 className="text-balance text-3xl font-semibold md:text-4xl">
+              <h2 className="text-balance font-serif text-3xl font-semibold md:text-4xl">
                 A calm glow after sunset.
               </h2>
-              <p className="mt-3 text-sm text-white/80 md:text-base">
+              <p className="mt-3 font-sans text-sm text-white/80 md:text-base">
                 Soft light, warm plates, and a space made for staying longer.
               </p>
             </Reveal>
@@ -168,17 +168,17 @@ const Home = () => {
           <Stagger className="grid gap-6 md:grid-cols-2">
             {signatureMoments.map((moment) => (
               <StaggerItem key={moment.title}>
-                <Card className="group flex items-center gap-4 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
+                <Card className="group flex items-center gap-4 transition-all duration-normal ease-gentle hover:-translate-y-1 hover:shadow-hover">
                   <img
                     src={moment.image}
                     alt={moment.title}
-                    className="h-16 w-16 rounded-2xl object-cover"
+                    className="h-16 w-16 rounded-lg object-cover"
                   />
                   <div>
-                    <p className="text-base font-semibold text-slate-900">
+                    <p className="font-serif text-base font-semibold text-neutral-slate">
                       {moment.title}
                     </p>
-                    <p className="text-sm text-slate-600">{moment.subtitle}</p>
+                    <p className="font-sans text-sm text-neutral-slate/70">{moment.subtitle}</p>
                   </div>
                 </Card>
               </StaggerItem>
@@ -194,12 +194,12 @@ const Home = () => {
               <img
                 src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=900&q=80"
                 alt="Slow mornings"
-                className="h-52 w-full rounded-2xl object-cover"
+                className="h-52 w-full rounded-lg object-cover"
               />
-              <h3 className="text-xl font-semibold text-slate-900">
+              <h3 className="font-serif text-xl font-semibold text-neutral-slate">
                 Slow mornings
               </h3>
-              <p className="text-sm text-slate-600">
+              <p className="font-sans text-sm text-neutral-slate/70">
                 Easy brunch, smooth coffee, and bright coastal light.
               </p>
             </GlassPanel>
@@ -209,12 +209,12 @@ const Home = () => {
               <img
                 src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80"
                 alt="Glowing nights"
-                className="h-52 w-full rounded-2xl object-cover"
+                className="h-52 w-full rounded-lg object-cover"
               />
-              <h3 className="text-xl font-semibold text-slate-900">
+              <h3 className="font-serif text-xl font-semibold text-neutral-slate">
                 Glowing nights
               </h3>
-              <p className="text-sm text-slate-600">
+              <p className="font-sans text-sm text-neutral-slate/70">
                 Dinner, drinks, and a relaxed rhythm — personally confirmed on
                 WhatsApp.
               </p>
@@ -240,10 +240,10 @@ const Home = () => {
             ].map((item) => (
               <StaggerItem key={item}>
                 <Card className="flex items-start gap-3">
-                  <span className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-brand-light text-brand-deep">
+                  <span className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-accent-caramel/20 text-accent-caramel">
                     ✦
                   </span>
-                  <p className="text-sm text-slate-600">{item}</p>
+                  <p className="font-sans text-sm text-neutral-slate/70">{item}</p>
                 </Card>
               </StaggerItem>
             ))}
@@ -264,13 +264,13 @@ const Home = () => {
             {reviews.map((review) => (
               <StaggerItem key={review.name}>
                 <Card className="space-y-4">
-                  <div className="flex gap-1 text-brand-primary">
+                  <div className="flex gap-1 text-accent-olive">
                     {Array.from({ length: 5 }).map((_, index) => (
                       <span key={index}>★</span>
                     ))}
                   </div>
-                  <p className="text-sm text-slate-600">“{review.quote}”</p>
-                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+                  <p className="font-sans text-sm text-neutral-slate/70">“{review.quote}”</p>
+                  <p className="font-sans text-xs font-medium uppercase tracking-[0.25em] text-neutral-slate/50">
                     {review.name}
                   </p>
                 </Card>
@@ -283,11 +283,11 @@ const Home = () => {
       <section className="section-padding">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <div className="rounded-3xl bg-brand-deep px-8 py-10 text-white shadow-layered md:px-12">
+            <div className="rounded-xl bg-brand-deep px-8 py-10 text-white shadow-soft md:px-12">
               <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-center">
                 <div className="space-y-3">
-                  <h2 className="text-3xl font-semibold">Planning a night out?</h2>
-                  <p className="text-sm text-white/80">
+                  <h2 className="font-serif text-3xl font-semibold">Planning a night out?</h2>
+                  <p className="font-sans text-sm text-white/80">
                     Send a reservation request — we’ll confirm on WhatsApp.
                   </p>
                 </div>
