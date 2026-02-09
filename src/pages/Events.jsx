@@ -41,7 +41,7 @@ const Events = () => {
       <section className="section-padding">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <div className="overflow-hidden rounded-3xl shadow-layered">
+            <div className="overflow-hidden rounded-xl shadow-soft">
               <div className="relative h-64 w-full md:h-80">
                 <img
                   src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1400&q=80"
@@ -88,10 +88,10 @@ const Events = () => {
             {scenarios.map((scenario) => (
               <StaggerItem key={scenario.title}>
                 <Card className="space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900">
+                  <h3 className="text-lg font-semibold text-neutral-slate">
                     {scenario.title}
                   </h3>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-neutral-slate/70">
                     {scenario.description}
                   </p>
                 </Card>
@@ -113,8 +113,8 @@ const Events = () => {
               <Stagger className="grid gap-4 md:grid-cols-3">
                 {steps.map((step) => (
                   <StaggerItem key={step}>
-                    <div className="flex items-start gap-3 text-sm text-slate-600">
-                      <span className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-brand-light text-brand-deep">
+                    <div className="flex items-start gap-3 text-sm text-neutral-slate/70">
+                      <span className="mt-1 flex h-8 w-8 items-center justify-center rounded-lg bg-brand-light text-brand-deep">
                         ✓
                       </span>
                       {step}

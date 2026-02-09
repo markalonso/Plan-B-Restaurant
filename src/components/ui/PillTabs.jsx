@@ -1,15 +1,15 @@
 const PillTabs = ({ options, active, onChange }) => {
   return (
-    <div className="inline-flex flex-wrap gap-2 rounded-full bg-white/60 p-1 shadow-soft">
+    <div className="inline-flex flex-wrap gap-2 rounded-xl bg-brand-light/50 p-1.5 shadow-soft">
       {options.map((option) => (
         <button
           key={option}
           type="button"
           onClick={() => onChange(option)}
-          className={`rounded-full px-4 py-2 text-xs font-semibold transition duration-200 md:text-sm ${
+          className={`rounded-lg px-4 py-2 font-sans text-xs font-medium transition-all duration-normal ease-gentle md:text-sm ${
             active === option
-              ? "bg-brand-primary text-white shadow-layered"
-              : "text-slate-600 hover:bg-white"
+              ? "bg-brand-primary text-white shadow-soft"
+              : "text-neutral-slate/80 hover:bg-white/60"
           }`}
         >
           {option}
