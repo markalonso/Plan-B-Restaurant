@@ -10,7 +10,7 @@ const Navbar = () => {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-coffee/10 bg-white/85 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <NavLink to="/" className="flex items-center gap-3">
-          <img src="/assets/planb/home/logo-planb.png.jpg" alt="Plan B logo" className="h-10 w-auto" />
+          <img src="/assets/planb/home/logo-planb.png" alt="Plan B" className="h-8 w-auto md:h-10" />
           <div>
             <p className="text-lg font-semibold text-text-primary">Plan B</p>
             <p className="text-xs uppercase tracking-[0.3em] text-text-muted">

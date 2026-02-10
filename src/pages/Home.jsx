@@ -128,13 +128,21 @@ const Home = () => {
           animate="visible"
         >
           <div className="max-w-3xl space-y-6">
-            {/* Title */}
-            <motion.h1 
-              className="text-balance text-5xl font-bold text-white md:text-6xl lg:text-7xl"
-              variants={heroItemVariants}
-            >
-              Plan B
-            </motion.h1>
+            {/* Title and Logo */}
+            <div className="flex flex-col items-center justify-center gap-4">
+              <motion.h1 
+                className="text-balance text-5xl font-bold text-white md:text-6xl lg:text-7xl"
+                variants={heroItemVariants}
+              >
+                PLAN
+              </motion.h1>
+              <motion.img 
+                src="/assets/planb/home/logo-planb.png" 
+                alt="Plan B" 
+                className="h-16 w-auto md:h-24 lg:h-28"
+                variants={heroItemVariants}
+              />
+            </div>
             
             {/* Subtitle */}
             <motion.p 
