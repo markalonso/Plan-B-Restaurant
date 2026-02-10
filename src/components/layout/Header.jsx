@@ -49,9 +49,10 @@ const Header = () => {
           {/* Logo - Left */}
           <NavLink to="/" className="flex items-center gap-3">
             <img
-              src="/logo.png"
+              src="/assets/planb/home/logo-planb.png"
               alt="Plan B logo"
               className="h-10 w-10"
+              onError={(e) => console.error("Navbar logo failed:", e.currentTarget.src)}
             />
             <div>
               <p className="text-lg font-semibold text-text-primary">Plan B</p>
