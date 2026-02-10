@@ -359,7 +359,7 @@ const Home = () => {
       <Section className="section-padding bg-surface-muted/30">
         <div className="mx-auto max-w-4xl">
           <Reveal>
-            <div className="text-center space-y-8">
+            <div className="space-y-8 text-center">
               <SectionHeading
                 eyebrow="What we offer"
                 title="Highlights"
