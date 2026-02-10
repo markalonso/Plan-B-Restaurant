@@ -12,7 +12,8 @@ const variants = {
     "bg-white text-text-primary border border-coffee/15 shadow-soft hover:bg-surface-muted",
   outline:
     "border border-coffee/20 text-text-primary hover:bg-surface-muted",
-  ghost: "text-text-primary hover:bg-surface-muted"
+  ghost: "text-text-primary hover:bg-surface-muted",
+  "ghost-light": "text-white hover:bg-white/10 border border-white/30"
 };
 
 const sizes = {

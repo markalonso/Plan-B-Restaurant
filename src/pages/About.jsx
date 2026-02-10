@@ -164,14 +164,13 @@ const About = () => {
               <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
                 <Button
                   onClick={() => navigate("/booking")}
-                  className="bg-white text-coffee-dark hover:bg-surface-muted"
+                  variant="secondary"
                 >
                   Reserve a Table
                 </Button>
                 <Button
-                  variant="ghost"
+                  variant="ghost-light"
                   onClick={() => navigate("/contact")}
-                  className="text-white hover:bg-white/10"
                 >
                   Contact Us
                 </Button>

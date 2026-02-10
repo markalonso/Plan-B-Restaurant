@@ -156,26 +156,18 @@ const Home = () => {
               className="flex flex-wrap items-center justify-center gap-4 pt-6"
               variants={heroItemVariants}
             >
-              <motion.button
-                type="button"
+              <Button
                 onClick={() => navigate("/menu")}
-                className="h-12 rounded-full bg-white px-6 font-semibold text-slate-900 transition hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-black/20"
-                variants={heroItemVariants}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                variant="secondary"
               >
                 View Menu
-              </motion.button>
-              <motion.button
-                type="button"
+              </Button>
+              <Button
                 onClick={() => navigate("/gallery")}
-                className="h-12 rounded-full border border-white/30 bg-white/10 px-6 font-semibold text-white transition hover:border-white/40 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-black/20"
-                variants={heroItemVariants}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                variant="ghost-light"
               >
                 Gallery
-              </motion.button>
+              </Button>
             </motion.div>
           </div>
         </motion.div>
@@ -510,24 +502,18 @@ const Home = () => {
                 Book your table or stop by — we're open daily from 9 AM to 2 AM.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-                <motion.button
-                  type="button"
+                <Button
                   onClick={() => navigate("/booking")}
-                  className="h-12 rounded-full bg-white px-6 font-semibold text-slate-900 transition hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-black/20"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  variant="secondary"
                 >
                   Book a Table
-                </motion.button>
-                <motion.button
-                  type="button"
+                </Button>
+                <Button
                   onClick={() => navigate("/contact")}
-                  className="h-12 rounded-full border border-white/30 bg-white/10 px-6 font-semibold text-white transition hover:border-white/40 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-black/20"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  variant="ghost-light"
                 >
                   Contact Us
-                </motion.button>
+                </Button>
               </div>
             </div>
           </motion.div>
