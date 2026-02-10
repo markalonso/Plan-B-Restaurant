@@ -1,18 +1,19 @@
 import { useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { cardImageVariants, cardOverlayVariants, staggerItem, staggerContainer, viewportConfig } from "../../lib/motion.js";
 
 /**
  * GalleryGrid component - Masonry-like grid with CSS columns
  * - Stable keys using image name/path
  * - No flicker on filter changes (grid stays mounted)
  * - Smooth loading with blur placeholder
- * - Uses object-cover for consistent grid appearance
+ * - Premium hover animations
  */
 const GalleryGrid = ({ images, onImageClick }) => {
   const fallbackImage =
     "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=900&q=80";
 
   // Track which images have loaded for smooth transitions
-  // State persists across filter changes to keep loaded images visible
   const [loadedImages, setLoadedImages] = useState(new Set());
   const gridRef = useRef(null);
 
@@ -34,49 +35,64 @@ const GalleryGrid = ({ images, onImageClick }) => {
   }
 
   return (
-    <div
+    <motion.div
       ref={gridRef}
       className="columns-1 gap-5 space-y-5 sm:columns-2 lg:columns-3"
+      variants={staggerContainer}
+      initial="hidden"
+      animate="visible"
     >
       {images.map((image) => {
         const key = getStableKey(image);
         const isLoaded = loadedImages.has(image.id);
 
         return (
-          <div
+          <motion.div
             key={key}
             className="group relative break-inside-avoid overflow-hidden rounded-2xl bg-surface-muted"
+            variants={staggerItem}
           >
-            <button
+            <motion.button
               type="button"
               onClick={() => onImageClick(image)}
               className="relative block w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-coffee/50"
               aria-label={`View ${image.title || "gallery image"}`}
+              whileHover="hover"
+              initial="initial"
             >
               {/* Blur placeholder */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-br from-surface-muted to-coffee/5 transition-opacity duration-500 ${
-                  isLoaded ? "opacity-0" : "opacity-100"
-                }`}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-surface-muted to-coffee/5"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: isLoaded ? 0 : 1 }}
+                transition={{ duration: 0.5 }}
               />
 
-              {/* Image */}
-              <img
+              {/* Image with zoom on hover */}
+              <motion.img
                 src={image.image_url || fallbackImage}
                 alt={image.alt_text || image.title || "Plan B gallery"}
-                className={`w-full transition-all duration-500 ${
-                  isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-[1.02]"
-                } group-hover:scale-[1.02]`}
+                className="w-full"
                 loading="lazy"
                 onLoad={() => handleImageLoad(image.id)}
                 style={{
                   aspectRatio: "auto",
                   objectFit: "cover"
                 }}
+                initial={{ opacity: 0, scale: 1.02 }}
+                animate={{ 
+                  opacity: isLoaded ? 1 : 0, 
+                  scale: isLoaded ? 1 : 1.02 
+                }}
+                transition={{ duration: 0.5 }}
+                variants={cardImageVariants}
               />
 
               {/* Hover overlay with title */}
-              <div className="absolute inset-0 flex items-end bg-gradient-to-t from-coffee-dark/80 via-coffee-dark/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <motion.div 
+                className="absolute inset-0 flex items-end bg-gradient-to-t from-coffee-dark/80 via-coffee-dark/20 to-transparent"
+                variants={cardOverlayVariants}
+              >
                 <div className="w-full p-4">
                   {image.title && (
                     <p className="text-sm font-semibold text-white">
@@ -89,19 +105,22 @@ const GalleryGrid = ({ images, onImageClick }) => {
                     </p>
                   )}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Category badge */}
               {image.category && (
-                <div className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-coffee-dark opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                <motion.div 
+                  className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-coffee-dark backdrop-blur-sm"
+                  variants={cardOverlayVariants}
+                >
                   {image.category}
-                </div>
+                </motion.div>
               )}
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         );
       })}
-    </div>
+    </motion.div>
   );
 };
 

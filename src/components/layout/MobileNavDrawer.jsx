@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { modalBackdropVariants, drawerVariants } from "../../lib/motion.js";
 
 const navLinks = [
   { to: "/", label: "Home" },
@@ -39,73 +41,81 @@ const MobileNavDrawer = ({ isOpen, onClose }) => {
     }`;
 
   return (
-    <>
-      {/* Backdrop overlay */}
-      <div
-        className={`fixed inset-0 z-40 bg-coffee-dark/50 backdrop-blur-sm transition-opacity duration-300 ${
-          isOpen ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
-        onClick={onClose}
-        aria-hidden="true"
-      />
-
-      {/* Drawer panel */}
-      <div
-        className={`fixed right-0 top-0 z-50 h-full w-72 bg-white shadow-xl transition-transform duration-300 ease-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Navigation menu"
-      >
-        {/* Close button */}
-        <div className="flex items-center justify-between border-b border-coffee/10 px-6 py-4">
-          <span className="text-sm font-semibold uppercase tracking-[0.3em] text-text-muted">
-            Menu
-          </span>
-          <button
-            type="button"
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop overlay */}
+          <motion.div
+            className="fixed inset-0 z-40 bg-coffee-dark/50 backdrop-blur-sm"
+            variants={modalBackdropVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-surface-muted hover:text-coffee"
-            aria-label="Close menu"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="h-5 w-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
+            aria-hidden="true"
+          />
 
-        {/* Navigation links */}
-        <nav className="px-6 py-4">
-          {navLinks.map((link) => (
-            <NavLink key={link.to} to={link.to} className={navLinkClasses}>
-              {link.label}
-            </NavLink>
-          ))}
-        </nav>
-
-        {/* CTA Button */}
-        <div className="absolute bottom-0 left-0 right-0 border-t border-coffee/10 bg-surface-muted p-6">
-          <NavLink
-            to="/booking"
-            className="flex w-full items-center justify-center gap-2 rounded-ui-default bg-coffee px-5 py-3 text-sm font-semibold text-white shadow-soft transition duration-200 hover:bg-coffee-dark"
+          {/* Drawer panel */}
+          <motion.div
+            className="fixed right-0 top-0 z-50 h-full w-72 bg-white shadow-xl"
+            variants={drawerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
           >
-            Reserve a Table
-          </NavLink>
-        </div>
-      </div>
-    </>
+            {/* Close button */}
+            <div className="flex items-center justify-between border-b border-coffee/10 px-6 py-4">
+              <span className="text-sm font-semibold uppercase tracking-[0.3em] text-text-muted">
+                Menu
+              </span>
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex h-10 w-10 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-surface-muted hover:text-coffee"
+                aria-label="Close menu"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="h-5 w-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* Navigation links */}
+            <nav className="px-6 py-4">
+              {navLinks.map((link) => (
+                <NavLink key={link.to} to={link.to} className={navLinkClasses}>
+                  {link.label}
+                </NavLink>
+              ))}
+            </nav>
+
+            {/* CTA Button */}
+            <div className="absolute bottom-0 left-0 right-0 border-t border-coffee/10 bg-surface-muted p-6">
+              <NavLink
+                to="/booking"
+                className="flex w-full items-center justify-center gap-2 rounded-ui-default bg-coffee px-5 py-3 text-sm font-semibold text-white shadow-soft transition duration-200 hover:bg-coffee-dark"
+              >
+                Reserve a Table
+              </NavLink>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 };
 

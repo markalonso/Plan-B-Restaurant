@@ -1,54 +1,37 @@
-import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { revealVariants, viewportConfig } from "../../lib/motion.js";
 
 /**
  * Section component with optional fade-in animation on scroll
- * Uses IntersectionObserver for subtle animations
+ * Uses Framer Motion for premium reveal animations
  */
 const Section = ({
   children,
   className = "",
   animate = true,
   id,
-  as: Component = "section"
+  delay = 0
 }) => {
-  const [isVisible, setIsVisible] = useState(!animate);
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    if (!animate) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+  if (!animate) {
+    return (
+      <section id={id} className={className}>
+        {children}
+      </section>
     );
-
-    const currentRef = sectionRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [animate]);
+  }
 
   return (
-    <Component
-      ref={sectionRef}
+    <motion.section
       id={id}
-      className={`transition-all duration-700 ease-out ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-      } ${className}`}
+      className={className}
+      variants={revealVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportConfig}
+      transition={{ delay }}
     >
       {children}
-    </Component>
+    </motion.section>
   );
 };
 

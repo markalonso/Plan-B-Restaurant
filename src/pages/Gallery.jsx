@@ -4,6 +4,7 @@ import Button from "../components/ui/Button.jsx";
 import SectionHeading from "../components/ui/SectionHeading.jsx";
 import GalleryGrid from "../components/gallery/GalleryGrid.jsx";
 import Lightbox from "../components/gallery/Lightbox.jsx";
+import { GallerySkeleton } from "../components/ui/Skeleton.jsx";
 import { supabase } from "../lib/supabaseClient.js";
 
 const tabs = ["All", "Space", "Food", "Moments"];
@@ -117,12 +118,7 @@ const Gallery = () => {
         {/* Gallery Grid */}
         <Section>
           {status.loading ? (
-            <div className="flex min-h-[300px] items-center justify-center">
-              <div className="space-y-3 text-center">
-                <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-coffee/30 border-t-coffee" />
-                <p className="text-sm text-text-muted">Loading gallery...</p>
-              </div>
-            </div>
+            <GallerySkeleton count={6} />
           ) : status.error ? (
             <div className="rounded-2xl border border-rose-200 bg-rose-50 p-8 text-center">
               <p className="text-sm text-rose-600">{status.error}</p>

@@ -1,33 +1,15 @@
 import { motion } from "framer-motion";
-
-const containerVariants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.1
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 12 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: "easeOut" }
-  }
-};
+import { staggerContainer, staggerItem, viewportConfig } from "../lib/motion.js";
 
 const Stagger = ({ children, className = "", animateOnView = true }) => {
   const motionProps = animateOnView
-    ? { whileInView: "show", viewport: { once: true, amount: 0.2 } }
-    : { animate: "show" };
+    ? { whileInView: "visible", viewport: viewportConfig }
+    : { animate: "visible" };
 
   return (
     <motion.div
       className={className}
-      variants={containerVariants}
+      variants={staggerContainer}
       initial="hidden"
       {...motionProps}
     >
@@ -38,7 +20,7 @@ const Stagger = ({ children, className = "", animateOnView = true }) => {
 
 export const StaggerItem = ({ children, className = "" }) => {
   return (
-    <motion.div className={className} variants={itemVariants}>
+    <motion.div className={className} variants={staggerItem}>
       {children}
     </motion.div>
   );
