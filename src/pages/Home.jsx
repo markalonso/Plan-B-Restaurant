@@ -23,7 +23,7 @@ import {
 import { supabase } from "../lib/supabaseClient.js";
 
 // Hero image - Plan B sea view terrace
-const heroImage = "/assets/planb/home/hero-sea-view.jpg";
+const heroImage = "/assets/planb/home/hero-sea-view.jpg.png";
 
 // Highlight strip items
 const highlights = [
@@ -38,38 +38,38 @@ const highlights = [
 const signatureItems = [
   {
     id: 1,
-    image: "/assets/planb/home/home-grid-1.jpg",
+    image: "/assets/planb/home/home-grid-1.jpg.png",
     title: "Signature Cocktails",
     alt: "Blue cocktail"
   },
   {
     id: 2,
-    image: "/assets/planb/home/home-grid-2.jpg",
+    image: "/assets/planb/home/home-grid-2.jpg.png",
     title: "Specialty Coffee",
     alt: "Artisan latte art"
   },
   {
     id: 3,
-    image: "/assets/planb/home/home-grid-3.jpg",
+    image: "/assets/planb/home/home-grid-3.jpg.png",
     title: "Desserts",
     alt: "Cheesecake plates"
   },
   {
     id: 4,
-    image: "/assets/planb/home/home-grid-4.jpg",
+    image: "/assets/planb/home/home-grid-4.jpg.png",
     title: "Fresh Salads",
     alt: "Fresh salad"
   },
   {
     id: 5,
-    image: "/assets/planb/home/home-grid-5.jpg",
+    image: "/assets/planb/home/home-grid-5.jpg.png",
     title: "Main Dishes",
     alt: "Featured main dish"
   }
 ];
 
 // The Atmosphere section image - sunset seating with sea view
-const vibeImage = "/assets/planb/home/home-atmosphere.jpg";
+const vibeImage = "/assets/planb/home/home-atmosphere.jpg.png";
 
 const Home = () => {
   const navigate = useNavigate();
