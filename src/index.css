@@ -250,3 +250,16 @@ body::before {
     transform: translateY(0); 
   }
 }
+
+/* ==========================================================================
+   SCROLLBAR UTILITIES
+   ========================================================================== */
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

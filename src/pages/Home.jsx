@@ -1,57 +1,49 @@
 import { useNavigate } from "react-router-dom";
-import Reveal from "../components/Reveal.jsx";
-import Stagger, { StaggerItem } from "../components/Stagger.jsx";
+import Section from "../components/ui/Section.jsx";
+import FeatureGrid from "../components/ui/FeatureGrid.jsx";
 import Button from "../components/ui/Button.jsx";
-import Card from "../components/ui/Card.jsx";
-import Divider from "../components/ui/Divider.jsx";
-import GlassPanel from "../components/ui/GlassPanel.jsx";
 import SectionHeading from "../components/ui/SectionHeading.jsx";
 
-const heroImages = [
-  "https://images.unsplash.com/photo-1481931098730-318b6f776db0?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=900&q=80"
-];
+// Hero image - use fallback since local assets may not exist
+// For production, add actual images to public/assets/hero/
+const heroFallback = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80";
 
-const signatureMoments = [
+// Signature Desserts images
+const dessertImages = [
   {
-    title: "Comfort favorites",
-    subtitle: "Approachable plates, done right.",
-    image:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
+    id: 1,
+    image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=600&q=80",
+    title: "Tiramisu",
+    alt: "Classic Italian tiramisu"
   },
   {
-    title: "Coffee & drinks",
-    subtitle: "From slow sips to late-night refresh.",
-    image:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
+    id: 2,
+    image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80",
+    title: "Chocolate Fondant",
+    alt: "Warm chocolate fondant"
   },
   {
-    title: "Evening ambience",
-    subtitle: "Music low. Conversation up.",
-    image:
-      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    title: "Private moments",
-    subtitle: "Birthdays and small celebrations, curated.",
-    image:
-      "https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=600&q=80"
+    id: 3,
+    image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80",
+    title: "Cheesecake",
+    alt: "Creamy New York cheesecake"
   }
 ];
 
-const reviews = [
+// Coffee & Latte Art image
+const coffeeImage = "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80";
+
+// Sea View images
+const seaViewImages = [
   {
-    name: "Nadia",
-    quote: "Soft lighting, easy vibe, and the food feels just right."
+    id: 1,
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
+    alt: "Sea view terrace at Plan B"
   },
   {
-    name: "Omar",
-    quote: "Perfect for late-night coffee and a calm conversation."
-  },
-  {
-    name: "Layla",
-    quote: "Clean, modern, and welcoming. The staff confirmed everything fast."
+    id: 2,
+    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=80",
+    alt: "Sunset dining by the sea"
   }
 ];
 
@@ -60,249 +52,173 @@ const Home = () => {
 
   return (
     <div className="bg-surface-primary">
-      <section className="section-padding">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <Reveal>
-            <div className="space-y-6">
-              <span className="text-xs font-semibold uppercase tracking-[0.4em] text-coffee">
-                PLAN B · RESTAURANT & CAFE
-              </span>
-              <h1 className="text-balance text-4xl font-semibold text-text-primary md:text-5xl lg:text-6xl">
-                Chill nights. Comfort food. Good company.
-              </h1>
-              <p className="text-balance text-base text-text-secondary md:text-lg">
-                A modern spot on Hurghada's Cornish Street for calm evenings,
-                signature plates, and an easy atmosphere.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Button onClick={() => navigate("/booking")}>
-                  Request a table
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => navigate("/menu")}
-                >
-                  Explore menu
-                </Button>
-              </div>
-              <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-text-muted">
-                <span className="inline-flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-coffee" />
-                  Daily 09:00–02:00
-                </span>
-                <Divider className="hidden h-3 w-6 md:block" />
-                <span className="inline-flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-coffee" />
-                  Cornish Street
-                </span>
-                <Divider className="hidden h-3 w-6 md:block" />
-                <span className="inline-flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-coffee" />
-                  WhatsApp confirmation
-                </span>
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.1}>
-            <div className="relative grid gap-4 sm:grid-cols-2">
-              <div className="group relative overflow-hidden rounded-3xl">
-                <img
-                  src={heroImages[0]}
-                  alt="Plan B interior"
-                  className="h-56 w-full object-cover transition duration-500 group-hover:-translate-y-1"
-                />
-              </div>
-              <div className="group relative overflow-hidden rounded-3xl">
-                <img
-                  src={heroImages[1]}
-                  alt="Plan B plates"
-                  className="h-56 w-full object-cover transition duration-500 group-hover:-translate-y-1"
-                />
-              </div>
-              <div className="group relative overflow-hidden rounded-3xl sm:col-span-2">
-                <img
-                  src={heroImages[2]}
-                  alt="Plan B night atmosphere"
-                  className="h-60 w-full object-cover transition duration-500 group-hover:-translate-y-1"
-                />
-              </div>
-              <div className="pointer-events-none absolute inset-0 rounded-3xl border border-coffee/10" />
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="relative overflow-hidden">
+      {/* Hero Section - Full width with overlay */}
+      <section className="relative min-h-[85vh] w-full overflow-hidden">
+        {/* Background Image */}
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1421622548261-c45bfe178854?auto=format&fit=crop&w=1800&q=80"
-            alt="Night mood"
+            src={heroFallback}
+            alt="Plan B sea view terrace"
             className="h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-coffee-dark/80" />
+          {/* Soft overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-coffee-dark/40 via-coffee-dark/30 to-coffee-dark/60" />
         </div>
-        <div className="relative section-padding">
-          <div className="mx-auto max-w-4xl text-center text-white">
-            <Reveal>
-              <h2 className="text-balance text-3xl font-semibold md:text-4xl">
-                A calm glow after sunset.
-              </h2>
-              <p className="mt-3 text-sm text-white/80 md:text-base">
-                Soft light, warm plates, and a space made for staying longer.
-              </p>
-            </Reveal>
+
+        {/* Hero Content */}
+        <div className="relative flex min-h-[85vh] items-center justify-center px-6 text-center">
+          <div className="max-w-3xl space-y-6">
+            <h1 className="text-balance text-4xl font-semibold text-white md:text-5xl lg:text-6xl">
+              Plan B — Sea View • Food • Vibes
+            </h1>
+            <p className="mx-auto max-w-xl text-base text-white/90 md:text-lg">
+              Where the coast meets comfort — breakfast to late night.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+              <Button
+                onClick={() => navigate("/menu")}
+                className="bg-white text-coffee-dark hover:bg-surface-muted"
+              >
+                View Menu
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => navigate("/gallery")}
+                className="border-white/50 text-white hover:bg-white/10"
+              >
+                Gallery
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="section-padding">
+      {/* Signature Desserts Section */}
+      <Section className="section-padding">
         <div className="mx-auto max-w-6xl space-y-8">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Signature moments"
-              title="Small rituals, memorable nights."
-              subtitle="Every table has a story, every plate is intentional."
-            />
-          </Reveal>
-          <Stagger className="grid gap-6 md:grid-cols-2">
-            {signatureMoments.map((moment) => (
-              <StaggerItem key={moment.title}>
-                <Card className="group flex items-center gap-4 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
-                  <img
-                    src={moment.image}
-                    alt={moment.title}
-                    className="h-16 w-16 rounded-2xl object-cover"
-                  />
-                  <div>
-                    <p className="text-base font-semibold text-text-primary">
-                      {moment.title}
-                    </p>
-                    <p className="text-sm text-text-secondary">{moment.subtitle}</p>
-                  </div>
-                </Card>
-              </StaggerItem>
-            ))}
-          </Stagger>
+          <SectionHeading
+            eyebrow="Sweet endings"
+            title="Signature Desserts"
+            subtitle="Handcrafted desserts with coastal café charm."
+            align="center"
+          />
+          <FeatureGrid
+            items={dessertImages}
+            columns={3}
+            scrollOnMobile={true}
+          />
         </div>
-      </section>
+      </Section>
 
-      <section className="section-padding">
-        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-2">
-          <Reveal>
-            <GlassPanel className="space-y-4">
-              <img
-                src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=900&q=80"
-                alt="Slow mornings"
-                className="h-52 w-full rounded-2xl object-cover"
-              />
-              <h3 className="text-xl font-semibold text-text-primary">
-                Slow mornings
-              </h3>
-              <p className="text-sm text-text-secondary">
-                Easy brunch, smooth coffee, and bright coastal light.
-              </p>
-            </GlassPanel>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <GlassPanel className="space-y-4">
-              <img
-                src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80"
-                alt="Glowing nights"
-                className="h-52 w-full rounded-2xl object-cover"
-              />
-              <h3 className="text-xl font-semibold text-text-primary">
-                Glowing nights
-              </h3>
-              <p className="text-sm text-text-secondary">
-                Dinner, drinks, and a relaxed rhythm — personally confirmed on
-                WhatsApp.
-              </p>
-            </GlassPanel>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="section-padding">
-        <div className="mx-auto max-w-6xl space-y-6">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Why Plan B"
-              title="Simple, personal, comfortable."
-              subtitle=""
-            />
-          </Reveal>
-          <Stagger className="grid gap-4 md:grid-cols-3">
-            {[
-              "Every request is confirmed by our team — no stress.",
-              "Comfort food and familiar flavors, made with care.",
-              "A clean, modern space with a calm coastal mood."
-            ].map((item) => (
-              <StaggerItem key={item}>
-                <Card className="flex items-start gap-3">
-                  <span className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-olive-light text-coffee-dark">
-                    ✦
-                  </span>
-                  <p className="text-sm text-text-secondary">{item}</p>
-                </Card>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
-      </section>
-
-      <section className="section-padding">
-        <div className="mx-auto max-w-6xl space-y-6">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Reviews"
-              title="Loved by locals & travelers."
-              subtitle="A few words from guests. More reviews coming soon."
-            />
-          </Reveal>
-          <Stagger className="grid gap-6 md:grid-cols-3">
-            {reviews.map((review) => (
-              <StaggerItem key={review.name}>
-                <Card className="space-y-4">
-                  <div className="flex gap-1 text-caramel">
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <span key={index}>★</span>
-                    ))}
-                  </div>
-                  <p className="text-sm text-text-secondary">"{review.quote}"</p>
-                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-text-muted">
-                    {review.name}
-                  </p>
-                </Card>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
-      </section>
-
-      <section className="section-padding">
+      {/* Coffee & Latte Art Section */}
+      <Section className="section-padding bg-surface-muted/50">
         <div className="mx-auto max-w-6xl">
-          <Reveal>
-            <div className="rounded-3xl bg-coffee-dark px-8 py-10 text-white shadow-layered md:px-12">
-              <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-center">
-                <div className="space-y-3">
-                  <h2 className="text-3xl font-semibold">Planning a night out?</h2>
-                  <p className="text-sm text-white/80">
-                    Send a reservation request — we'll confirm on WhatsApp.
-                  </p>
+          <div className="grid items-center gap-10 lg:grid-cols-2">
+            {/* Big Image */}
+            <div className="relative overflow-hidden rounded-3xl">
+              <img
+                src={coffeeImage}
+                alt="Latte art at Plan B"
+                className="h-80 w-full object-cover lg:h-[28rem]"
+                loading="lazy"
+              />
+            </div>
+            
+            {/* Text Content */}
+            <div className="space-y-6">
+              <span className="text-xs font-semibold uppercase tracking-[0.4em] text-coffee">
+                Crafted with care
+              </span>
+              <h2 className="text-3xl font-semibold text-text-primary md:text-4xl">
+                Coffee & Latte Art
+              </h2>
+              <p className="text-text-secondary">
+                Every cup tells a story. Our baristas craft beautiful latte art using
+                locally roasted beans — from classic espresso to creative seasonal drinks.
+                Start your morning slow or fuel your afternoon with intention.
+              </p>
+              <div className="flex flex-wrap gap-4 pt-2">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-olive" />
+                  <span className="text-sm text-text-muted">Specialty roasts</span>
                 </div>
-                <div className="flex flex-wrap gap-3 md:justify-end">
-                  <Button onClick={() => navigate("/booking")}
-                    className="bg-white text-coffee-dark hover:-translate-y-0.5"
-                  >
-                    Request a table
-                  </Button>
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-olive" />
+                  <span className="text-sm text-text-muted">Latte art</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-olive" />
+                  <span className="text-sm text-text-muted">Cold brews</span>
                 </div>
               </div>
+              <Button onClick={() => navigate("/menu")} variant="secondary">
+                See Drinks Menu
+              </Button>
             </div>
-          </Reveal>
+          </div>
         </div>
-      </section>
+      </Section>
+
+      {/* Sea View Vibes Section */}
+      <Section className="section-padding">
+        <div className="mx-auto max-w-6xl space-y-8">
+          <SectionHeading
+            eyebrow="Location"
+            title="Sea View Vibes"
+            subtitle="Your table awaits — overlooking the coast."
+            align="center"
+          />
+          
+          {/* Two images: side-by-side on desktop, stacked on mobile */}
+          <div className="grid gap-6 md:grid-cols-2">
+            {seaViewImages.map((item) => (
+              <div
+                key={item.id}
+                className="group relative overflow-hidden rounded-2xl"
+              >
+                <img
+                  src={item.image}
+                  alt={item.alt}
+                  className="h-64 w-full object-cover transition duration-500 group-hover:scale-105 md:h-80"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-coffee-dark/50 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* CTA Section */}
+      <Section className="section-padding">
+        <div className="mx-auto max-w-6xl">
+          <div className="rounded-3xl bg-coffee-dark px-8 py-12 text-center text-white shadow-layered md:px-12">
+            <div className="mx-auto max-w-2xl space-y-4">
+              <h2 className="text-3xl font-semibold md:text-4xl">
+                Ready to experience Plan B?
+              </h2>
+              <p className="text-white/80">
+                Book your table or stop by — we're open daily from 9 AM to 2 AM.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+                <Button
+                  onClick={() => navigate("/booking")}
+                  className="bg-white text-coffee-dark hover:bg-surface-muted"
+                >
+                  Reserve a Table
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate("/contact")}
+                  className="text-white hover:bg-white/10"
+                >
+                  Contact Us
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
     </div>
   );
 };
