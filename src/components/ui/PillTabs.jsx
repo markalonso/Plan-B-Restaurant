@@ -8,8 +8,8 @@ const PillTabs = ({ options, active, onChange }) => {
           onClick={() => onChange(option)}
           className={`rounded-full px-4 py-2 text-xs font-semibold transition duration-200 md:text-sm ${
             active === option
-              ? "bg-brand-primary text-white shadow-layered"
-              : "text-slate-600 hover:bg-white"
+              ? "bg-coffee text-white shadow-layered"
+              : "text-text-secondary hover:bg-white"
           }`}
         >
           {option}

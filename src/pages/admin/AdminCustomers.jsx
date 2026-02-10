@@ -42,8 +42,8 @@ const AdminCustomers = () => {
   return (
     <AdminLayout>
       <div>
-        <h1 className="text-3xl font-semibold text-slate-900">Customers</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <h1 className="text-3xl font-semibold text-text-primary">Customers</h1>
+        <p className="mt-2 text-sm text-text-secondary">
           Keep notes and tags for guest preferences.
         </p>
       </div>
@@ -54,12 +54,12 @@ const AdminCustomers = () => {
           placeholder="Search by name or phone"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm md:w-80"
+          className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm md:w-80"
         />
         <button
           type="button"
           onClick={() => setSearch("")}
-          className="rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+          className="rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
         >
           Reset
         </button>
@@ -67,24 +67,24 @@ const AdminCustomers = () => {
 
       <div className="glass-card space-y-4">
         {loading ? (
-          <p className="text-sm text-slate-500">Loading customers…</p>
+          <p className="text-sm text-text-muted">Loading customers…</p>
         ) : (
           filteredCustomers.map((customer) => (
             <div
               key={customer.id}
-              className="rounded-2xl border border-slate-100 p-4"
+              className="rounded-2xl border border-coffee/10 p-4"
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">
+                  <p className="text-sm font-semibold text-text-primary">
                     {customer.full_name || "Guest"}
                   </p>
-                  <p className="text-xs text-slate-500">{customer.phone}</p>
+                  <p className="text-xs text-text-muted">{customer.phone}</p>
                   {customer.email && (
-                    <p className="text-xs text-slate-500">{customer.email}</p>
+                    <p className="text-xs text-text-muted">{customer.email}</p>
                   )}
                 </div>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-text-muted">
                   Joined {new Date(customer.created_at).toLocaleDateString()}
                 </div>
               </div>
@@ -96,7 +96,7 @@ const AdminCustomers = () => {
                     updateCustomer(customer.id, { notes: event.target.value })
                   }
                   placeholder="Notes"
-                  className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                  className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
                 />
                 <input
                   type="text"
@@ -110,7 +110,7 @@ const AdminCustomers = () => {
                     })
                   }
                   placeholder="Tags (comma separated)"
-                  className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                  className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
                 />
               </div>
             </div>

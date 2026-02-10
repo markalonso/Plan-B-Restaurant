@@ -86,7 +86,7 @@ const Gallery = () => {
 
         {status.loading ? (
           <Card>
-            <p className="text-sm text-slate-600">Loading gallery…</p>
+            <p className="text-sm text-text-secondary">Loading gallery…</p>
           </Card>
         ) : status.error ? (
           <Card>
@@ -94,7 +94,7 @@ const Gallery = () => {
           </Card>
         ) : filteredImages.length === 0 ? (
           <Card>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-text-secondary">
               No images yet for this category.
             </p>
           </Card>
@@ -130,7 +130,7 @@ const Gallery = () => {
       </div>
 
       {activeImage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-brand-deep/80 p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-coffee-dark/80 p-6">
           <button
             type="button"
             className="absolute inset-0"

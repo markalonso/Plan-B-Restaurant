@@ -40,13 +40,13 @@ const AdminLogin = () => {
     <div className="section-padding">
       <div className="mx-auto max-w-lg space-y-6">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-primary">
+          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-coffee">
             Admin Access
           </p>
-          <h1 className="mt-2 text-3xl font-semibold text-slate-900 md:text-4xl">
+          <h1 className="mt-2 text-3xl font-semibold text-text-primary md:text-4xl">
             {mode === "sign-in" ? "Sign in" : "Create admin login"}
           </h1>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-text-secondary">
             Use your owner email and password. Access is granted after your
             account is added to the admin_users table.
           </p>
@@ -59,7 +59,7 @@ const AdminLogin = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-3"
             required
           />
           <input
@@ -68,7 +68,7 @@ const AdminLogin = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-3"
             required
           />
           {status.error && (
@@ -79,7 +79,7 @@ const AdminLogin = () => {
           <button
             type="submit"
             disabled={status.loading}
-            className="w-full rounded-full bg-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-brand-primary disabled:cursor-not-allowed disabled:bg-slate-300"
+            className="w-full rounded-full bg-coffee px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-coffee disabled:cursor-not-allowed disabled:bg-coffee-light"
           >
             {status.loading
               ? "Working..."
@@ -92,7 +92,7 @@ const AdminLogin = () => {
         <button
           type="button"
           onClick={() => setMode(mode === "sign-in" ? "sign-up" : "sign-in")}
-          className="text-sm font-semibold text-brand-primary"
+          className="text-sm font-semibold text-coffee"
         >
           {mode === "sign-in"
             ? "Need to create an admin account?"

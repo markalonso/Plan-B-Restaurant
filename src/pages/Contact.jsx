@@ -33,24 +33,24 @@ const Contact = () => {
     <div className="section-padding">
       <div className="mx-auto max-w-6xl space-y-10">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-primary">
+          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-coffee">
             Contact
           </p>
-          <h1 className="mt-2 text-4xl font-semibold text-slate-900 md:text-5xl">
+          <h1 className="mt-2 text-4xl font-semibold text-text-primary md:text-5xl">
             Let’s connect
           </h1>
         </div>
 
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="glass-card space-y-4">
-            <h2 className="text-xl font-semibold text-slate-900">Visit Us</h2>
-            <p className="text-sm text-slate-600">
+            <h2 className="text-xl font-semibold text-text-primary">Visit Us</h2>
+            <p className="text-sm text-text-secondary">
               Hurghada, Cornish Street, Gold Star Mall
             </p>
-            <p className="text-sm text-slate-600">Daily 09:00 – 02:00</p>
+            <p className="text-sm text-text-secondary">Daily 09:00 – 02:00</p>
             <div>
               <a
-                className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+                className="inline-flex items-center gap-2 rounded-full bg-coffee px-5 py-2 text-sm font-semibold text-white transition hover:bg-coffee-dark"
                 href="https://wa.me/201005260787"
                 target="_blank"
                 rel="noreferrer"
@@ -58,18 +58,18 @@ const Contact = () => {
                 WhatsApp +20 100 526 0787
               </a>
             </div>
-            <p className="text-sm text-slate-500">Map coming soon</p>
+            <p className="text-sm text-text-muted">Map coming soon</p>
           </div>
 
           <form className="glass-card space-y-4" onSubmit={handleSubmit}>
-            <h2 className="text-xl font-semibold text-slate-900">Message Us</h2>
+            <h2 className="text-xl font-semibold text-text-primary">Message Us</h2>
             <input
               type="text"
               name="name"
               placeholder="Full Name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+              className="w-full rounded-2xl border border-coffee/15 px-4 py-3"
               required
             />
             <input
@@ -78,7 +78,7 @@ const Contact = () => {
               placeholder="Phone / WhatsApp"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+              className="w-full rounded-2xl border border-coffee/15 px-4 py-3"
               required
             />
             <textarea
@@ -87,12 +87,12 @@ const Contact = () => {
               value={formData.message}
               onChange={handleChange}
               rows="4"
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+              className="w-full rounded-2xl border border-coffee/15 px-4 py-3"
             />
             <button
               type="submit"
               disabled={!isValid}
-              className="w-full rounded-ui-default bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-layered transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+              className="w-full rounded-ui-default bg-coffee px-6 py-3 text-sm font-semibold text-white shadow-layered transition hover:bg-coffee-dark disabled:cursor-not-allowed disabled:bg-coffee-light"
             >
               Send via WhatsApp
             </button>

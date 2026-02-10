@@ -48,7 +48,7 @@ const Events = () => {
                   alt="Plan B events"
                   className="h-full w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-brand-deep/65" />
+                <div className="absolute inset-0 bg-coffee-dark/65" />
                 <div className="absolute inset-0 flex flex-col justify-end p-8 text-white">
                   <span className="text-xs font-semibold uppercase tracking-[0.4em] text-white/70">
                     Events
@@ -88,10 +88,10 @@ const Events = () => {
             {scenarios.map((scenario) => (
               <StaggerItem key={scenario.title}>
                 <Card className="space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900">
+                  <h3 className="text-lg font-semibold text-text-primary">
                     {scenario.title}
                   </h3>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-text-secondary">
                     {scenario.description}
                   </p>
                 </Card>
@@ -113,8 +113,8 @@ const Events = () => {
               <Stagger className="grid gap-4 md:grid-cols-3">
                 {steps.map((step) => (
                   <StaggerItem key={step}>
-                    <div className="flex items-start gap-3 text-sm text-slate-600">
-                      <span className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-brand-light text-brand-deep">
+                    <div className="flex items-start gap-3 text-sm text-text-secondary">
+                      <span className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-olive-light text-coffee-dark">
                         ✓
                       </span>
                       {step}

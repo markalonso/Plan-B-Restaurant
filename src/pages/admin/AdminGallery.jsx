@@ -149,19 +149,19 @@ const AdminGallery = () => {
   return (
     <AdminLayout>
       <div>
-        <h1 className="text-3xl font-semibold text-slate-900">Gallery</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <h1 className="text-3xl font-semibold text-text-primary">Gallery</h1>
+        <p className="mt-2 text-sm text-text-secondary">
           Upload and manage the public gallery images.
         </p>
       </div>
 
       <form className="glass-card space-y-4" onSubmit={handleSubmit}>
-        <h2 className="text-lg font-semibold text-slate-900">Add image</h2>
+        <h2 className="text-lg font-semibold text-text-primary">Add image</h2>
         <input
           type="file"
           accept="image/*"
           onChange={(event) => setFile(event.target.files?.[0] || null)}
-          className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+          className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
           required
         />
         <div className="grid gap-4 md:grid-cols-2">
@@ -170,7 +170,7 @@ const AdminGallery = () => {
             onChange={(event) =>
               setFormData((prev) => ({ ...prev, category: event.target.value }))
             }
-            className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
           >
             {categories.map((category) => (
               <option key={category} value={category}>
@@ -185,7 +185,7 @@ const AdminGallery = () => {
             onChange={(event) =>
               setFormData((prev) => ({ ...prev, title: event.target.value }))
             }
-            className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
           />
         </div>
         <textarea
@@ -195,7 +195,7 @@ const AdminGallery = () => {
           onChange={(event) =>
             setFormData((prev) => ({ ...prev, description: event.target.value }))
           }
-          className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+          className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
         />
         <input
           type="text"
@@ -204,7 +204,7 @@ const AdminGallery = () => {
           onChange={(event) =>
             setFormData((prev) => ({ ...prev, alt_text: event.target.value }))
           }
-          className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+          className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
         />
         {status.error && (
           <p className="text-xs font-medium text-rose-500">{status.error}</p>
@@ -216,7 +216,7 @@ const AdminGallery = () => {
         )}
         <button
           type="submit"
-          className="rounded-full bg-brand-primary px-4 py-2 text-xs font-semibold text-white"
+          className="rounded-full bg-coffee px-4 py-2 text-xs font-semibold text-white"
           disabled={status.loading}
         >
           {status.loading ? "Uploading..." : "Add to gallery"}
@@ -225,15 +225,15 @@ const AdminGallery = () => {
 
       <div className="glass-card space-y-4">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-semibold text-text-primary">
             Gallery images
           </h2>
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-text-muted">
             {sortedImages.length} total
           </span>
         </div>
         {sortedImages.length === 0 ? (
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-text-muted">
             No gallery images yet. Add the first one above.
           </p>
         ) : (
@@ -241,7 +241,7 @@ const AdminGallery = () => {
             {sortedImages.map((image) => (
               <div
                 key={image.id}
-                className="rounded-2xl border border-slate-100 p-4"
+                className="rounded-2xl border border-coffee/10 p-4"
               >
                 <div className="flex items-start gap-4">
                   <img
@@ -251,7 +251,7 @@ const AdminGallery = () => {
                   />
                   <div className="flex-1 space-y-2">
                     <div className="flex items-center justify-between gap-3">
-                      <p className="text-sm font-semibold text-slate-900">
+                      <p className="text-sm font-semibold text-text-primary">
                         {image.title || "Untitled image"}
                       </p>
                       <button
@@ -262,7 +262,7 @@ const AdminGallery = () => {
                         Delete
                       </button>
                     </div>
-                    <p className="text-xs text-slate-500">{image.category}</p>
+                    <p className="text-xs text-text-muted">{image.category}</p>
                   </div>
                 </div>
 
@@ -274,7 +274,7 @@ const AdminGallery = () => {
                         category: event.target.value
                       })
                     }
-                    className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                    className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
                   >
                     {categories.map((category) => (
                       <option key={category} value={category}>
@@ -289,7 +289,7 @@ const AdminGallery = () => {
                       handleUpdate(image.id, { title: event.target.value })
                     }
                     placeholder="Title"
-                    className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                    className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
                   />
                   <input
                     type="text"
@@ -298,7 +298,7 @@ const AdminGallery = () => {
                       handleUpdate(image.id, { alt_text: event.target.value })
                     }
                     placeholder="Alt text"
-                    className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                    className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
                   />
                   <textarea
                     rows="2"
@@ -309,7 +309,7 @@ const AdminGallery = () => {
                       })
                     }
                     placeholder="Description"
-                    className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                    className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
                   />
                 </div>
               </div>
