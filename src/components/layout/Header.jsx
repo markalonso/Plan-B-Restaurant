@@ -51,7 +51,7 @@ const Header = () => {
             <img
               src="/assets/planb/home/logo-planb.png"
               alt="Plan B logo"
-              className="h-10 w-10"
+              className="h-20 w-20"
               onError={(e) => console.error("Navbar logo failed:", e.currentTarget.src)}
             />
             <div>

@@ -139,7 +139,7 @@ const Home = () => {
               <img 
                 src="/assets/planb/home/logo-planb.png" 
                 alt="Plan B" 
-                className="w-16 md:w-24 lg:w-28"
+                className="w-32 md:w-48 lg:w-56"
               />
             </motion.div>
             
