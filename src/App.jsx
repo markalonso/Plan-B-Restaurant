@@ -1,7 +1,9 @@
 import { Route, Routes, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import Header from "./components/layout/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import FloatingBookingButton from "./components/FloatingBookingButton.jsx";
+import PageTransition from "./components/PageTransition.jsx";
 import AdminRoute from "./components/AdminRoute.jsx";
 import Home from "./pages/Home.jsx";
 import Menu from "./pages/Menu.jsx";
@@ -26,64 +28,66 @@ const App = () => {
     <div className="min-h-screen bg-surface-primary text-text-primary">
       {!isAdminRoute && <Header />}
       <main className={isAdminRoute ? "pt-0" : "pt-20"}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/booking" element={<Booking />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route
-            path="/admin"
-            element={
-              <AdminRoute>
-                <AdminOverview />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/admin/reservations"
-            element={
-              <AdminRoute>
-                <AdminReservations />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/admin/events"
-            element={
-              <AdminRoute>
-                <AdminEvents />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/admin/customers"
-            element={
-              <AdminRoute>
-                <AdminCustomers />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/admin/menu"
-            element={
-              <AdminRoute>
-                <AdminMenu />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/admin/gallery"
-            element={
-              <AdminRoute>
-                <AdminGallery />
-              </AdminRoute>
-            }
-          />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+            <Route path="/menu" element={<PageTransition><Menu /></PageTransition>} />
+            <Route path="/booking" element={<PageTransition><Booking /></PageTransition>} />
+            <Route path="/events" element={<PageTransition><Events /></PageTransition>} />
+            <Route path="/gallery" element={<PageTransition><Gallery /></PageTransition>} />
+            <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+            <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route
+              path="/admin"
+              element={
+                <AdminRoute>
+                  <AdminOverview />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/reservations"
+              element={
+                <AdminRoute>
+                  <AdminReservations />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/events"
+              element={
+                <AdminRoute>
+                  <AdminEvents />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/customers"
+              element={
+                <AdminRoute>
+                  <AdminCustomers />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/menu"
+              element={
+                <AdminRoute>
+                  <AdminMenu />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/gallery"
+              element={
+                <AdminRoute>
+                  <AdminGallery />
+                </AdminRoute>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
       </main>
       {!isAdminRoute && (
         <>
