@@ -22,9 +22,8 @@ import {
 } from "../lib/motion.js";
 import { supabase } from "../lib/supabaseClient.js";
 
-// Hero image - use fallback since local assets may not exist
-// For production, add actual images to public/assets/hero/
-const heroImage = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80";
+// Hero image - Plan B sea view terrace
+const heroImage = "/assets/planb/home/hero-sea-view.jpg";
 
 // Highlight strip items
 const highlights = [
@@ -35,42 +34,42 @@ const highlights = [
   { id: 5, icon: "🎵", label: "Live Music", description: "Weekend vibes" }
 ];
 
-// Signature Food & Desserts images
+// Signature Food & Desserts images - "Made to Be Enjoyed" section
 const signatureItems = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=600&q=80",
-    title: "Tiramisu",
-    alt: "Classic Italian tiramisu"
+    image: "/assets/planb/home/home-grid-1.jpg",
+    title: "Signature Cocktails",
+    alt: "Blue cocktail"
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/planb/home/home-grid-2.jpg",
     title: "Specialty Coffee",
-    alt: "Artisan latte art"
+    alt: "Coffee cup art"
   },
   {
     id: 3,
-    image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80",
-    title: "Chocolate Fondant",
-    alt: "Warm chocolate fondant"
+    image: "/assets/planb/home/home-grid-3.jpg",
+    title: "Desserts",
+    alt: "Cheesecake plates"
   },
   {
     id: 4,
-    image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80",
-    title: "Cheesecake",
-    alt: "Creamy New York cheesecake"
+    image: "/assets/planb/home/home-grid-4.jpg",
+    title: "Fresh Salads",
+    alt: "Salad plate"
   },
   {
     id: 5,
-    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
-    title: "Fresh Cuisine",
-    alt: "Signature dishes"
+    image: "/assets/planb/home/home-grid-5.jpg",
+    title: "Main Dishes",
+    alt: "Main dish with rice, fries, chicken, and sauce"
   }
 ];
 
-// The Vibe section image
-const vibeImage = "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=80";
+// The Atmosphere section image - sunset seating with sea view
+const vibeImage = "/assets/planb/home/home-atmosphere.jpg";
 
 const Home = () => {
   const navigate = useNavigate();
