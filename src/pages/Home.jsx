@@ -129,12 +129,19 @@ const Home = () => {
         >
           <div className="max-w-3xl space-y-6">
             {/* Title */}
-            <motion.h1 
-              className="text-balance text-5xl font-bold text-white md:text-6xl lg:text-7xl"
+            <motion.div
+              className="flex flex-col items-center gap-4"
               variants={heroItemVariants}
             >
-              Plan B
-            </motion.h1>
+              <h1 className="text-balance text-5xl font-bold text-white md:text-6xl lg:text-7xl">
+                PLAN
+              </h1>
+              <img 
+                src="/assets/planb/home/logo-planb.png" 
+                alt="Plan B" 
+                className="w-16 md:w-24 lg:w-28"
+              />
+            </motion.div>
             
             {/* Subtitle */}
             <motion.p 
