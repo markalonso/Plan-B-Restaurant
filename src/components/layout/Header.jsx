@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
+import { headerVariants } from "../../lib/motion.js";
 import MobileNavDrawer from "./MobileNavDrawer.jsx";
 
 const navLinks = [
@@ -37,12 +39,11 @@ const Header = () => {
 
   return (
     <>
-      <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "border-b border-coffee/10 bg-white/95 shadow-soft backdrop-blur-md"
-            : "bg-transparent"
-        }`}
+      <motion.header
+        className="fixed inset-x-0 top-0 z-50 border-b border-transparent"
+        variants={headerVariants}
+        initial="transparent"
+        animate={isScrolled ? "scrolled" : "transparent"}
       >
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4" aria-label="Main navigation">
           {/* Logo - Left */}
@@ -103,7 +104,7 @@ const Header = () => {
             </svg>
           </button>
         </nav>
-      </header>
+      </motion.header>
 
       {/* Mobile Navigation Drawer */}
       <MobileNavDrawer isOpen={isMobileMenuOpen} onClose={closeMobileMenu} />
