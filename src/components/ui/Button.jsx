@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
-import { buttonGlowVariants, prefersReducedMotion } from "../../lib/motion.js";
+import { buttonGlowVariants } from "../../lib/motion.js";
 
+// Base styles for all buttons
 const baseStyles =
-  "inline-flex items-center justify-center gap-2 rounded-ui-default px-5 py-2.5 text-sm font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coffee/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-primary relative overflow-hidden";
+  "inline-flex items-center justify-center gap-2 rounded-ui-default px-5 py-2.5 text-sm font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coffee/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-primary";
 
 const variants = {
   primary:
-    "bg-coffee text-white shadow-soft hover:bg-coffee-dark",
+    "bg-coffee text-white shadow-soft hover:bg-coffee-dark btn-sheen",
   secondary:
     "bg-white text-text-primary border border-coffee/15 shadow-soft hover:bg-surface-muted",
   outline:
@@ -53,7 +54,6 @@ const Button = ({
   loading = false,
   ...props
 }) => {
-  const reducedMotion = prefersReducedMotion();
   const isDisabled = disabled || loading;
 
   return (
@@ -69,11 +69,6 @@ const Button = ({
       disabled={isDisabled}
       {...props}
     >
-      {/* Sheen effect overlay - only visible on hover for primary buttons */}
-      {!reducedMotion && variant === "primary" && (
-        <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-all duration-500 group-hover:translate-x-full group-hover:opacity-100" />
-      )}
-      
       {loading ? (
         <>
           <LoadingSpinner />

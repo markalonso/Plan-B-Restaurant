@@ -7,7 +7,6 @@ import SectionHeading from "../components/ui/SectionHeading.jsx";
 import {
   heroContentVariants,
   heroItemVariants,
-  scrollIndicatorVariants,
   highlightStripContainer,
   highlightItemVariants,
   staggerContainer,
@@ -18,7 +17,8 @@ import {
   galleryPreviewItem,
   viewportConfig,
   imageRevealVariants,
-  revealVariants
+  revealVariants,
+  prefersReducedMotion
 } from "../lib/motion.js";
 import { supabase } from "../lib/supabaseClient.js";
 
@@ -76,6 +76,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryLoading, setGalleryLoading] = useState(true);
+  const reducedMotion = prefersReducedMotion();
 
   // Load gallery images from Supabase
   useEffect(() => {
@@ -169,11 +170,15 @@ const Home = () => {
         {/* Scroll Indicator */}
         <motion.div 
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          variants={scrollIndicatorVariants}
-          initial="initial"
-          animate={["animate", "bounce"]}
+          initial={{ opacity: 0, y: reducedMotion ? 0 : -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: reducedMotion ? 0.3 : 1.5, duration: reducedMotion ? 0.2 : 0.5 }}
         >
-          <div className="flex flex-col items-center gap-2 text-white/70">
+          <motion.div 
+            className="flex flex-col items-center gap-2 text-white/70"
+            animate={reducedMotion ? {} : { y: [0, 8, 0] }}
+            transition={reducedMotion ? {} : { duration: 1.5, ease: "easeInOut", repeat: Infinity, repeatDelay: 0.5 }}
+          >
             <span className="text-xs uppercase tracking-widest">Scroll</span>
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
@@ -185,7 +190,7 @@ const Home = () => {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
             </svg>
-          </div>
+          </motion.div>
         </motion.div>
       </section>
 
@@ -433,7 +438,8 @@ const Home = () => {
               whileInView="visible"
               viewport={viewportConfig}
             >
-              {signatureItems.slice(0, 6).map((item, index) => (
+              {/* Fallback: Show signature items when no gallery images */}
+              {signatureItems.map((item, index) => (
                 <motion.div
                   key={`fallback-${index}`}
                   className="group relative overflow-hidden rounded-2xl"
