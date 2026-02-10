@@ -1,5 +1,4 @@
-import { NavLink } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const navLinkClasses = ({ isActive }) =>
   `transition-colors ${
@@ -16,12 +15,11 @@ const Navbar = () => {
               src="/assets/planb/home/logo-planb.png" 
               alt="Plan B" 
               style={{ 
-                height: '32px',
                 display: 'block',
                 opacity: 1,
                 visibility: 'visible'
               }}
-              className="w-auto md:h-[38px]"
+              className="h-8 w-auto md:h-[38px]"
             />
           </Link>
           <div>
