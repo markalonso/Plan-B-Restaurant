@@ -447,3 +447,192 @@ export const prefersReducedMotion = getReducedMotion;
 export const getAnimationProps = (full, reduced = {}) => {
   return getReducedMotion() ? reduced : full;
 };
+
+// ============================================================================
+// HERO ANIMATION VARIANTS
+// For hero section content with fade + rise animation
+// ============================================================================
+export const heroContentVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: motionSafe(30, 0)
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      duration: getDuration("reveal"), 
+      ease: easings.premium,
+      staggerChildren: getReducedMotion() ? 0.05 : 0.15,
+      delayChildren: getReducedMotion() ? 0 : 0.2
+    }
+  }
+};
+
+export const heroItemVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: motionSafe(20, 0)
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      duration: getDuration("slow"), 
+      ease: easings.premium 
+    }
+  }
+};
+
+// ============================================================================
+// SCROLL INDICATOR VARIANTS
+// Subtle bounce animation for scroll indicator
+// ============================================================================
+export const scrollIndicatorVariants = {
+  initial: { opacity: 0, y: motionSafe(-10, 0) },
+  animate: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      delay: 1.5,
+      duration: getDuration("slow"),
+      ease: easings.premium
+    }
+  },
+  bounce: {
+    y: motionSafe([0, 8, 0], 0),
+    transition: {
+      duration: 1.5,
+      ease: "easeInOut",
+      repeat: Infinity,
+      repeatDelay: 0.5
+    }
+  }
+};
+
+// ============================================================================
+// HIGHLIGHT STRIP VARIANTS
+// For horizontal highlight items with stagger + hover
+// ============================================================================
+export const highlightStripContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: getReducedMotion() ? 0.03 : 0.1,
+      delayChildren: getReducedMotion() ? 0 : 0.1
+    }
+  }
+};
+
+export const highlightItemVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: motionSafe(15, 0)
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      duration: getDuration("slow"), 
+      ease: easings.premium 
+    }
+  },
+  hover: {
+    y: motionSafe(-4, 0),
+    boxShadow: motionSafe(
+      "0 8px 24px rgba(111, 78, 55, 0.15)",
+      "0 2px 8px rgba(111, 78, 55, 0.1)"
+    ),
+    transition: { 
+      duration: getDuration("fast"), 
+      ease: easings.soft 
+    }
+  }
+};
+
+// ============================================================================
+// IMAGE REVEAL VARIANTS
+// For images that reveal on scroll with slight zoom
+// ============================================================================
+export const imageRevealVariants = {
+  hidden: { 
+    opacity: 0, 
+    scale: motionSafe(1.05, 1)
+  },
+  visible: { 
+    opacity: 1, 
+    scale: 1,
+    transition: { 
+      duration: getDuration("reveal"), 
+      ease: easings.premium 
+    }
+  }
+};
+
+// ============================================================================
+// PARALLAX CONFIG
+// Gentle parallax effect values
+// ============================================================================
+export const parallaxConfig = {
+  slow: 0.05,
+  medium: 0.1,
+  fast: 0.15
+};
+
+// ============================================================================
+// BUTTON GLOW VARIANTS
+// Premium hover with subtle glow effect
+// ============================================================================
+export const buttonGlowVariants = {
+  initial: { 
+    scale: 1, 
+    y: 0,
+    boxShadow: "0 0 0 0 rgba(111, 78, 55, 0)"
+  },
+  hover: { 
+    scale: motionSafe(1.02, 1),
+    y: motionSafe(-2, 0),
+    boxShadow: motionSafe(
+      "0 8px 20px rgba(111, 78, 55, 0.2)",
+      "0 2px 8px rgba(111, 78, 55, 0.1)"
+    ),
+    transition: springs.snappy
+  },
+  tap: { 
+    scale: 0.98,
+    y: 0,
+    boxShadow: "0 2px 8px rgba(111, 78, 55, 0.1)",
+    transition: springs.button
+  }
+};
+
+// ============================================================================
+// GALLERY PREVIEW VARIANTS
+// Staggered reveal for gallery preview grid
+// ============================================================================
+export const galleryPreviewContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: getReducedMotion() ? 0.05 : 0.12,
+      delayChildren: getReducedMotion() ? 0 : 0.15
+    }
+  }
+};
+
+export const galleryPreviewItem = {
+  hidden: { 
+    opacity: 0, 
+    y: motionSafe(20, 0),
+    scale: motionSafe(0.95, 1)
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    scale: 1,
+    transition: { 
+      duration: getDuration("slow"), 
+      ease: easings.premium 
+    }
+  }
+};
