@@ -156,19 +156,26 @@ const Home = () => {
               className="flex flex-wrap items-center justify-center gap-4 pt-6"
               variants={heroItemVariants}
             >
-              <Button
+              <motion.button
+                type="button"
                 onClick={() => navigate("/menu")}
-                className="bg-white px-8 py-3 text-base text-coffee-dark hover:bg-surface-muted"
+                className="h-12 rounded-full bg-white px-6 font-semibold text-slate-900 transition hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-black/20"
+                variants={heroItemVariants}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 View Menu
-              </Button>
-              <Button
-                variant="outline"
+              </motion.button>
+              <motion.button
+                type="button"
                 onClick={() => navigate("/gallery")}
-                className="border-2 border-white/60 px-8 py-3 text-base text-white hover:bg-white/10"
+                className="h-12 rounded-full border border-white/30 bg-white/10 px-6 font-semibold text-white transition hover:border-white/40 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-black/20"
+                variants={heroItemVariants}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 Gallery
-              </Button>
+              </motion.button>
             </motion.div>
           </div>
         </motion.div>
@@ -503,19 +510,24 @@ const Home = () => {
                 Book your table or stop by — we're open daily from 9 AM to 2 AM.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-                <Button
+                <motion.button
+                  type="button"
                   onClick={() => navigate("/booking")}
-                  className="bg-white px-8 py-3 text-base text-coffee-dark hover:bg-surface-muted"
+                  className="h-12 rounded-full bg-white px-6 font-semibold text-slate-900 transition hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-black/20"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   Book a Table
-                </Button>
-                <Button
-                  variant="ghost"
+                </motion.button>
+                <motion.button
+                  type="button"
                   onClick={() => navigate("/contact")}
-                  className="px-8 py-3 text-base text-white hover:bg-white/10"
+                  className="h-12 rounded-full border border-white/30 bg-white/10 px-6 font-semibold text-white transition hover:border-white/40 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-black/20"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   Contact Us
-                </Button>
+                </motion.button>
               </div>
             </div>
           </motion.div>
