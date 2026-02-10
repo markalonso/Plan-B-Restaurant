@@ -258,11 +258,11 @@ const Booking = () => {
                       placeholder="Full Name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                      className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
                       required
                     />
                     {helperText.name && (
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-text-muted">
                         {helperText.name}
                       </p>
                     )}
@@ -274,11 +274,11 @@ const Booking = () => {
                       placeholder="Phone / WhatsApp"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                      className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
                       required
                     />
                     {helperText.phone && (
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-text-muted">
                         {helperText.phone}
                       </p>
                     )}
@@ -290,7 +290,7 @@ const Booking = () => {
                   placeholder="Email (optional)"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                  className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
                 />
                 <div className="grid gap-4 md:grid-cols-3">
                   <input
@@ -299,7 +299,7 @@ const Booking = () => {
                     min="1"
                     value={formData.guests}
                     onChange={handleChange}
-                    className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                    className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
                     required
                   />
                   <div className="space-y-2">
@@ -308,11 +308,11 @@ const Booking = () => {
                       name="date"
                       value={formData.date}
                       onChange={handleChange}
-                      className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                      className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
                       required
                     />
                     {helperText.date && (
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-text-muted">
                         {helperText.date}
                       </p>
                     )}
@@ -323,7 +323,7 @@ const Booking = () => {
                         name="time"
                         value={formData.time}
                         onChange={handleChange}
-                        className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                        className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
                         required
                       >
                         <option value="">Select time</option>
@@ -334,7 +334,7 @@ const Booking = () => {
                         ))}
                       </select>
                       {helperText.time && (
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-text-muted">
                           {helperText.time}
                         </p>
                       )}
@@ -346,7 +346,7 @@ const Booking = () => {
                       placeholder="Preferred time window (optional)"
                       value={formData.timeWindow}
                       onChange={handleChange}
-                      className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                      className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
                     />
                   )}
                 </div>
@@ -356,7 +356,7 @@ const Booking = () => {
                       name="eventType"
                       value={formData.eventType}
                       onChange={handleChange}
-                      className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                      className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
                     >
                       <option value="">Event type (optional)</option>
                       <option value="Birthday">Birthday</option>
@@ -369,7 +369,7 @@ const Booking = () => {
                       placeholder="Budget range (optional)"
                       value={formData.budgetRange}
                       onChange={handleChange}
-                      className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                      className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
                     />
                   </div>
                 )}
@@ -383,7 +383,7 @@ const Booking = () => {
                   value={formData.notes}
                   onChange={handleChange}
                   rows="4"
-                  className="w-full rounded-ui-default border border-slate-200 px-4 py-3 text-sm focus:border-brand-primary focus:outline-none"
+                  className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
                 />
                 {status.error && (
                   <p className="text-xs font-medium text-rose-400">
@@ -399,7 +399,7 @@ const Booking = () => {
                     ? "Sending..."
                     : "Send request on WhatsApp"}
                 </Button>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-text-muted">
                   Typical reply time: 10–30 minutes.
                 </p>
               </form>
@@ -410,7 +410,7 @@ const Booking = () => {
         <Reveal delay={0.1}>
           <div className="space-y-6">
             <GlassPanel className="space-y-4">
-              <h3 className="text-lg font-semibold text-slate-900">
+              <h3 className="text-lg font-semibold text-text-primary">
                 What happens next
               </h3>
               <Stagger className="space-y-3">
@@ -420,8 +420,8 @@ const Booking = () => {
                   { icon: "✨", label: "You arrive and enjoy" }
                 ].map((step) => (
                   <StaggerItem key={step.label}>
-                    <div className="flex items-center gap-3 text-sm text-slate-600">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-light text-brand-deep">
+                    <div className="flex items-center gap-3 text-sm text-text-secondary">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-olive-light text-coffee-dark">
                         {step.icon}
                       </span>
                       {step.label}
@@ -432,8 +432,8 @@ const Booking = () => {
             </GlassPanel>
 
             <GlassPanel className="space-y-3">
-              <h3 className="text-lg font-semibold text-slate-900">Good to know</h3>
-              <ul className="space-y-2 text-sm text-slate-600">
+              <h3 className="text-lg font-semibold text-text-primary">Good to know</h3>
+              <ul className="space-y-2 text-sm text-text-secondary">
                 <li>Daily 09:00–02:00</li>
                 <li>Time slots every 30 minutes</li>
                 <li>Groups (9+): tailored reply</li>

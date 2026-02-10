@@ -1,7 +1,7 @@
 const variants = {
-  info: "bg-brand-light/50 text-brand-deep",
-  accent: "bg-white/70 text-brand-primary",
-  subtle: "bg-slate-100 text-slate-600"
+  info: "bg-olive-light/50 text-coffee-dark",
+  accent: "bg-white/70 text-coffee",
+  subtle: "bg-surface-muted text-text-secondary"
 };
 
 const Badge = ({ children, variant = "info", className = "" }) => {

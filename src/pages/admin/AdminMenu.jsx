@@ -85,15 +85,15 @@ const AdminMenu = () => {
   return (
     <AdminLayout>
       <div>
-        <h1 className="text-3xl font-semibold text-slate-900">Menu</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <h1 className="text-3xl font-semibold text-text-primary">Menu</h1>
+        <p className="mt-2 text-sm text-text-secondary">
           Manage menu categories and items in real time.
         </p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <form className="glass-card space-y-3" onSubmit={handleCategorySubmit}>
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-semibold text-text-primary">
             Add category
           </h2>
           <input
@@ -103,7 +103,7 @@ const AdminMenu = () => {
             onChange={(event) =>
               setCategoryForm((prev) => ({ ...prev, name: event.target.value }))
             }
-            className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
             required
           />
           <input
@@ -116,18 +116,18 @@ const AdminMenu = () => {
                 sort_order: Number(event.target.value)
               }))
             }
-            className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
           />
           <button
             type="submit"
-            className="rounded-full bg-brand-primary px-4 py-2 text-xs font-semibold text-white"
+            className="rounded-full bg-coffee px-4 py-2 text-xs font-semibold text-white"
           >
             Save category
           </button>
         </form>
 
         <form className="glass-card space-y-3" onSubmit={handleItemSubmit}>
-          <h2 className="text-lg font-semibold text-slate-900">Add item</h2>
+          <h2 className="text-lg font-semibold text-text-primary">Add item</h2>
           <input
             type="text"
             placeholder="Item name"
@@ -135,7 +135,7 @@ const AdminMenu = () => {
             onChange={(event) =>
               setItemForm((prev) => ({ ...prev, name: event.target.value }))
             }
-            className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
             required
           />
           <textarea
@@ -148,7 +148,7 @@ const AdminMenu = () => {
                 description: event.target.value
               }))
             }
-            className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
           />
           <input
             type="number"
@@ -158,7 +158,7 @@ const AdminMenu = () => {
             onChange={(event) =>
               setItemForm((prev) => ({ ...prev, price: event.target.value }))
             }
-            className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
             required
           />
           <input
@@ -171,7 +171,7 @@ const AdminMenu = () => {
                 image_url: event.target.value
               }))
             }
-            className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
           />
           <select
             value={itemForm.category_id}
@@ -181,7 +181,7 @@ const AdminMenu = () => {
                 category_id: event.target.value
               }))
             }
-            className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
             required
           >
             <option value="">Select category</option>
@@ -191,7 +191,7 @@ const AdminMenu = () => {
               </option>
             ))}
           </select>
-          <div className="flex flex-wrap gap-4 text-sm text-slate-600">
+          <div className="flex flex-wrap gap-4 text-sm text-text-secondary">
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
@@ -229,11 +229,11 @@ const AdminMenu = () => {
                 sort_order: Number(event.target.value)
               }))
             }
-            className="w-full rounded-2xl border border-slate-200 px-4 py-2 text-sm"
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
           />
           <button
             type="submit"
-            className="rounded-full bg-brand-primary px-4 py-2 text-xs font-semibold text-white"
+            className="rounded-full bg-coffee px-4 py-2 text-xs font-semibold text-white"
           >
             Save item
           </button>
@@ -241,21 +241,21 @@ const AdminMenu = () => {
       </div>
 
       <div className="glass-card space-y-4">
-        <h2 className="text-lg font-semibold text-slate-900">Menu items</h2>
+        <h2 className="text-lg font-semibold text-text-primary">Menu items</h2>
         {items.map((item) => (
           <div
             key={item.id}
-            className="rounded-2xl border border-slate-100 p-4"
+            className="rounded-2xl border border-coffee/10 p-4"
           >
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold text-slate-900">
+                <p className="text-sm font-semibold text-text-primary">
                   {item.name}
                 </p>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-text-muted">
                   {categoryName[item.category_id] || "Uncategorized"}
                 </p>
-                <p className="text-xs text-slate-500">EGP {item.price}</p>
+                <p className="text-xs text-text-muted">EGP {item.price}</p>
               </div>
               <button
                 type="button"
@@ -273,14 +273,14 @@ const AdminMenu = () => {
                   handleItemUpdate(item.id, { name: event.target.value })
                 }
                 placeholder="Name"
-                className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
               />
               <select
                 defaultValue={item.category_id}
                 onChange={(event) =>
                   handleItemUpdate(item.id, { category_id: event.target.value })
                 }
-                className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
               >
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>
@@ -295,7 +295,7 @@ const AdminMenu = () => {
                   handleItemUpdate(item.id, { description: event.target.value })
                 }
                 placeholder="Description"
-                className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
               />
               <input
                 type="text"
@@ -306,7 +306,7 @@ const AdminMenu = () => {
                   })
                 }
                 placeholder="Image URL"
-                className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
               />
               <input
                 type="number"
@@ -318,7 +318,7 @@ const AdminMenu = () => {
                   })
                 }
                 placeholder="Price"
-                className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
               />
               <input
                 type="number"
@@ -329,9 +329,9 @@ const AdminMenu = () => {
                   })
                 }
                 placeholder="Sort order"
-                className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
               />
-              <div className="flex flex-wrap gap-4 text-xs text-slate-600">
+              <div className="flex flex-wrap gap-4 text-xs text-text-secondary">
                 <label className="flex items-center gap-2">
                   <input
                     type="checkbox"
@@ -363,11 +363,11 @@ const AdminMenu = () => {
       </div>
 
       <div className="glass-card space-y-3">
-        <h2 className="text-lg font-semibold text-slate-900">Categories</h2>
+        <h2 className="text-lg font-semibold text-text-primary">Categories</h2>
         {categories.map((category) => (
           <div
             key={category.id}
-            className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-100 p-3"
+            className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-coffee/10 p-3"
           >
             <div className="grid gap-2 md:grid-cols-2">
               <input
@@ -378,7 +378,7 @@ const AdminMenu = () => {
                     name: event.target.value
                   })
                 }
-                className="rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                className="rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
               />
               <input
                 type="number"
@@ -388,7 +388,7 @@ const AdminMenu = () => {
                     sort_order: Number(event.target.value)
                   })
                 }
-                className="rounded-2xl border border-slate-200 px-3 py-2 text-xs"
+                className="rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
               />
             </div>
             <button

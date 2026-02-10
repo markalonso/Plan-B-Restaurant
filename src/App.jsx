@@ -1,5 +1,5 @@
 import { Route, Routes, useLocation } from "react-router-dom";
-import Navbar from "./components/Navbar.jsx";
+import Header from "./components/layout/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import FloatingBookingButton from "./components/FloatingBookingButton.jsx";
 import AdminRoute from "./components/AdminRoute.jsx";
@@ -8,6 +8,7 @@ import Menu from "./pages/Menu.jsx";
 import Booking from "./pages/Booking.jsx";
 import Events from "./pages/Events.jsx";
 import Gallery from "./pages/Gallery.jsx";
+import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import AdminLogin from "./pages/admin/AdminLogin.jsx";
 import AdminOverview from "./pages/admin/AdminOverview.jsx";
@@ -22,8 +23,8 @@ const App = () => {
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      {!isAdminRoute && <Navbar />}
+    <div className="min-h-screen bg-surface-primary text-text-primary">
+      {!isAdminRoute && <Header />}
       <main className={isAdminRoute ? "pt-0" : "pt-20"}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/booking" element={<Booking />} />
           <Route path="/events" element={<Events />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route

@@ -1,13 +1,15 @@
 import { motion } from "framer-motion";
+import { revealVariants, viewportConfig } from "../lib/motion.js";
 
 const Reveal = ({ children, delay = 0, className = "" }) => {
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.8, ease: "easeOut", delay }}
+      variants={revealVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportConfig}
+      transition={{ delay }}
     >
       {children}
     </motion.div>
