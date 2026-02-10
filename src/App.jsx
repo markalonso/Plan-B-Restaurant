@@ -1,5 +1,5 @@
 import { Route, Routes, useLocation } from "react-router-dom";
-import Navbar from "./components/Navbar.jsx";
+import Header from "./components/layout/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import FloatingBookingButton from "./components/FloatingBookingButton.jsx";
 import AdminRoute from "./components/AdminRoute.jsx";
@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-surface-primary text-text-primary">
-      {!isAdminRoute && <Navbar />}
+      {!isAdminRoute && <Header />}
       <main className={isAdminRoute ? "pt-0" : "pt-20"}>
         <Routes>
           <Route path="/" element={<Home />} />
