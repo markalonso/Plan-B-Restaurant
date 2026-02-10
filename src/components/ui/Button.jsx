@@ -13,7 +13,7 @@ const variants = {
   outline:
     "border border-coffee/20 text-text-primary hover:bg-surface-muted",
   ghost: "text-text-primary hover:bg-surface-muted",
-  "ghost-light": "text-white hover:bg-white/10 border border-white/30"
+  "ghost-light": "text-white hover:bg-white/20 border border-white/50 hover:border-white/60"
 };
 
 const sizes = {
