@@ -8,6 +8,7 @@ import Menu from "./pages/Menu.jsx";
 import Booking from "./pages/Booking.jsx";
 import Events from "./pages/Events.jsx";
 import Gallery from "./pages/Gallery.jsx";
+import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import AdminLogin from "./pages/admin/AdminLogin.jsx";
 import AdminOverview from "./pages/admin/AdminOverview.jsx";
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/booking" element={<Booking />} />
           <Route path="/events" element={<Events />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route
