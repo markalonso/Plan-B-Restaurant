@@ -46,7 +46,7 @@ const signatureItems = [
     id: 2,
     image: "/assets/planb/home/home-grid-2.jpg",
     title: "Specialty Coffee",
-    alt: "Coffee cup art"
+    alt: "Artisan latte art"
   },
   {
     id: 3,
@@ -58,13 +58,13 @@ const signatureItems = [
     id: 4,
     image: "/assets/planb/home/home-grid-4.jpg",
     title: "Fresh Salads",
-    alt: "Salad plate"
+    alt: "Fresh salad"
   },
   {
     id: 5,
     image: "/assets/planb/home/home-grid-5.jpg",
     title: "Main Dishes",
-    alt: "Main dish with rice, fries, chicken, and sauce"
+    alt: "Featured main dish"
   }
 ];
 
