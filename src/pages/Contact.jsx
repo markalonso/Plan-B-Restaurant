@@ -116,16 +116,16 @@ const Contact = () => {
                 </a>
               </div>
 
-              {/* Map Placeholder */}
+              {/* Google Map */}
               <div className="overflow-hidden rounded-2xl border border-coffee/10 bg-surface-muted">
-                <div className="flex h-48 items-center justify-center">
-                  <div className="text-center">
-                    <span className="text-3xl">🗺️</span>
-                    <p className="mt-2 text-sm text-text-muted">
-                      Interactive map coming soon
-                    </p>
-                  </div>
-                </div>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3540.123456789012!2d33.8116!3d27.2579!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjfCsDE1JzI4LjQiTiAzM8KwNDgnNDEuOCJF!5e0!3m2!1sen!2seg!4v1234567890123!5m2!1sen!2seg"
+                  className="h-[260px] w-full border-0 md:h-[320px]"
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Plan B Restaurant Location"
+                ></iframe>
               </div>
             </div>
 
