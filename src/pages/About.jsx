@@ -17,7 +17,7 @@ const storyBlocks = [
     title: "Where the Sea Meets Your Table",
     description:
       "Perched on Hurghada's Cornish Street, Plan B offers an uninterrupted view of the Red Sea. Watch the sunset paint the water gold while you sip your coffee, or catch the moonlight dancing on the waves during a late dinner. Every seat is a window to the coast.",
-    image: vibeImages.seaView,
+    image: "/assets/planb/home/about-view.jpg.png",
     imageAlt: "Sea view from Plan B terrace",
     imagePosition: "right"
   },
@@ -27,7 +27,7 @@ const storyBlocks = [
     title: "Comfort Made Fresh",
     description:
       "Our kitchen blends familiar favorites with creative twists. From all-day breakfast to signature desserts, every dish is crafted with care and local ingredients. Whether you crave a hearty meal or a light bite, we've got something that feels just right.",
-    image: vibeImages.interior,
+    image: "/assets/planb/home/about-food.jpg.png",
     imageAlt: "Plan B restaurant interior",
     imagePosition: "left"
   },
@@ -37,7 +37,7 @@ const storyBlocks = [
     title: "Casual, Warm, Intentional",
     description:
       "Plan B isn't just a place to eat — it's a place to be. Low lighting, good music, and a space designed for connection. Come for breakfast, stay for sunset drinks. Bring a friend or come alone with a book. There's no rush here.",
-    image: vibeImages.ambiance,
+    image: "/assets/planb/home/about-vibe.jpg.jpg",
     imageAlt: "Plan B evening ambiance",
     imagePosition: "right"
   }
