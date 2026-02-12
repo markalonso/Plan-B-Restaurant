@@ -1,38 +1,89 @@
 import { useEffect, useMemo, useState } from "react";
 import AdminLayout from "../../components/AdminLayout.jsx";
 import { supabase } from "../../lib/supabaseClient.js";
+import { uploadImageToGalleryBucket } from "../../lib/uploadImage.js";
+import { resolveFirstExistingTable } from "../../lib/adminTableResolver.js";
 
-const categories = ["Space", "Food", "Moments"];
+const uncategorizedCategory = "Uncategorized";
 
 const emptyForm = {
-  category: "Space",
+  category: uncategorizedCategory,
   title: "",
   description: "",
   alt_text: ""
 };
 
+const emptyCategoryForm = {
+  name: "",
+  sort_order: 0
+};
+
 const AdminGallery = () => {
   const [images, setImages] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState(emptyForm);
+  const [categoryForm, setCategoryForm] = useState(emptyCategoryForm);
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState({ loading: false, error: "", success: "" });
+  const [categoryTable, setCategoryTable] = useState(null);
 
-  const loadImages = async () => {
-    const { data, error } = await supabase
+  const loadData = async () => {
+    const { data: imagesData, error: imagesError } = await supabase
       .from("gallery_images")
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (error) {
-      setStatus({ loading: false, error: error.message, success: "" });
+    if (imagesError) {
+      setStatus({ loading: false, error: imagesError.message, success: "" });
       return;
     }
 
-    setImages(data ?? []);
+    const resolvedCategoryTable = await resolveFirstExistingTable([
+      "gallery_categories",
+      "gallery_category"
+    ]);
+
+    let nextCategories = [];
+
+    if (resolvedCategoryTable) {
+      const { data: categoryRows, error: categoriesError } = await supabase
+        .from(resolvedCategoryTable)
+        .select("*")
+        .order("sort_order", { ascending: true })
+        .order("name", { ascending: true });
+
+      if (!categoriesError) {
+        nextCategories = categoryRows ?? [];
+        setCategoryTable(resolvedCategoryTable);
+      }
+    }
+
+    if (nextCategories.length === 0) {
+      const uniqueNames = [...new Set((imagesData ?? []).map((row) => row.category).filter(Boolean))];
+      if (!uniqueNames.includes(uncategorizedCategory)) {
+        uniqueNames.unshift(uncategorizedCategory);
+      }
+      nextCategories = uniqueNames.map((name, index) => ({
+        id: `${name}-${index}`,
+        name,
+        sort_order: index
+      }));
+      setCategoryTable(null);
+    }
+
+    setImages(imagesData ?? []);
+    setCategories(nextCategories);
+    setFormData((prev) => ({
+      ...prev,
+      category:
+        nextCategories.find((category) => category.name === prev.category)?.name ||
+        nextCategories[0]?.name ||
+        uncategorizedCategory
+    }));
   };
 
   useEffect(() => {
-    loadImages();
+    loadData();
   }, []);
 
   const handleSubmit = async (event) => {
@@ -48,50 +99,131 @@ const AdminGallery = () => {
       return;
     }
 
-    const fileExt = file.name.split(".").pop();
-    const filePath = `gallery/${Date.now()}-${Math.random()
-      .toString(36)
-      .slice(2)}.${fileExt}`;
+    try {
+      const { publicUrl: imageUrl, filePath } = await uploadImageToGalleryBucket({
+        file,
+        folder: "gallery"
+      });
 
-    const { error: uploadError } = await supabase.storage
-      .from("gallery")
-      .upload(filePath, file, { cacheControl: "3600", upsert: false });
+      const { error: insertError } = await supabase.from("gallery_images").insert([
+        {
+          category: formData.category,
+          title: formData.title || null,
+          description: formData.description || null,
+          alt_text: formData.alt_text || null,
+          image_url: imageUrl,
+          storage_path: filePath
+        }
+      ]);
 
-    if (uploadError) {
-      setStatus({ loading: false, error: uploadError.message, success: "" });
-      return;
-    }
-
-    const { data: publicUrlData } = supabase.storage
-      .from("gallery")
-      .getPublicUrl(filePath);
-
-    const imageUrl = publicUrlData?.publicUrl;
-
-    const { error: insertError } = await supabase.from("gallery_images").insert([
-      {
-        category: formData.category,
-        title: formData.title || null,
-        description: formData.description || null,
-        alt_text: formData.alt_text || null,
-        image_url: imageUrl,
-        storage_path: filePath
+      if (insertError) {
+        setStatus({ loading: false, error: insertError.message, success: "" });
+        return;
       }
-    ]);
-
-    if (insertError) {
-      setStatus({ loading: false, error: insertError.message, success: "" });
+    } catch (error) {
+      setStatus({ loading: false, error: error.message, success: "" });
       return;
     }
 
-    setFormData(emptyForm);
+    setFormData((prev) => ({ ...emptyForm, category: prev.category }));
     setFile(null);
     setStatus({
       loading: false,
       error: "",
       success: "Image added to the gallery."
     });
-    await loadImages();
+    await loadData();
+  };
+
+  const handleCategorySubmit = async (event) => {
+    event.preventDefault();
+
+    const normalizedName = categoryForm.name.trim();
+    if (!normalizedName) {
+      return;
+    }
+
+    if (!categoryTable) {
+      setStatus({
+        loading: false,
+        error: "Category table is not available in this project schema.",
+        success: ""
+      });
+      return;
+    }
+
+    const { error } = await supabase.from(categoryTable).insert([
+      {
+        name: normalizedName,
+        sort_order: Number(categoryForm.sort_order) || 0
+      }
+    ]);
+
+    if (error) {
+      setStatus({ loading: false, error: error.message, success: "" });
+      return;
+    }
+
+    setCategoryForm(emptyCategoryForm);
+    setStatus({ loading: false, error: "", success: "Category saved." });
+    await loadData();
+  };
+
+  const handleCategoryDelete = async (categoryName) => {
+    if (categoryName === uncategorizedCategory) {
+      setStatus({
+        loading: false,
+        error: "Uncategorized cannot be deleted.",
+        success: ""
+      });
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Delete category \"${categoryName}\"? Existing images will move to ${uncategorizedCategory}.`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    if (!categoryTable) {
+      setStatus({
+        loading: false,
+        error: "Category table is not available in this project schema.",
+        success: ""
+      });
+      return;
+    }
+
+    setStatus({ loading: true, error: "", success: "" });
+
+    const { error: moveError } = await supabase
+      .from("gallery_images")
+      .update({ category: uncategorizedCategory })
+      .eq("category", categoryName);
+
+    if (moveError) {
+      setStatus({ loading: false, error: moveError.message, success: "" });
+      return;
+    }
+
+    const { error: deleteError } = await supabase
+      .from(categoryTable)
+      .delete()
+      .eq("name", categoryName);
+
+    if (deleteError) {
+      setStatus({ loading: false, error: deleteError.message, success: "" });
+      return;
+    }
+
+    setStatus({
+      loading: false,
+      error: "",
+      success: `Category \"${categoryName}\" deleted. Images moved to ${uncategorizedCategory}.`
+    });
+    await loadData();
   };
 
   const handleDelete = async (image) => {
@@ -127,7 +259,7 @@ const AdminGallery = () => {
       error: "",
       success: "Image deleted."
     });
-    await loadImages();
+    await loadData();
   };
 
   const handleUpdate = async (id, updates) => {
@@ -141,7 +273,7 @@ const AdminGallery = () => {
       return;
     }
 
-    await loadImages();
+    await loadData();
   };
 
   const sortedImages = useMemo(() => images, [images]);
@@ -154,6 +286,59 @@ const AdminGallery = () => {
           Upload and manage the public gallery images.
         </p>
       </div>
+
+      <form className="glass-card space-y-4" onSubmit={handleCategorySubmit}>
+        <h2 className="text-lg font-semibold text-text-primary">Gallery categories</h2>
+        <div className="grid gap-4 md:grid-cols-[2fr_1fr_auto]">
+          <input
+            type="text"
+            placeholder="Category name"
+            value={categoryForm.name}
+            onChange={(event) =>
+              setCategoryForm((prev) => ({ ...prev, name: event.target.value }))
+            }
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
+            required
+          />
+          <input
+            type="number"
+            placeholder="Sort order"
+            value={categoryForm.sort_order}
+            onChange={(event) =>
+              setCategoryForm((prev) => ({
+                ...prev,
+                sort_order: Number(event.target.value)
+              }))
+            }
+            className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
+          />
+          <button
+            type="submit"
+            className="rounded-full bg-coffee px-4 py-2 text-xs font-semibold text-white"
+          >
+            Save category
+          </button>
+        </div>
+
+        <div className="space-y-2">
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              className="flex items-center justify-between rounded-2xl border border-coffee/10 px-3 py-2"
+            >
+              <span className="text-sm text-text-primary">{category.name}</span>
+              <button
+                type="button"
+                onClick={() => handleCategoryDelete(category.name)}
+                className="text-xs font-semibold text-rose-500"
+                disabled={category.name === uncategorizedCategory}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
+      </form>
 
       <form className="glass-card space-y-4" onSubmit={handleSubmit}>
         <h2 className="text-lg font-semibold text-text-primary">Add image</h2>
@@ -173,8 +358,8 @@ const AdminGallery = () => {
             className="w-full rounded-2xl border border-coffee/15 px-4 py-2 text-sm"
           >
             {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
+              <option key={category.id} value={category.name}>
+                {category.name}
               </option>
             ))}
           </select>
@@ -277,8 +462,8 @@ const AdminGallery = () => {
                     className="w-full rounded-2xl border border-coffee/15 px-3 py-2 text-xs"
                   >
                     {categories.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
+                      <option key={category.id} value={category.name}>
+                        {category.name}
                       </option>
                     ))}
                   </select>

@@ -7,14 +7,13 @@ import Lightbox from "../components/gallery/Lightbox.jsx";
 import { GallerySkeleton } from "../components/ui/Skeleton.jsx";
 import { supabase } from "../lib/supabaseClient.js";
 
-const tabs = ["All", "Space", "Food", "Moments"];
-
 const normalizeValue = (value) => value.toLowerCase().trim();
 
 const Gallery = () => {
   const [activeTab, setActiveTab] = useState("All");
   const [activeImage, setActiveImage] = useState(null);
   const [images, setImages] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [status, setStatus] = useState({ loading: true, error: "" });
 
   // Filter images based on active tab
@@ -27,6 +26,8 @@ const Gallery = () => {
     );
   }, [activeTab, images]);
 
+  const tabs = useMemo(() => ["All", ...categories], [categories]);
+
   // Load images from Supabase
   useEffect(() => {
     let isMounted = true;
@@ -34,19 +35,27 @@ const Gallery = () => {
     const loadImages = async () => {
       setStatus({ loading: true, error: "" });
 
-      const { data, error } = await supabase
-        .from("gallery_images")
-        .select("*")
-        .order("created_at", { ascending: false });
+      const [imagesRes, categoriesRes] = await Promise.all([
+        supabase
+          .from("gallery_images")
+          .select("*")
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("gallery_categories")
+          .select("name")
+          .order("sort_order", { ascending: true })
+          .order("name", { ascending: true })
+      ]);
 
       if (!isMounted) return;
 
-      if (error) {
-        setStatus({ loading: false, error: error.message });
+      if (imagesRes.error) {
+        setStatus({ loading: false, error: imagesRes.error.message });
         return;
       }
 
-      setImages(data ?? []);
+      setImages(imagesRes.data ?? []);
+      setCategories((categoriesRes.data ?? []).map((category) => category.name));
       setStatus({ loading: false, error: "" });
     };
 
