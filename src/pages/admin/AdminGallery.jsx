@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import AdminLayout from "../../components/AdminLayout.jsx";
 import { supabase } from "../../lib/supabaseClient.js";
 import { uploadImageToGalleryBucket } from "../../lib/uploadImage.js";
+import { resolveFirstExistingTable } from "../../lib/adminTableResolver.js";
 
 const uncategorizedCategory = "Uncategorized";
 
@@ -24,33 +25,53 @@ const AdminGallery = () => {
   const [categoryForm, setCategoryForm] = useState(emptyCategoryForm);
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState({ loading: false, error: "", success: "" });
+  const [categoryTable, setCategoryTable] = useState(null);
 
   const loadData = async () => {
-    const [imagesRes, categoriesRes] = await Promise.all([
-      supabase
-        .from("gallery_images")
-        .select("*")
-        .order("created_at", { ascending: false }),
-      supabase
-        .from("gallery_categories")
-        .select("*")
-        .order("sort_order", { ascending: true })
-        .order("name", { ascending: true })
+    const { data: imagesData, error: imagesError } = await supabase
+      .from("gallery_images")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (imagesError) {
+      setStatus({ loading: false, error: imagesError.message, success: "" });
+      return;
+    }
+
+    const resolvedCategoryTable = await resolveFirstExistingTable([
+      "gallery_categories",
+      "gallery_category"
     ]);
 
-    if (imagesRes.error) {
-      setStatus({ loading: false, error: imagesRes.error.message, success: "" });
-      return;
+    let nextCategories = [];
+
+    if (resolvedCategoryTable) {
+      const { data: categoryRows, error: categoriesError } = await supabase
+        .from(resolvedCategoryTable)
+        .select("*")
+        .order("sort_order", { ascending: true })
+        .order("name", { ascending: true });
+
+      if (!categoriesError) {
+        nextCategories = categoryRows ?? [];
+        setCategoryTable(resolvedCategoryTable);
+      }
     }
 
-    if (categoriesRes.error) {
-      setStatus({ loading: false, error: categoriesRes.error.message, success: "" });
-      return;
+    if (nextCategories.length === 0) {
+      const uniqueNames = [...new Set((imagesData ?? []).map((row) => row.category).filter(Boolean))];
+      if (!uniqueNames.includes(uncategorizedCategory)) {
+        uniqueNames.unshift(uncategorizedCategory);
+      }
+      nextCategories = uniqueNames.map((name, index) => ({
+        id: `${name}-${index}`,
+        name,
+        sort_order: index
+      }));
+      setCategoryTable(null);
     }
 
-    const nextCategories = categoriesRes.data ?? [];
-
-    setImages(imagesRes.data ?? []);
+    setImages(imagesData ?? []);
     setCategories(nextCategories);
     setFormData((prev) => ({
       ...prev,
@@ -122,7 +143,16 @@ const AdminGallery = () => {
       return;
     }
 
-    const { error } = await supabase.from("gallery_categories").insert([
+    if (!categoryTable) {
+      setStatus({
+        loading: false,
+        error: "Category table is not available in this project schema.",
+        success: ""
+      });
+      return;
+    }
+
+    const { error } = await supabase.from(categoryTable).insert([
       {
         name: normalizedName,
         sort_order: Number(categoryForm.sort_order) || 0
@@ -157,6 +187,15 @@ const AdminGallery = () => {
       return;
     }
 
+    if (!categoryTable) {
+      setStatus({
+        loading: false,
+        error: "Category table is not available in this project schema.",
+        success: ""
+      });
+      return;
+    }
+
     setStatus({ loading: true, error: "", success: "" });
 
     const { error: moveError } = await supabase
@@ -170,7 +209,7 @@ const AdminGallery = () => {
     }
 
     const { error: deleteError } = await supabase
-      .from("gallery_categories")
+      .from(categoryTable)
       .delete()
       .eq("name", categoryName);
 

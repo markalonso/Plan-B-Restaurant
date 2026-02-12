@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import AdminLayout from "../../components/AdminLayout.jsx";
 import { supabase } from "../../lib/supabaseClient.js";
 import { uploadImageToGalleryBucket } from "../../lib/uploadImage.js";
+import { resolveFirstExistingTable } from "../../lib/adminTableResolver.js";
 
 const emptyCategory = { name: "", sort_order: 0 };
 const emptyItem = {
@@ -32,9 +33,16 @@ const AdminMenu = () => {
   const [itemFile, setItemFile] = useState(null);
   const [comfortFile, setComfortFile] = useState(null);
   const [statusMessage, setStatusMessage] = useState("");
+  const [comfortSourceTable, setComfortSourceTable] = useState("menu_comfort_picks");
 
   const loadMenu = async () => {
-    const [categoryRes, itemRes, comfortRes] = await Promise.all([
+    const resolvedComfortTable = await resolveFirstExistingTable([
+      "menu_comfort_picks",
+      "comfort_picks",
+      "home_comfort_picks"
+    ]);
+
+    const [categoryRes, itemRes] = await Promise.all([
       supabase
         .from("menu_categories")
         .select("*")
@@ -51,9 +59,24 @@ const AdminMenu = () => {
         .order("sort_order", { ascending: true })
         .order("created_at", { ascending: false })
     ]);
+
     setCategories(categoryRes.data ?? []);
     setItems(itemRes.data ?? []);
-    setComfortPicks(comfortRes.data ?? []);
+
+    if (resolvedComfortTable) {
+      const { data } = await supabase
+        .from(resolvedComfortTable)
+        .select("*")
+        .order("sort_order", { ascending: true })
+        .order("created_at", { ascending: false });
+      setComfortPicks(data ?? []);
+      setComfortSourceTable(resolvedComfortTable);
+      return;
+    }
+
+    const fallbackComfort = (itemRes.data ?? []).filter((item) => item.is_popular);
+    setComfortPicks(fallbackComfort);
+    setComfortSourceTable("menu_items");
   };
 
   useEffect(() => {
@@ -105,13 +128,26 @@ const AdminMenu = () => {
       imageUrl = publicUrl;
     }
 
-    await supabase.from("menu_comfort_picks").insert([
-      {
-        ...comfortForm,
-        image_url: imageUrl,
-        price: Number(comfortForm.price)
-      }
-    ]);
+    if (comfortSourceTable === "menu_items") {
+      await supabase.from("menu_items").insert([
+        {
+          ...comfortForm,
+          image_url: imageUrl,
+          price: Number(comfortForm.price),
+          is_popular: true,
+          is_available: true,
+          category_id: categories[0]?.id ?? null
+        }
+      ]);
+    } else {
+      await supabase.from(comfortSourceTable).insert([
+        {
+          ...comfortForm,
+          image_url: imageUrl,
+          price: Number(comfortForm.price)
+        }
+      ]);
+    }
 
     setComfortForm(emptyComfortPick);
     setComfortFile(null);
@@ -124,7 +160,14 @@ const AdminMenu = () => {
   };
 
   const handleComfortUpdate = async (id, updates) => {
-    await supabase.from("menu_comfort_picks").update(updates).eq("id", id);
+    if (comfortSourceTable === "menu_items") {
+      await supabase
+        .from("menu_items")
+        .update({ ...updates, is_popular: true })
+        .eq("id", id);
+    } else {
+      await supabase.from(comfortSourceTable).update(updates).eq("id", id);
+    }
     await loadMenu();
   };
 
@@ -547,7 +590,7 @@ const AdminMenu = () => {
               </div>
               <button
                 type="button"
-                onClick={() => handleDelete("menu_comfort_picks", item.id)}
+                onClick={() => handleDelete(comfortSourceTable, item.id)}
                 className="text-xs font-semibold text-rose-500"
               >
                 Delete
