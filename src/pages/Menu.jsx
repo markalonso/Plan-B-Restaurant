@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Reveal from "../components/Reveal.jsx";
 import Stagger, { StaggerItem } from "../components/Stagger.jsx";
 import Button from "../components/ui/Button.jsx";
@@ -6,6 +6,7 @@ import Card from "../components/ui/Card.jsx";
 import GlassPanel from "../components/ui/GlassPanel.jsx";
 import SectionHeading from "../components/ui/SectionHeading.jsx";
 import menuData from "../data/menu.json";
+import { supabase } from "../lib/supabaseClient.js";
 
 const normalizeValue = (value) => value.trim().toLowerCase();
 
@@ -24,25 +25,92 @@ const fallbackImage =
 
 const Menu = () => {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [categories, setCategories] = useState([]);
+  const [items, setItems] = useState([]);
+  const [comfortPicks, setComfortPicks] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadMenu = async () => {
+      const [categoriesRes, itemsRes, picksRes] = await Promise.all([
+        supabase
+          .from("menu_categories")
+          .select("*")
+          .order("sort_order", { ascending: true })
+          .order("name", { ascending: true }),
+        supabase
+          .from("menu_items")
+          .select("*")
+          .eq("is_available", true)
+          .order("sort_order", { ascending: true })
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("menu_comfort_picks")
+          .select("*")
+          .order("sort_order", { ascending: true })
+          .order("created_at", { ascending: false })
+      ]);
+
+      if (!isMounted) {
+        return;
+      }
+
+      if (!categoriesRes.error && !itemsRes.error) {
+        setCategories(categoriesRes.data ?? []);
+        setItems(itemsRes.data ?? []);
+      } else {
+        setCategories((menuData.categories ?? []).map((name, index) => ({ id: name, name, sort_order: index })));
+        setItems((menuData.items ?? []).map((item) => ({
+          id: item.id,
+          name: item.name,
+          description: item.description,
+          price: item.price,
+          image_url: item.image,
+          category_id: item.category,
+          is_available: true,
+          sort_order: 0
+        })));
+      }
+
+      if (!picksRes.error && (picksRes.data?.length ?? 0) > 0) {
+        setComfortPicks(picksRes.data);
+      } else {
+        setComfortPicks((menuData.items ?? []).filter((item) => item.popular));
+      }
+    };
+
+    loadMenu();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const categoryNameById = useMemo(() => {
+    return categories.reduce((acc, category) => {
+      acc[category.id] = category.name;
+      return acc;
+    }, {});
+  }, [categories]);
 
   const categoryOptions = useMemo(
-    () => ["All", ...menuData.categories],
-    []
+    () => ["All", ...categories.map((category) => category.name)],
+    [categories]
   );
 
   const normalizedCategory = normalizeValue(activeCategory);
 
-  const popularItems = menuData.items.filter((item) => item.popular);
-
   const filteredItems = useMemo(() => {
     if (normalizedCategory === "all") {
-      return menuData.items;
+      return items;
     }
-    return menuData.items.filter((item) => {
-      const itemCategory = normalizeValue(item.category || "");
-      return itemCategory === normalizedCategory;
+
+    return items.filter((item) => {
+      const name = categoryNameById[item.category_id] || item.category_id || "";
+      return normalizeValue(name) === normalizedCategory;
     });
-  }, [normalizedCategory]);
+  }, [categoryNameById, items, normalizedCategory]);
 
   return (
     <div className="section-padding">
@@ -56,11 +124,11 @@ const Menu = () => {
         </Reveal>
 
         <Stagger className="grid gap-6 md:grid-cols-2" animateOnView={false}>
-          {popularItems.map((item) => (
+          {comfortPicks.map((item) => (
             <StaggerItem key={item.id}>
               <Card className="group flex gap-4 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
                 <img
-                  src={item.image || fallbackImage}
+                  src={item.image_url || item.image || fallbackImage}
                   alt={item.name}
                   className="h-24 w-24 rounded-2xl object-cover"
                 />
@@ -123,7 +191,7 @@ const Menu = () => {
               <StaggerItem key={item.id}>
                 <Card className="group space-y-3 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
                   <img
-                    src={item.image || fallbackImage}
+                    src={item.image_url || item.image || fallbackImage}
                     alt={item.name}
                     className="h-44 w-full rounded-2xl object-cover"
                   />
