@@ -52,6 +52,11 @@ const AdminMenu = () => {
         .from("menu_items")
         .select("*")
         .order("sort_order", { ascending: true })
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("menu_comfort_picks")
+        .select("*")
+        .order("sort_order", { ascending: true })
         .order("created_at", { ascending: false })
     ]);
 
