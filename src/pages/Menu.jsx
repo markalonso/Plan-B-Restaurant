@@ -7,6 +7,7 @@ import GlassPanel from "../components/ui/GlassPanel.jsx";
 import SectionHeading from "../components/ui/SectionHeading.jsx";
 import menuData from "../data/menu.json";
 import { supabase } from "../lib/supabaseClient.js";
+import { resolveFirstExistingTable } from "../lib/adminTableResolver.js";
 
 const normalizeValue = (value) => value.trim().toLowerCase();
 
@@ -33,6 +34,12 @@ const Menu = () => {
     let isMounted = true;
 
     const loadMenu = async () => {
+      const comfortTable = await resolveFirstExistingTable([
+        "menu_comfort_picks",
+        "comfort_picks",
+        "home_comfort_picks"
+      ]);
+
       const [categoriesRes, itemsRes, picksRes] = await Promise.all([
         supabase
           .from("menu_categories")
@@ -45,11 +52,13 @@ const Menu = () => {
           .eq("is_available", true)
           .order("sort_order", { ascending: true })
           .order("created_at", { ascending: false }),
-        supabase
-          .from("menu_comfort_picks")
-          .select("*")
-          .order("sort_order", { ascending: true })
-          .order("created_at", { ascending: false })
+        comfortTable
+          ? supabase
+              .from(comfortTable)
+              .select("*")
+              .order("sort_order", { ascending: true })
+              .order("created_at", { ascending: false })
+          : Promise.resolve({ data: [], error: null })
       ]);
 
       if (!isMounted) {
