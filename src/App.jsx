@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Header from "./components/layout/Header.jsx";
@@ -5,6 +6,9 @@ import Footer from "./components/Footer.jsx";
 import FloatingBookingButton from "./components/FloatingBookingButton.jsx";
 import PageTransition from "./components/PageTransition.jsx";
 import AdminRoute from "./components/AdminRoute.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
+import GlobalLoadingIndicator from "./components/GlobalLoadingIndicator.jsx";
+import { useGlobalLoading } from "./context/LoadingContext.jsx";
 import Home from "./pages/Home.jsx";
 import Menu from "./pages/Menu.jsx";
 import Booking from "./pages/Booking.jsx";
@@ -20,12 +24,28 @@ import AdminCustomers from "./pages/admin/AdminCustomers.jsx";
 import AdminMenu from "./pages/admin/AdminMenu.jsx";
 import AdminGallery from "./pages/admin/AdminGallery.jsx";
 
+const routeLoaderDelayMs = 450;
+
 const App = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const { isLoading } = useGlobalLoading();
+  const [routeLoading, setRouteLoading] = useState(true);
+
+  useEffect(() => {
+    setRouteLoading(true);
+    const timer = window.setTimeout(() => {
+      setRouteLoading(false);
+    }, routeLoaderDelayMs);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen bg-surface-primary text-text-primary">
+      <ScrollToTop />
       {!isAdminRoute && <Header />}
       <main className={isAdminRoute ? "pt-0" : "pt-20"}>
         <AnimatePresence mode="wait">
@@ -89,6 +109,7 @@ const App = () => {
           </Routes>
         </AnimatePresence>
       </main>
+      <GlobalLoadingIndicator visible={isLoading || routeLoading} />
       {!isAdminRoute && (
         <>
           <Footer />

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "../../components/AdminLayout.jsx";
 import { supabase } from "../../lib/supabaseClient.js";
+import { useGlobalLoading } from "../../context/LoadingContext.jsx";
 
 const AdminOverview = () => {
+  const { startLoading, stopLoading } = useGlobalLoading();
   const [metrics, setMetrics] = useState({
     reservations: 0,
     events: 0,
@@ -15,6 +17,8 @@ const AdminOverview = () => {
 
     const loadMetrics = async () => {
       setLoading(true);
+      startLoading();
+      try {
       const [reservations, events, customers] = await Promise.all([
         supabase
           .from("reservations")
@@ -36,6 +40,12 @@ const AdminOverview = () => {
           customers: customers.count ?? 0
         });
         setLoading(false);
+      }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+        stopLoading();
       }
     };
 
