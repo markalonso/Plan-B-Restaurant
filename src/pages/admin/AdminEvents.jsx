@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import AdminLayout from "../../components/AdminLayout.jsx";
 import { supabase } from "../../lib/supabaseClient.js";
+import { useGlobalLoading } from "../../context/LoadingContext.jsx";
 
 const statusOptions = ["new", "contacted", "confirmed", "cancelled"];
 
 const AdminEvents = () => {
+  const { startLoading, stopLoading } = useGlobalLoading();
   const [filters, setFilters] = useState({ status: "", date: "" });
   const [requests, setRequests] = useState([]);
   const [activeRequest, setActiveRequest] = useState(null);
@@ -25,12 +27,17 @@ const AdminEvents = () => {
 
   const loadRequests = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("event_requests")
-      .select("*")
-      .order("date", { ascending: true });
-    setRequests(data ?? []);
-    setLoading(false);
+    startLoading();
+    try {
+      const { data } = await supabase
+        .from("event_requests")
+        .select("*")
+        .order("date", { ascending: true });
+      setRequests(data ?? []);
+    } finally {
+      setLoading(false);
+      stopLoading();
+    }
   };
 
   useEffect(() => {

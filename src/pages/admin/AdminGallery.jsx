@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import AdminLayout from "../../components/AdminLayout.jsx";
 import { supabase } from "../../lib/supabaseClient.js";
+import { useGlobalLoading } from "../../context/LoadingContext.jsx";
 import { uploadImageToGalleryBucket } from "../../lib/uploadImage.js";
 import { resolveFirstExistingTable } from "../../lib/adminTableResolver.js";
 
@@ -19,6 +20,7 @@ const emptyCategoryForm = {
 };
 
 const AdminGallery = () => {
+  const { startLoading, stopLoading } = useGlobalLoading();
   const [images, setImages] = useState([]);
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState(emptyForm);
@@ -28,6 +30,8 @@ const AdminGallery = () => {
   const [categoryTable, setCategoryTable] = useState(null);
 
   const loadData = async () => {
+    startLoading();
+    try {
     const { data: imagesData, error: imagesError } = await supabase
       .from("gallery_images")
       .select("*")
@@ -80,6 +84,9 @@ const AdminGallery = () => {
         nextCategories[0]?.name ||
         uncategorizedCategory
     }));
+    } finally {
+      stopLoading();
+    }
   };
 
   useEffect(() => {

@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import AdminLayout from "../../components/AdminLayout.jsx";
 import { supabase } from "../../lib/supabaseClient.js";
+import { useGlobalLoading } from "../../context/LoadingContext.jsx";
 
 const statusOptions = ["new", "contacted", "confirmed", "cancelled"];
 
 const AdminReservations = () => {
+  const { startLoading, stopLoading } = useGlobalLoading();
   const [filters, setFilters] = useState({ status: "", date: "" });
   const [reservations, setReservations] = useState([]);
   const [activeReservation, setActiveReservation] = useState(null);
@@ -25,13 +27,18 @@ const AdminReservations = () => {
 
   const loadReservations = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("reservations")
-      .select("*")
-      .order("date", { ascending: true })
-      .order("time", { ascending: true });
-    setReservations(data ?? []);
-    setLoading(false);
+    startLoading();
+    try {
+      const { data } = await supabase
+        .from("reservations")
+        .select("*")
+        .order("date", { ascending: true })
+        .order("time", { ascending: true });
+      setReservations(data ?? []);
+    } finally {
+      setLoading(false);
+      stopLoading();
+    }
   };
 
   useEffect(() => {

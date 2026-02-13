@@ -21,6 +21,7 @@ import {
   prefersReducedMotion
 } from "../lib/motion.js";
 import { supabase } from "../lib/supabaseClient.js";
+import { useGlobalLoading } from "../context/LoadingContext.jsx";
 
 // Hero image - Plan B sea view terrace
 const heroImage = "/assets/planb/home/hero-sea-view.jpg.png";
@@ -75,6 +76,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryLoading, setGalleryLoading] = useState(true);
+  const { startLoading, stopLoading } = useGlobalLoading();
   const reducedMotion = prefersReducedMotion();
 
   // Load gallery images from Supabase
@@ -82,18 +84,25 @@ const Home = () => {
     let isMounted = true;
 
     const loadGalleryImages = async () => {
-      const { data, error } = await supabase
-        .from("gallery_images")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(6);
+      startLoading();
+      try {
+        const { data, error } = await supabase
+          .from("gallery_images")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(6);
 
-      if (!isMounted) return;
+        if (!isMounted) return;
 
-      if (!error && data) {
-        setGalleryImages(data);
+        if (!error && data) {
+          setGalleryImages(data);
+        }
+      } finally {
+        if (isMounted) {
+          setGalleryLoading(false);
+        }
+        stopLoading();
       }
-      setGalleryLoading(false);
     };
 
     loadGalleryImages();
