@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import AdminLayout from "../../components/AdminLayout.jsx";
 import { supabase } from "../../lib/supabaseClient.js";
+import { useGlobalLoading } from "../../context/LoadingContext.jsx";
 import { uploadImageToGalleryBucket } from "../../lib/uploadImage.js";
 import { resolveFirstExistingTable } from "../../lib/adminTableResolver.js";
 
@@ -24,6 +25,7 @@ const emptyComfortPick = {
 };
 
 const AdminMenu = () => {
+  const { startLoading, stopLoading } = useGlobalLoading();
   const [categories, setCategories] = useState([]);
   const [items, setItems] = useState([]);
   const [comfortPicks, setComfortPicks] = useState([]);
@@ -36,6 +38,8 @@ const AdminMenu = () => {
   const [comfortSourceTable, setComfortSourceTable] = useState("menu_comfort_picks");
 
   const loadMenu = async () => {
+    startLoading();
+    try {
     const resolvedComfortTable = await resolveFirstExistingTable([
       "menu_comfort_picks",
       "comfort_picks",
@@ -77,6 +81,9 @@ const AdminMenu = () => {
     const fallbackComfort = (itemRes.data ?? []).filter((item) => item.is_popular);
     setComfortPicks(fallbackComfort);
     setComfortSourceTable("menu_items");
+    } finally {
+      stopLoading();
+    }
   };
 
   useEffect(() => {

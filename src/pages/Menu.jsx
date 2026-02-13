@@ -7,6 +7,8 @@ import GlassPanel from "../components/ui/GlassPanel.jsx";
 import SectionHeading from "../components/ui/SectionHeading.jsx";
 import menuData from "../data/menu.json";
 import { supabase } from "../lib/supabaseClient.js";
+import { MenuItemSkeleton } from "../components/ui/Skeleton.jsx";
+import { useGlobalLoading } from "../context/LoadingContext.jsx";
 import { resolveFirstExistingTable } from "../lib/adminTableResolver.js";
 
 const normalizeValue = (value) => value.trim().toLowerCase();
@@ -29,63 +31,75 @@ const Menu = () => {
   const [categories, setCategories] = useState([]);
   const [items, setItems] = useState([]);
   const [comfortPicks, setComfortPicks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { startLoading, stopLoading } = useGlobalLoading();
 
   useEffect(() => {
     let isMounted = true;
 
     const loadMenu = async () => {
-      const comfortTable = await resolveFirstExistingTable([
-        "menu_comfort_picks",
-        "comfort_picks",
-        "home_comfort_picks"
-      ]);
+      setLoading(true);
+      startLoading();
 
-      const [categoriesRes, itemsRes, picksRes] = await Promise.all([
-        supabase
-          .from("menu_categories")
-          .select("*")
-          .order("sort_order", { ascending: true })
-          .order("name", { ascending: true }),
-        supabase
-          .from("menu_items")
-          .select("*")
-          .eq("is_available", true)
-          .order("sort_order", { ascending: true })
-          .order("created_at", { ascending: false }),
-        comfortTable
-          ? supabase
-              .from(comfortTable)
-              .select("*")
-              .order("sort_order", { ascending: true })
-              .order("created_at", { ascending: false })
-          : Promise.resolve({ data: [], error: null })
-      ]);
+      try {
+        const comfortTable = await resolveFirstExistingTable([
+          "menu_comfort_picks",
+          "comfort_picks",
+          "home_comfort_picks"
+        ]);
 
-      if (!isMounted) {
-        return;
-      }
+        const [categoriesRes, itemsRes, picksRes] = await Promise.all([
+          supabase
+            .from("menu_categories")
+            .select("*")
+            .order("sort_order", { ascending: true })
+            .order("name", { ascending: true }),
+          supabase
+            .from("menu_items")
+            .select("*")
+            .eq("is_available", true)
+            .order("sort_order", { ascending: true })
+            .order("created_at", { ascending: false }),
+          comfortTable
+            ? supabase
+                .from(comfortTable)
+                .select("*")
+                .order("sort_order", { ascending: true })
+                .order("created_at", { ascending: false })
+            : Promise.resolve({ data: [], error: null })
+        ]);
 
-      if (!categoriesRes.error && !itemsRes.error) {
-        setCategories(categoriesRes.data ?? []);
-        setItems(itemsRes.data ?? []);
-      } else {
-        setCategories((menuData.categories ?? []).map((name, index) => ({ id: name, name, sort_order: index })));
-        setItems((menuData.items ?? []).map((item) => ({
-          id: item.id,
-          name: item.name,
-          description: item.description,
-          price: item.price,
-          image_url: item.image,
-          category_id: item.category,
-          is_available: true,
-          sort_order: 0
-        })));
-      }
+        if (!isMounted) {
+          return;
+        }
 
-      if (!picksRes.error && (picksRes.data?.length ?? 0) > 0) {
-        setComfortPicks(picksRes.data);
-      } else {
-        setComfortPicks((menuData.items ?? []).filter((item) => item.popular));
+        if (!categoriesRes.error && !itemsRes.error) {
+          setCategories(categoriesRes.data ?? []);
+          setItems(itemsRes.data ?? []);
+        } else {
+          setCategories((menuData.categories ?? []).map((name, index) => ({ id: name, name, sort_order: index })));
+          setItems((menuData.items ?? []).map((item) => ({
+            id: item.id,
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            image_url: item.image,
+            category_id: item.category,
+            is_available: true,
+            sort_order: 0
+          })));
+        }
+
+        if (!picksRes.error && (picksRes.data?.length ?? 0) > 0) {
+          setComfortPicks(picksRes.data);
+        } else {
+          setComfortPicks((menuData.items ?? []).filter((item) => item.popular));
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+        stopLoading();
       }
     };
 
@@ -185,7 +199,9 @@ const Menu = () => {
           </div>
         </Reveal>
 
-        {filteredItems.length === 0 ? (
+        {loading ? (
+          <MenuItemSkeleton count={4} />
+        ) : filteredItems.length === 0 ? (
           <Card className="flex flex-col gap-3">
             <p className="text-sm text-text-secondary">
               No items match this category yet.

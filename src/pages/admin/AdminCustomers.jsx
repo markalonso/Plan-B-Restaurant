@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import AdminLayout from "../../components/AdminLayout.jsx";
 import { supabase } from "../../lib/supabaseClient.js";
+import { useGlobalLoading } from "../../context/LoadingContext.jsx";
 
 const AdminCustomers = () => {
+  const { startLoading, stopLoading } = useGlobalLoading();
   const [search, setSearch] = useState("");
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,12 +24,17 @@ const AdminCustomers = () => {
 
   const loadCustomers = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("customers")
-      .select("*")
-      .order("created_at", { ascending: false });
-    setCustomers(data ?? []);
-    setLoading(false);
+    startLoading();
+    try {
+      const { data } = await supabase
+        .from("customers")
+        .select("*")
+        .order("created_at", { ascending: false });
+      setCustomers(data ?? []);
+    } finally {
+      setLoading(false);
+      stopLoading();
+    }
   };
 
   useEffect(() => {

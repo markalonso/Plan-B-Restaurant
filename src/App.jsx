@@ -6,6 +6,8 @@ import FloatingBookingButton from "./components/FloatingBookingButton.jsx";
 import PageTransition from "./components/PageTransition.jsx";
 import AdminRoute from "./components/AdminRoute.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
+import LoadingSpinner from "./components/ui/LoadingSpinner.jsx";
+import { useGlobalLoading } from "./context/LoadingContext.jsx";
 import Home from "./pages/Home.jsx";
 import Menu from "./pages/Menu.jsx";
 import Booking from "./pages/Booking.jsx";
@@ -24,6 +26,7 @@ import AdminGallery from "./pages/admin/AdminGallery.jsx";
 const App = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const { isLoading } = useGlobalLoading();
 
   return (
     <div className="min-h-screen bg-surface-primary text-text-primary">
@@ -91,6 +94,11 @@ const App = () => {
           </Routes>
         </AnimatePresence>
       </main>
+      {isLoading && (
+        <div className="pointer-events-none fixed right-5 top-5 z-50 rounded-full border border-coffee/15 bg-white/85 p-2 shadow-soft backdrop-blur">
+          <LoadingSpinner size="sm" />
+        </div>
+      )}
       {!isAdminRoute && (
         <>
           <Footer />
