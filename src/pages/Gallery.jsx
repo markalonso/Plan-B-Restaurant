@@ -6,8 +6,12 @@ import GalleryGrid from "../components/gallery/GalleryGrid.jsx";
 import Lightbox from "../components/gallery/Lightbox.jsx";
 import { GallerySkeleton } from "../components/ui/Skeleton.jsx";
 import { supabase } from "../lib/supabaseClient.js";
+import { resolveFirstExistingTable } from "../lib/adminTableResolver.js";
 
 const normalizeValue = (value) => value.toLowerCase().trim();
+const uncategorizedLabel = "uncategorized";
+const getImageCategoryName = (image, categoryNameById) =>
+  image.category || categoryNameById[image.category_id] || "";
 
 const Gallery = () => {
   const [activeTab, setActiveTab] = useState("All");
@@ -17,16 +21,32 @@ const Gallery = () => {
   const [status, setStatus] = useState({ loading: true, error: "" });
 
   // Filter images based on active tab
+  const categoryNameById = useMemo(() => {
+    return categories.reduce((acc, category) => {
+      if (category.id) {
+        acc[category.id] = category.name;
+      }
+      return acc;
+    }, {});
+  }, [categories]);
+
   const filteredImages = useMemo(() => {
     if (normalizeValue(activeTab) === "all") {
       return images;
     }
     return images.filter(
-      (item) => normalizeValue(item.category || "") === normalizeValue(activeTab)
+      (item) =>
+        normalizeValue(getImageCategoryName(item, categoryNameById)) ===
+        normalizeValue(activeTab)
     );
-  }, [activeTab, images]);
+  }, [activeTab, images, categoryNameById]);
 
-  const tabs = useMemo(() => ["All", ...categories], [categories]);
+  const publicCategories = useMemo(
+    () => categories.filter((category) => normalizeValue(category.name || "") !== uncategorizedLabel),
+    [categories]
+  );
+
+  const tabs = useMemo(() => ["All", ...publicCategories.map((category) => category.name)], [publicCategories]);
 
   // Load images from Supabase
   useEffect(() => {
@@ -35,16 +55,23 @@ const Gallery = () => {
     const loadImages = async () => {
       setStatus({ loading: true, error: "" });
 
+      const categoryTable = await resolveFirstExistingTable([
+        "gallery_categories",
+        "gallery_category"
+      ]);
+
       const [imagesRes, categoriesRes] = await Promise.all([
         supabase
           .from("gallery_images")
           .select("*")
           .order("created_at", { ascending: false }),
-        supabase
-          .from("gallery_categories")
-          .select("name")
-          .order("sort_order", { ascending: true })
-          .order("name", { ascending: true })
+        categoryTable
+          ? supabase
+              .from(categoryTable)
+              .select("id, name, sort_order")
+              .order("sort_order", { ascending: true })
+              .order("name", { ascending: true })
+          : Promise.resolve({ data: [], error: null })
       ]);
 
       if (!isMounted) return;
@@ -55,7 +82,14 @@ const Gallery = () => {
       }
 
       setImages(imagesRes.data ?? []);
-      setCategories((categoriesRes.data ?? []).map((category) => category.name));
+
+      if (!categoriesRes.error && (categoriesRes.data?.length ?? 0) > 0) {
+        setCategories(categoriesRes.data ?? []);
+      } else {
+        const names = [...new Set((imagesRes.data ?? []).map((image) => image.category).filter(Boolean))];
+        setCategories(names.map((name, index) => ({ id: `${name}-${index}`, name, sort_order: index })));
+      }
+
       setStatus({ loading: false, error: "" });
     };
 
