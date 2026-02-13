@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 const LoadingContext = createContext(null);
 
@@ -12,6 +12,28 @@ export const LoadingProvider = ({ children }) => {
   const stopLoading = useCallback(() => {
     setLoadingCount((prev) => (prev > 0 ? prev - 1 : 0));
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+
+    const handleStart = () => {
+      startLoading();
+    };
+
+    const handleStop = () => {
+      stopLoading();
+    };
+
+    window.addEventListener("app:loading:start", handleStart);
+    window.addEventListener("app:loading:stop", handleStop);
+
+    return () => {
+      window.removeEventListener("app:loading:start", handleStart);
+      window.removeEventListener("app:loading:stop", handleStop);
+    };
+  }, [startLoading, stopLoading]);
 
   const value = useMemo(
     () => ({

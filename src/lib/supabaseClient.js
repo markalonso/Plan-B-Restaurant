@@ -13,9 +13,29 @@ if (isMissingCredentials) {
   );
 }
 
+const emitLoadingEvent = (eventName) => {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event(eventName));
+  }
+};
+
+const loadingFetch = async (...args) => {
+  emitLoadingEvent("app:loading:start");
+  try {
+    return await fetch(...args);
+  } finally {
+    emitLoadingEvent("app:loading:stop");
+  }
+};
+
 // Create client with fallback values for development (operations will fail gracefully)
 // In production, proper environment variables must be set
 export const supabase = createClient(
   supabaseUrl || "https://placeholder.supabase.co",
-  supabaseAnonKey || "placeholder-key"
+  supabaseAnonKey || "placeholder-key",
+  {
+    global: {
+      fetch: loadingFetch
+    }
+  }
 );

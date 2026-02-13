@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Header from "./components/layout/Header.jsx";
@@ -6,7 +7,7 @@ import FloatingBookingButton from "./components/FloatingBookingButton.jsx";
 import PageTransition from "./components/PageTransition.jsx";
 import AdminRoute from "./components/AdminRoute.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
-import LoadingSpinner from "./components/ui/LoadingSpinner.jsx";
+import GlobalLoadingIndicator from "./components/GlobalLoadingIndicator.jsx";
 import { useGlobalLoading } from "./context/LoadingContext.jsx";
 import Home from "./pages/Home.jsx";
 import Menu from "./pages/Menu.jsx";
@@ -23,10 +24,24 @@ import AdminCustomers from "./pages/admin/AdminCustomers.jsx";
 import AdminMenu from "./pages/admin/AdminMenu.jsx";
 import AdminGallery from "./pages/admin/AdminGallery.jsx";
 
+const routeLoaderDelayMs = 450;
+
 const App = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
   const { isLoading } = useGlobalLoading();
+  const [routeLoading, setRouteLoading] = useState(true);
+
+  useEffect(() => {
+    setRouteLoading(true);
+    const timer = window.setTimeout(() => {
+      setRouteLoading(false);
+    }, routeLoaderDelayMs);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen bg-surface-primary text-text-primary">
@@ -94,11 +109,7 @@ const App = () => {
           </Routes>
         </AnimatePresence>
       </main>
-      {isLoading && (
-        <div className="pointer-events-none fixed right-5 top-5 z-50 rounded-full border border-coffee/15 bg-white/85 p-2 shadow-soft backdrop-blur">
-          <LoadingSpinner size="sm" />
-        </div>
-      )}
+      <GlobalLoadingIndicator visible={isLoading || routeLoading} />
       {!isAdminRoute && (
         <>
           <Footer />
