@@ -5,6 +5,7 @@ import Footer from "./components/Footer.jsx";
 import FloatingBookingButton from "./components/FloatingBookingButton.jsx";
 import PageTransition from "./components/PageTransition.jsx";
 import AdminRoute from "./components/AdminRoute.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 import Home from "./pages/Home.jsx";
 import Menu from "./pages/Menu.jsx";
 import Booking from "./pages/Booking.jsx";
@@ -26,6 +27,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-surface-primary text-text-primary">
+      <ScrollToTop />
       {!isAdminRoute && <Header />}
       <main className={isAdminRoute ? "pt-0" : "pt-20"}>
         <AnimatePresence mode="wait">

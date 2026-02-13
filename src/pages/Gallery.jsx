@@ -9,6 +9,7 @@ import { supabase } from "../lib/supabaseClient.js";
 import { resolveFirstExistingTable } from "../lib/adminTableResolver.js";
 
 const normalizeValue = (value) => value.toLowerCase().trim();
+const uncategorizedLabel = "uncategorized";
 const getImageCategoryName = (image, categoryNameById) =>
   image.category || categoryNameById[image.category_id] || "";
 
@@ -40,7 +41,12 @@ const Gallery = () => {
     );
   }, [activeTab, images, categoryNameById]);
 
-  const tabs = useMemo(() => ["All", ...categories.map((category) => category.name)], [categories]);
+  const publicCategories = useMemo(
+    () => categories.filter((category) => normalizeValue(category.name || "") !== uncategorizedLabel),
+    [categories]
+  );
+
+  const tabs = useMemo(() => ["All", ...publicCategories.map((category) => category.name)], [publicCategories]);
 
   // Load images from Supabase
   useEffect(() => {
