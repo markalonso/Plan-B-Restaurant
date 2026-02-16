@@ -23,12 +23,21 @@ import AdminEvents from "./pages/admin/AdminEvents.jsx";
 import AdminCustomers from "./pages/admin/AdminCustomers.jsx";
 import AdminMenu from "./pages/admin/AdminMenu.jsx";
 import AdminGallery from "./pages/admin/AdminGallery.jsx";
+import AdminModifiers from "./pages/admin/AdminModifiers.jsx";
+import AdminInventory from "./pages/admin/AdminInventory.jsx";
+import AdminPurchases from "./pages/admin/AdminPurchases.jsx";
+import AdminExpenses from "./pages/admin/AdminExpenses.jsx";
+import AdminWaste from "./pages/admin/AdminWaste.jsx";
+import AdminReports from "./pages/admin/AdminReports.jsx";
+import POS from "./pages/POS.jsx";
+import OwnerRoute from "./components/OwnerRoute.jsx";
 
 const routeLoaderDelayMs = 450;
 
 const App = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const isPOSRoute = location.pathname.startsWith("/pos");
   const { isLoading } = useGlobalLoading();
   const [routeLoading, setRouteLoading] = useState(true);
 
@@ -46,8 +55,8 @@ const App = () => {
   return (
     <div className="min-h-screen bg-surface-primary text-text-primary">
       <ScrollToTop />
-      {!isAdminRoute && <Header />}
-      <main className={isAdminRoute ? "pt-0" : "pt-20"}>
+      {!isAdminRoute && !isPOSRoute && <Header />}
+      <main className={isAdminRoute || isPOSRoute ? "pt-0" : "pt-20"}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageTransition><Home /></PageTransition>} />
@@ -57,6 +66,7 @@ const App = () => {
             <Route path="/gallery" element={<PageTransition><Gallery /></PageTransition>} />
             <Route path="/about" element={<PageTransition><About /></PageTransition>} />
             <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+            <Route path="/pos" element={<AdminRoute><POS /></AdminRoute>} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route
               path="/admin"
@@ -106,11 +116,59 @@ const App = () => {
                 </AdminRoute>
               }
             />
+            <Route
+              path="/admin/modifiers"
+              element={
+                <OwnerRoute>
+                  <AdminModifiers />
+                </OwnerRoute>
+              }
+            />
+            <Route
+              path="/admin/inventory"
+              element={
+                <OwnerRoute>
+                  <AdminInventory />
+                </OwnerRoute>
+              }
+            />
+            <Route
+              path="/admin/purchases"
+              element={
+                <OwnerRoute>
+                  <AdminPurchases />
+                </OwnerRoute>
+              }
+            />
+            <Route
+              path="/admin/expenses"
+              element={
+                <OwnerRoute>
+                  <AdminExpenses />
+                </OwnerRoute>
+              }
+            />
+            <Route
+              path="/admin/waste"
+              element={
+                <OwnerRoute>
+                  <AdminWaste />
+                </OwnerRoute>
+              }
+            />
+            <Route
+              path="/admin/reports"
+              element={
+                <OwnerRoute>
+                  <AdminReports />
+                </OwnerRoute>
+              }
+            />
           </Routes>
         </AnimatePresence>
       </main>
       <GlobalLoadingIndicator visible={isLoading || routeLoading} />
-      {!isAdminRoute && (
+      {!isAdminRoute && !isPOSRoute && (
         <>
           <Footer />
           <FloatingBookingButton />
