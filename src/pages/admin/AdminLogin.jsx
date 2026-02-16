@@ -46,7 +46,7 @@ const AdminLogin = () => {
       navigate("/admin");
     } catch (err) {
       // Handle unexpected errors (e.g., network issues, undefined client)
-      console.error("[AdminLogin] Authentication error:", err);
+      console.error("[AdminLogin] Authentication error:", err.message);
       setStatus({
         loading: false,
         error: err.message || "An unexpected error occurred. Please try again."

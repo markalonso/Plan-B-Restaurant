@@ -17,7 +17,7 @@ const AdminLayout = ({ children, onSignOut }) => {
     try {
       await supabase.auth.signOut();
     } catch (err) {
-      console.error("[AdminLayout] Sign out error:", err);
+      console.error("[AdminLayout] Sign out error:", err.message);
     }
     if (onSignOut) {
       onSignOut();

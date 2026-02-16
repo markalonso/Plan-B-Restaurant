@@ -51,7 +51,7 @@ const AdminRoute = ({ children }) => {
           await supabase.auth.signOut();
         }
       } catch (err) {
-        console.error("[AdminRoute] Error checking access:", err);
+        console.error("[AdminRoute] Error checking access:", err.message);
         if (isMounted) {
           setStatus({ loading: false, authenticated: false, authorized: false });
         }
