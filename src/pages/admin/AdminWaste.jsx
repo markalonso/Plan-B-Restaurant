@@ -37,11 +37,13 @@ const AdminWaste = () => {
           startDate = today.toISOString().split("T")[0];
           query = query.eq("waste_date", startDate);
         } else if (dateFilter === "week") {
-          const weekAgo = new Date(today.setDate(today.getDate() - 7));
+          const weekAgo = new Date(today.getTime());
+          weekAgo.setDate(weekAgo.getDate() - 7);
           startDate = weekAgo.toISOString().split("T")[0];
           query = query.gte("waste_date", startDate);
         } else if (dateFilter === "month") {
-          const monthAgo = new Date(today.setMonth(today.getMonth() - 1));
+          const monthAgo = new Date(today.getTime());
+          monthAgo.setMonth(monthAgo.getMonth() - 1);
           startDate = monthAgo.toISOString().split("T")[0];
           query = query.gte("waste_date", startDate);
         }

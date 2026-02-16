@@ -22,11 +22,12 @@ const AdminReports = () => {
 
   useEffect(() => {
     if (dateFrom && dateTo) {
-      loadReport();
+      triggerLoadReport();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reportType, dateFrom, dateTo]);
 
-  const loadReport = async () => {
+  const triggerLoadReport = async () => {
     startLoading();
     try {
       switch (reportType) {
@@ -298,7 +299,7 @@ const AdminReports = () => {
             </div>
             <div className="flex items-end">
               <button
-                onClick={loadReport}
+                onClick={triggerLoadReport}
                 className="rounded-lg bg-coffee px-4 py-2 text-white hover:bg-coffee/90"
               >
                 Generate Report
