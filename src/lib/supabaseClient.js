@@ -39,3 +39,11 @@ export const supabase = createClient(
     }
   }
 );
+
+// Export flag to check if credentials are available
+export const hasSupabaseCredentials = !isMissingCredentials;
+
+// Log Supabase URL presence in development only
+if (import.meta.env.DEV) {
+  console.log('[Supabase] URL configured:', Boolean(supabaseUrl));
+}

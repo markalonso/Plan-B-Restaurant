@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../../lib/supabaseClient.js";
+import { supabase, hasSupabaseCredentials } from "../../lib/supabaseClient.js";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -17,23 +17,41 @@ const AdminLogin = () => {
     event.preventDefault();
     setStatus({ loading: true, error: "" });
 
-    const action =
-      mode === "sign-in"
-        ? supabase.auth.signInWithPassword
-        : supabase.auth.signUp;
-
-    const { error } = await action({
-      email: formData.email,
-      password: formData.password
-    });
-
-    if (error) {
-      setStatus({ loading: false, error: error.message });
+    // Check if Supabase credentials are configured
+    if (!hasSupabaseCredentials) {
+      setStatus({
+        loading: false,
+        error: "Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables."
+      });
       return;
     }
 
-    setStatus({ loading: false, error: "" });
-    navigate("/admin");
+    try {
+      const action =
+        mode === "sign-in"
+          ? supabase.auth.signInWithPassword
+          : supabase.auth.signUp;
+
+      const { error } = await action({
+        email: formData.email,
+        password: formData.password
+      });
+
+      if (error) {
+        setStatus({ loading: false, error: error.message });
+        return;
+      }
+
+      setStatus({ loading: false, error: "" });
+      navigate("/admin");
+    } catch (err) {
+      // Handle unexpected errors (e.g., network issues, undefined client)
+      console.error("[AdminLogin] Authentication error:", err.message);
+      setStatus({
+        loading: false,
+        error: err.message || "An unexpected error occurred. Please try again."
+      });
+    }
   };
 
   return (
@@ -51,6 +69,18 @@ const AdminLogin = () => {
             account is added to the admin_users table.
           </p>
         </div>
+
+        {!hasSupabaseCredentials && (
+          <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4">
+            <p className="text-sm font-semibold text-rose-700">
+              ⚠️ Configuration Error
+            </p>
+            <p className="mt-1 text-sm text-rose-600">
+              Supabase environment variables are not configured. Please contact
+              the site administrator.
+            </p>
+          </div>
+        )}
 
         <form className="glass-card space-y-4" onSubmit={handleSubmit}>
           <input
@@ -78,7 +108,7 @@ const AdminLogin = () => {
           )}
           <button
             type="submit"
-            disabled={status.loading}
+            disabled={status.loading || !hasSupabaseCredentials}
             className="w-full rounded-full bg-coffee px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-coffee disabled:cursor-not-allowed disabled:bg-coffee-light"
           >
             {status.loading
