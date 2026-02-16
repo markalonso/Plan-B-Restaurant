@@ -23,7 +23,14 @@ import AdminEvents from "./pages/admin/AdminEvents.jsx";
 import AdminCustomers from "./pages/admin/AdminCustomers.jsx";
 import AdminMenu from "./pages/admin/AdminMenu.jsx";
 import AdminGallery from "./pages/admin/AdminGallery.jsx";
+import AdminModifiers from "./pages/admin/AdminModifiers.jsx";
+import AdminInventory from "./pages/admin/AdminInventory.jsx";
+import AdminPurchases from "./pages/admin/AdminPurchases.jsx";
+import AdminExpenses from "./pages/admin/AdminExpenses.jsx";
+import AdminWaste from "./pages/admin/AdminWaste.jsx";
+import AdminReports from "./pages/admin/AdminReports.jsx";
 import POS from "./pages/POS.jsx";
+import OwnerRoute from "./components/OwnerRoute.jsx";
 
 const routeLoaderDelayMs = 450;
 
@@ -107,6 +114,54 @@ const App = () => {
                 <AdminRoute>
                   <AdminGallery />
                 </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/modifiers"
+              element={
+                <OwnerRoute>
+                  <AdminModifiers />
+                </OwnerRoute>
+              }
+            />
+            <Route
+              path="/admin/inventory"
+              element={
+                <OwnerRoute>
+                  <AdminInventory />
+                </OwnerRoute>
+              }
+            />
+            <Route
+              path="/admin/purchases"
+              element={
+                <OwnerRoute>
+                  <AdminPurchases />
+                </OwnerRoute>
+              }
+            />
+            <Route
+              path="/admin/expenses"
+              element={
+                <OwnerRoute>
+                  <AdminExpenses />
+                </OwnerRoute>
+              }
+            />
+            <Route
+              path="/admin/waste"
+              element={
+                <OwnerRoute>
+                  <AdminWaste />
+                </OwnerRoute>
+              }
+            />
+            <Route
+              path="/admin/reports"
+              element={
+                <OwnerRoute>
+                  <AdminReports />
+                </OwnerRoute>
               }
             />
           </Routes>
