@@ -23,12 +23,14 @@ import AdminEvents from "./pages/admin/AdminEvents.jsx";
 import AdminCustomers from "./pages/admin/AdminCustomers.jsx";
 import AdminMenu from "./pages/admin/AdminMenu.jsx";
 import AdminGallery from "./pages/admin/AdminGallery.jsx";
+import POS from "./pages/POS.jsx";
 
 const routeLoaderDelayMs = 450;
 
 const App = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const isPOSRoute = location.pathname.startsWith("/pos");
   const { isLoading } = useGlobalLoading();
   const [routeLoading, setRouteLoading] = useState(true);
 
@@ -46,8 +48,8 @@ const App = () => {
   return (
     <div className="min-h-screen bg-surface-primary text-text-primary">
       <ScrollToTop />
-      {!isAdminRoute && <Header />}
-      <main className={isAdminRoute ? "pt-0" : "pt-20"}>
+      {!isAdminRoute && !isPOSRoute && <Header />}
+      <main className={isAdminRoute || isPOSRoute ? "pt-0" : "pt-20"}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageTransition><Home /></PageTransition>} />
@@ -57,6 +59,7 @@ const App = () => {
             <Route path="/gallery" element={<PageTransition><Gallery /></PageTransition>} />
             <Route path="/about" element={<PageTransition><About /></PageTransition>} />
             <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+            <Route path="/pos" element={<AdminRoute><POS /></AdminRoute>} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route
               path="/admin"
@@ -110,7 +113,7 @@ const App = () => {
         </AnimatePresence>
       </main>
       <GlobalLoadingIndicator visible={isLoading || routeLoading} />
-      {!isAdminRoute && (
+      {!isAdminRoute && !isPOSRoute && (
         <>
           <Footer />
           <FloatingBookingButton />
