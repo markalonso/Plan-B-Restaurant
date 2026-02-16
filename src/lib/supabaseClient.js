@@ -3,47 +3,14 @@ import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Check for missing environment variables
-const isMissingCredentials = !supabaseUrl || !supabaseAnonKey;
+export const hasSupabaseCredentials = Boolean(supabaseUrl && supabaseAnonKey);
 
-if (isMissingCredentials) {
+export const supabase = hasSupabaseCredentials
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
+
+if (!hasSupabaseCredentials) {
   console.warn(
-    "Missing Supabase environment variables. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY. " +
-    "Database features will be disabled."
+    "Missing Supabase env vars: VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY"
   );
-}
-
-const emitLoadingEvent = (eventName) => {
-  if (typeof window !== "undefined") {
-    window.dispatchEvent(new Event(eventName));
-  }
-};
-
-const loadingFetch = async (...args) => {
-  emitLoadingEvent("app:loading:start");
-  try {
-    return await fetch(...args);
-  } finally {
-    emitLoadingEvent("app:loading:stop");
-  }
-};
-
-// Create client with fallback values for development (operations will fail gracefully)
-// In production, proper environment variables must be set
-export const supabase = createClient(
-  supabaseUrl || "https://placeholder.supabase.co",
-  supabaseAnonKey || "placeholder-key",
-  {
-    global: {
-      fetch: loadingFetch
-    }
-  }
-);
-
-// Export flag to check if credentials are available
-export const hasSupabaseCredentials = !isMissingCredentials;
-
-// Log Supabase URL presence in development only
-if (import.meta.env.DEV) {
-  console.log('[Supabase] URL configured:', Boolean(supabaseUrl));
 }
