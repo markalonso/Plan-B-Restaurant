@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { supabase } from "../lib/supabaseClient.js";
+import { supabase, hasSupabaseCredentials } from "../lib/supabaseClient.js";
 
 const AdminRoute = ({ children }) => {
   const [status, setStatus] = useState({
@@ -13,33 +13,48 @@ const AdminRoute = ({ children }) => {
     let isMounted = true;
 
     const checkAccess = async () => {
-      const {
-        data: { session }
-      } = await supabase.auth.getSession();
-
-      if (!session?.user) {
+      // If credentials are missing, immediately redirect to login
+      if (!hasSupabaseCredentials) {
         if (isMounted) {
           setStatus({ loading: false, authenticated: false, authorized: false });
         }
         return;
       }
 
-      const { data: adminRow } = await supabase
-        .from("admin_users")
-        .select("user_id")
-        .eq("user_id", session.user.id)
-        .maybeSingle();
+      try {
+        const {
+          data: { session }
+        } = await supabase.auth.getSession();
 
-      if (isMounted) {
-        setStatus({
-          loading: false,
-          authenticated: true,
-          authorized: Boolean(adminRow)
-        });
-      }
+        if (!session?.user) {
+          if (isMounted) {
+            setStatus({ loading: false, authenticated: false, authorized: false });
+          }
+          return;
+        }
 
-      if (!adminRow) {
-        await supabase.auth.signOut();
+        const { data: adminRow } = await supabase
+          .from("admin_users")
+          .select("user_id")
+          .eq("user_id", session.user.id)
+          .maybeSingle();
+
+        if (isMounted) {
+          setStatus({
+            loading: false,
+            authenticated: true,
+            authorized: Boolean(adminRow)
+          });
+        }
+
+        if (!adminRow) {
+          await supabase.auth.signOut();
+        }
+      } catch (err) {
+        console.error("[AdminRoute] Error checking access:", err);
+        if (isMounted) {
+          setStatus({ loading: false, authenticated: false, authorized: false });
+        }
       }
     };
 
