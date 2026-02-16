@@ -3,6 +3,7 @@ import { supabase } from "../lib/supabaseClient.js";
 
 const navItems = [
   { to: "/admin", label: "Overview", end: true },
+  { to: "/pos", label: "POS", end: true, highlight: true },
   { to: "/admin/reservations", label: "Reservations" },
   { to: "/admin/events", label: "Events" },
   { to: "/admin/customers", label: "Customers" },
@@ -55,6 +56,8 @@ const AdminLayout = ({ children, onSignOut }) => {
                 `block rounded-2xl px-4 py-2 text-sm font-semibold transition ${
                   isActive
                     ? "bg-coffee text-white"
+                    : item.highlight
+                    ? "bg-green-50 text-green-700 hover:bg-green-100 border-2 border-green-200"
                     : "text-text-secondary hover:bg-surface-muted"
                 }`
               }
