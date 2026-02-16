@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { supabase } from "../../lib/supabaseClient.js";
 
 const MenuItemSelector = ({
   menuItems,
@@ -144,8 +145,5 @@ const MenuItemSelector = ({
     </div>
   );
 };
-
-// Import supabase at the top
-import { supabase } from "../../lib/supabaseClient.js";
 
 export default MenuItemSelector;

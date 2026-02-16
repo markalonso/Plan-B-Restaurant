@@ -20,7 +20,7 @@ const OrderPanel = ({
   const [showPrintReceipt, setShowPrintReceipt] = useState(false);
 
   // Calculate totals
-  const subtotal = orderItems.reduce((sum, item) => sum + parseFloat(item.total_price), 0);
+  const subtotal = orderItems.filter(item => !item.is_deleted).reduce((sum, item) => sum + parseFloat(item.total_price), 0);
   const discountAmount = subtotal * (discountPercent / 100);
   const afterDiscount = subtotal - discountAmount;
   const taxAmount = order.session_type === "dine_in" ? afterDiscount * 0.14 : 0;

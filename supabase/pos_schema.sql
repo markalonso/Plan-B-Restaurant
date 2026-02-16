@@ -98,7 +98,8 @@ create table if not exists inventory (
   unit text not null default 'unit',
   low_stock_threshold numeric(10,2) default 10,
   updated_at timestamptz not null default now(),
-  is_active boolean not null default true
+  is_active boolean not null default true,
+  unique(menu_item_id)
 );
 
 -- Audit logs
@@ -294,15 +295,23 @@ returns trigger as $$
 declare
   order_subtotal numeric(10,2);
   order_record record;
+  target_order_id uuid;
 begin
+  -- Determine which order_id to use
+  if TG_OP = 'DELETE' then
+    target_order_id := OLD.order_id;
+  else
+    target_order_id := NEW.order_id;
+  end if;
+  
   -- Calculate subtotal from order items
   select coalesce(sum(total_price), 0)
   into order_subtotal
   from order_items
-  where order_id = NEW.order_id and is_deleted = false;
+  where order_id = target_order_id and is_deleted = false;
   
   -- Get order details
-  select * into order_record from orders where id = NEW.order_id;
+  select * into order_record from orders where id = target_order_id;
   
   -- Update order totals
   update orders
@@ -323,7 +332,7 @@ begin
         order_subtotal - (order_subtotal * (discount_percent / 100)) + coalesce(delivery_fee, 0)
     end,
     updated_at = now()
-  where id = NEW.order_id;
+  where id = target_order_id;
   
   return NEW;
 end;
@@ -370,4 +379,4 @@ on conflict (number) do nothing;
 insert into inventory (menu_item_id, quantity, unit, low_stock_threshold)
 select id, 100, 'unit', 10
 from menu_items
-on conflict do nothing;
+on conflict (menu_item_id) do nothing;

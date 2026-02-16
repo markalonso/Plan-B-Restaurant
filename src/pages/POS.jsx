@@ -37,8 +37,7 @@ const POS = () => {
     try {
       const { data, error } = await supabase
         .from("tables")
-        .select("*, orders!orders_table_id_fkey(*)")
-        .eq("orders.status", "pending")
+        .select("*")
         .order("number", { ascending: true });
 
       if (error) throw error;
