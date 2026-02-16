@@ -27,16 +27,15 @@ const AdminLogin = () => {
     }
 
     try {
+      const credentials = {
+        email: formData.email,
+        password: formData.password
+      };
+
       const { error } = await (
         mode === "sign-in"
-          ? supabase.auth.signInWithPassword({
-              email: formData.email,
-              password: formData.password
-            })
-          : supabase.auth.signUp({
-              email: formData.email,
-              password: formData.password
-            })
+          ? supabase.auth.signInWithPassword(credentials)
+          : supabase.auth.signUp(credentials)
       );
 
       if (error) {
