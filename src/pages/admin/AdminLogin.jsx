@@ -27,15 +27,17 @@ const AdminLogin = () => {
     }
 
     try {
-      const action =
+      const { error } = await (
         mode === "sign-in"
-          ? supabase.auth.signInWithPassword
-          : supabase.auth.signUp;
-
-      const { error } = await action({
-        email: formData.email,
-        password: formData.password
-      });
+          ? supabase.auth.signInWithPassword({
+              email: formData.email,
+              password: formData.password
+            })
+          : supabase.auth.signUp({
+              email: formData.email,
+              password: formData.password
+            })
+      );
 
       if (error) {
         setStatus({ loading: false, error: error.message });
