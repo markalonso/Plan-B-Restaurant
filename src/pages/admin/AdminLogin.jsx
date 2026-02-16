@@ -27,16 +27,15 @@ const AdminLogin = () => {
     }
 
     try {
-      const credentials = {
+      const action =
+        mode === "sign-in"
+          ? supabase.auth.signInWithPassword
+          : supabase.auth.signUp;
+
+      const { error } = await action({
         email: formData.email,
         password: formData.password
-      };
-
-      const { error } = await (
-        mode === "sign-in"
-          ? supabase.auth.signInWithPassword(credentials)
-          : supabase.auth.signUp(credentials)
-      );
+      });
 
       if (error) {
         setStatus({ loading: false, error: error.message });
