@@ -10,12 +10,6 @@ import { supabase } from "../lib/supabaseClient.js";
 
 const whatsappNumber = "201005260787";
 
-const miniGallery = [
-  "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1481931098730-318b6f776db0?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
-];
-
 const formatWhatsAppMessage = ({
   id,
   type,
@@ -102,6 +96,7 @@ const Booking = () => {
     phone: !formData.phone.trim()
       ? "Phone or WhatsApp is required."
       : "",
+    guests: !formData.guests ? "Please enter number of guests." : "",
     date: !formData.date ? "Please select a date." : "",
     time: isReservation && !formData.time ? "Please select a time." : ""
   };
@@ -240,7 +235,7 @@ const Booking = () => {
 
   return (
     <div className="section-padding">
-      <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.18fr_0.82fr]">
         <Reveal>
           <div className="space-y-6">
             <SectionHeading
@@ -292,16 +287,25 @@ const Booking = () => {
                   onChange={handleChange}
                   className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
                 />
-                <div className="grid gap-4 md:grid-cols-3">
-                  <input
-                    type="number"
-                    name="guests"
-                    min="1"
-                    value={formData.guests}
-                    onChange={handleChange}
-                    className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
-                    required
-                  />
+                <div className={`grid gap-4 ${isReservation ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
+                  <div className="space-y-2">
+                    <input
+                      type="number"
+                      name="guests"
+                      min="1"
+                      value={formData.guests}
+                      onChange={handleChange}
+                      aria-label="Number of guests"
+                      placeholder="Guests"
+                      className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
+                      required
+                    />
+                    {helperText.guests && (
+                      <p className="text-xs text-text-muted">
+                        {helperText.guests}
+                      </p>
+                    )}
+                  </div>
                   <div className="space-y-2">
                     <input
                       type="date"
@@ -339,16 +343,7 @@ const Booking = () => {
                         </p>
                       )}
                     </div>
-                  ) : (
-                    <input
-                      type="text"
-                      name="timeWindow"
-                      placeholder="Preferred time window (optional)"
-                      value={formData.timeWindow}
-                      onChange={handleChange}
-                      className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
-                    />
-                  )}
+                  ) : null}
                 </div>
                 {isGroupRequest && (
                   <div className="grid gap-4 md:grid-cols-2">
@@ -440,20 +435,6 @@ const Booking = () => {
               </ul>
             </GlassPanel>
 
-            <div className="grid grid-cols-3 gap-3">
-              {miniGallery.map((image) => (
-                <div
-                  key={image}
-                  className="overflow-hidden rounded-2xl shadow-soft"
-                >
-                  <img
-                    src={image}
-                    alt="Plan B atmosphere"
-                    className="h-24 w-full object-cover transition duration-300 hover:scale-105"
-                  />
-                </div>
-              ))}
-            </div>
           </div>
         </Reveal>
       </div>
