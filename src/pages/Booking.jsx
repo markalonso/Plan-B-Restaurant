@@ -97,6 +97,7 @@ const Booking = () => {
     phone: !formData.phone.trim()
       ? "Phone or WhatsApp is required."
       : "",
+    guests: !formData.guests ? "Please enter number of guests." : "",
     date: !formData.date ? "Please select a date." : "",
     time: isReservation && !formData.time ? "Please select a time." : ""
   };
