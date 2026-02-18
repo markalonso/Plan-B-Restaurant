@@ -6,6 +6,7 @@ import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import GlassPanel from "../components/ui/GlassPanel.jsx";
 import SectionHeading from "../components/ui/SectionHeading.jsx";
+import LocationMap from "../components/ui/LocationMap.jsx";
 import { supabase } from "../lib/supabaseClient.js";
 
 const whatsappNumber = "201005260787";
@@ -300,11 +301,9 @@ const Booking = () => {
                       className="w-full rounded-ui-default border border-coffee/15 px-4 py-3 text-sm focus:border-coffee focus:outline-none"
                       required
                     />
-                    {helperText.guests && (
-                      <p className="text-xs text-text-muted">
-                        {helperText.guests}
-                      </p>
-                    )}
+                    <p className="text-xs text-text-muted">
+                      Number of guests is required.
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <input
@@ -434,6 +433,10 @@ const Booking = () => {
                 <li>Groups (9+): tailored reply</li>
               </ul>
             </GlassPanel>
+
+            <div className="overflow-hidden rounded-2xl border border-coffee/10 bg-surface-muted">
+              <LocationMap />
+            </div>
 
           </div>
         </Reveal>
