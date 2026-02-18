@@ -182,29 +182,28 @@ const Home = () => {
         </motion.div>
 
         {/* Scroll Indicator */}
-        <motion.div 
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          initial={{ opacity: 0, y: reducedMotion ? 0 : -10 }}
+        <motion.div
+          className="pointer-events-none absolute bottom-20 left-1/2 z-10 -translate-x-1/2 sm:bottom-10"
+          initial={{ opacity: 0, y: reducedMotion ? 0 : 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: reducedMotion ? 0.3 : 1.5, duration: reducedMotion ? 0.2 : 0.5 }}
+          transition={{ delay: reducedMotion ? 0.25 : 1.2, duration: reducedMotion ? 0.2 : 0.45 }}
         >
-          <motion.div 
-            className="flex flex-col items-center gap-2 text-white/70"
-            animate={reducedMotion ? {} : { y: [0, 8, 0] }}
-            transition={reducedMotion ? {} : { duration: 1.5, ease: "easeInOut", repeat: Infinity, repeatDelay: 0.5 }}
-          >
-            <span className="text-xs uppercase tracking-widest">Scroll</span>
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              strokeWidth={2} 
-              stroke="currentColor" 
-              className="h-5 w-5"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
-            </svg>
-          </motion.div>
+          <div className="flex flex-col items-center gap-2 text-white/80">
+            <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-white/75 sm:text-xs">
+              Scroll
+            </span>
+            <div className="flex h-10 w-6 items-start justify-center rounded-full border border-white/65 bg-white/10 p-1 shadow-[0_8px_24px_rgba(0,0,0,0.2)] backdrop-blur-sm">
+              <motion.span
+                className="h-1.5 w-1.5 rounded-full bg-white/95"
+                animate={reducedMotion ? {} : { y: [0, 12, 0], opacity: [1, 0.45, 1] }}
+                transition={
+                  reducedMotion
+                    ? {}
+                    : { duration: 1.6, ease: "easeInOut", repeat: Infinity, repeatDelay: 0.35 }
+                }
+              />
+            </div>
+          </div>
         </motion.div>
       </section>
 

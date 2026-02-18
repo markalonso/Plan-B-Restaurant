@@ -395,10 +395,14 @@ export const skeletonShimmer = {
 // Smooth background/shadow transition on scroll
 // ============================================================================
 export const headerVariants = {
-  transparent: { 
-    backgroundColor: "rgba(250, 247, 242, 0)",
-    boxShadow: "0 0 0 rgba(0,0,0,0)",
-    backdropFilter: "blur(0px)"
+  transparent: {
+    backgroundColor: "rgba(250, 247, 242, 0.9)",
+    boxShadow: "0 1px 2px rgba(111, 78, 55, 0.06)",
+    backdropFilter: "blur(6px)",
+    transition: {
+      duration: getDuration("normal"),
+      ease: easings.soft
+    }
   },
   scrolled: { 
     backgroundColor: "rgba(250, 247, 242, 0.95)",
