@@ -11,7 +11,9 @@ import { MenuItemSkeleton } from "../components/ui/Skeleton.jsx";
 import { useGlobalLoading } from "../context/LoadingContext.jsx";
 import { resolveFirstExistingTable } from "../lib/adminTableResolver.js";
 
-const normalizeValue = (value) => value.trim().toLowerCase();
+const normalizeValue = (value) => String(value ?? "").trim().toLowerCase();
+
+const MOST_POPULAR_CATEGORY = "Most Popular";
 
 const formatPrice = (price) => {
   if (typeof price === "string") {
@@ -86,7 +88,8 @@ const Menu = () => {
             image_url: item.image,
             category_id: item.category,
             is_available: true,
-            sort_order: 0
+            sort_order: 0,
+            is_popular: Boolean(item.popular)
           })));
         }
 
@@ -117,23 +120,49 @@ const Menu = () => {
     }, {});
   }, [categories]);
 
-  const categoryOptions = useMemo(
-    () => ["All", ...categories.map((category) => category.name)],
-    [categories]
+  const uniqueItems = useMemo(() => {
+    const seen = new Set();
+    return items.filter((item) => {
+      if (!item?.id || seen.has(item.id)) return false;
+      seen.add(item.id);
+      return true;
+    });
+  }, [items]);
+
+  const hasPopularItems = useMemo(
+    () => uniqueItems.some((item) => Boolean(item.is_popular ?? item.popular)),
+    [uniqueItems]
   );
+
+  const categoryOptions = useMemo(() => {
+    const names = categories
+      .map((category) => category.name)
+      .filter(Boolean)
+      .filter((name) => normalizeValue(name) !== normalizeValue(MOST_POPULAR_CATEGORY));
+
+    return [
+      "All",
+      ...(hasPopularItems ? [MOST_POPULAR_CATEGORY] : []),
+      ...names
+    ];
+  }, [categories, hasPopularItems]);
 
   const normalizedCategory = normalizeValue(activeCategory);
 
   const filteredItems = useMemo(() => {
     if (normalizedCategory === "all") {
-      return items;
+      return uniqueItems;
     }
 
-    return items.filter((item) => {
+    if (normalizedCategory === normalizeValue(MOST_POPULAR_CATEGORY)) {
+      return uniqueItems.filter((item) => Boolean(item.is_popular ?? item.popular));
+    }
+
+    return uniqueItems.filter((item) => {
       const name = categoryNameById[item.category_id] || item.category_id || "";
       return normalizeValue(name) === normalizedCategory;
     });
-  }, [categoryNameById, items, normalizedCategory]);
+  }, [categoryNameById, normalizedCategory, uniqueItems]);
 
   return (
     <div className="section-padding">

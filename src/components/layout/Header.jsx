@@ -40,23 +40,28 @@ const Header = () => {
   return (
     <>
       <motion.header
-        className="fixed inset-x-0 top-0 z-50 border-b border-transparent"
+        className="fixed inset-x-0 top-0 z-50 border-b border-coffee/10"
         variants={headerVariants}
         initial="transparent"
         animate={isScrolled ? "scrolled" : "transparent"}
       >
-        <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4" aria-label="Main navigation">
+        <nav
+          className={`mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 ${
+            isScrolled ? "min-h-[82px] py-3.5" : "min-h-[76px] py-3"
+          }`}
+          aria-label="Main navigation"
+        >
           {/* Logo - Left */}
-          <NavLink to="/" className="flex items-center gap-3">
+          <NavLink to="/" className="flex min-w-0 items-center gap-2.5 sm:gap-3">
             <img
               src="/assets/planb/home/logo-planb.png"
               alt="Plan B logo"
-              className="h-20 w-20"
+              className="h-12 w-12 shrink-0 sm:h-14 sm:w-14"
               onError={(e) => console.error("Navbar logo failed:", e.currentTarget.src)}
             />
-            <div>
-              <p className="text-lg font-semibold text-text-primary">Plan B</p>
-              <p className="text-xs uppercase tracking-[0.3em] text-text-muted">
+            <div className="min-w-0 leading-tight">
+              <p className="text-base font-semibold text-text-primary sm:text-lg">Plan B</p>
+              <p className="truncate whitespace-nowrap text-[10px] uppercase tracking-[0.16em] text-text-muted sm:text-xs sm:tracking-[0.3em]">
                 Restaurant & Cafe
               </p>
             </div>
@@ -85,7 +90,7 @@ const Header = () => {
           <button
             type="button"
             onClick={openMobileMenu}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-surface-muted hover:text-coffee md:hidden"
+            className="ml-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-surface-muted hover:text-coffee md:hidden"
             aria-label="Open menu"
             aria-expanded={isMobileMenuOpen}
           >
