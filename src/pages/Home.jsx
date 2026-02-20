@@ -748,78 +748,29 @@ const Home = () => {
       </section>
 
       <Section className="pb-8 pt-12 md:pb-10 md:pt-14">
-        <div className="mx-auto max-w-6xl border-y border-coffee/10 bg-surface-muted/25 px-1 py-2 md:px-2">
-          <div className="grid gap-8 py-5 md:py-6 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10">
-            <div className="max-w-2xl">
-              <motion.h2
-                className="text-balance text-3xl font-semibold text-text-primary md:text-4xl"
-                initial={reducedMotion ? false : { opacity: 0, y: 10, filter: "blur(4px)" }}
-                whileInView={reducedMotion ? {} : { opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ once: true, amount: 0.35 }}
-                transition={{ duration: 0.22, ease: "easeOut" }}
-              >
-                Visit Plan B on the Cornish
-              </motion.h2>
-              <motion.p
-                className="mt-3 text-sm leading-relaxed text-text-secondary md:text-base"
-                initial={reducedMotion ? false : { opacity: 0, y: 8 }}
-                whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ delay: reducedMotion ? 0 : 0.12, duration: 0.22, ease: "easeOut" }}
-              >
-                Plan B is a restaurant &amp; café in Hurghada with sea-view seating, located at Gold Star Mall on Cornish Street.
-              </motion.p>
-
-              <motion.div
-                className="mt-4 divide-y divide-coffee/10 text-sm text-text-secondary md:text-base"
-                initial={reducedMotion ? false : "hidden"}
-                whileInView={reducedMotion ? {} : "visible"}
-                viewport={{ once: true, amount: 0.2 }}
-                variants={{
-                  hidden: {},
-                  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.16 } }
-                }}
-              >
-                <motion.p variants={{ hidden: { opacity: 0, x: reducedMotion ? 0 : -8 }, visible: { opacity: 1, x: 0 } }} className="py-2">
-                  <span className="font-medium text-text-primary">Location:</span>{" "}
-                  <a
-                    href="https://www.google.com/maps/place/Plan+B+Caf%C3%A9+%26+Restaurant/@27.2585772,33.823205,17z/data=!4m8!3m7!1s0x14528756b4e5a9a7:0x4f65db9fe1cfb206!8m2!3d27.2585725!4d33.8257799!9m1!1b1!16s%2Fg%2F11yy_zfvpv?entry=ttu&g_ep=EgoyMDI2MDIxOC4wIKXMDSoASAFQAw%3D%3D"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline-offset-2 hover:underline"
-                  >
-                    Gold Star Mall, Cornish Street, Hurghada
-                  </a>
-                </motion.p>
-                <motion.p variants={{ hidden: { opacity: 0, x: reducedMotion ? 0 : -8 }, visible: { opacity: 1, x: 0 } }} className="py-2">
-                  <span className="font-medium text-text-primary">Hours:</span> Open daily 9:00 AM – 2:00 AM
-                </motion.p>
-                <motion.p variants={{ hidden: { opacity: 0, x: reducedMotion ? 0 : -8 }, visible: { opacity: 1, x: 0 } }} className="py-2">
-                  <span className="font-medium text-text-primary">Reservations:</span> WhatsApp confirmation
-                </motion.p>
-              </motion.div>
-
-              <p className="mt-4 max-w-xl text-sm leading-relaxed text-text-secondary md:text-base">
-                Breakfast, coffee, sunset drinks, and dinner — plus a full menu of mains, pizza &amp; pasta, desserts, and more.
-              </p>
-
-              <div className="mt-4 max-w-2xl text-sm leading-relaxed text-text-secondary md:text-base">
-                <p>
-                  <span className="font-medium text-text-primary">Menu highlights:</span> Seafood • Grill &amp; mains • Burgers • Pizza &amp; pasta • Coffee &amp; hot drinks • Cocktails • Desserts
-                </p>
-                <p className="mt-2 text-sm">Plus starters, salads, fresh juice, and seasonal specials.</p>
-              </div>
-            </div>
-
+        <div className="mx-auto max-w-6xl py-6 md:py-8">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
             <motion.div
-              className="lg:border-l lg:border-coffee/10 lg:pl-8"
+              className="lg:col-span-8"
               initial={reducedMotion ? false : { opacity: 0, y: 10 }}
               whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ delay: reducedMotion ? 0 : 0.24, duration: 0.22, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.12, ease: "easeOut" }}
             >
-              <h3 className="text-lg font-semibold text-text-primary">Actions</h3>
-              <div className="mt-4 flex flex-col gap-3">
+              <h2 className="text-balance text-3xl font-semibold text-text-primary md:text-4xl">Visit Plan B on the Cornish</h2>
+              <p className="mt-2 max-w-2xl text-sm text-text-secondary md:text-base">
+                Sea-view restaurant &amp; café in Hurghada — Gold Star Mall on Cornish Street.
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="lg:col-span-4"
+              initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+              whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ delay: reducedMotion ? 0 : 0.08, duration: 0.16, ease: "easeOut" }}
+            >
+              <div className="flex flex-col gap-2">
                 <a
                   href={reserveWhatsAppLink}
                   target="_blank"
@@ -835,11 +786,83 @@ const Home = () => {
                 >
                   View Menu
                 </Button>
+                <p className="text-xs text-text-secondary">Fast WhatsApp confirmation (name • guests • time).</p>
               </div>
-              <p className="mt-3 max-w-sm text-xs leading-relaxed text-text-secondary">
-                We reply fast on WhatsApp — include name, guests, and time.
-              </p>
             </motion.div>
+          </div>
+
+          <motion.div
+            className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3"
+            initial={reducedMotion ? false : "hidden"}
+            whileInView={reducedMotion ? {} : "visible"}
+            viewport={{ once: true, amount: 0.2 }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06 } } }}
+          >
+            {[
+              {
+                label: "LOCATION",
+                value: "Gold Star Mall, Cornish Street, Hurghada",
+                href: "https://www.google.com/maps/place/Plan+B+Caf%C3%A9+%26+Restaurant/@27.2585772,33.823205,17z/data=!4m8!3m7!1s0x14528756b4e5a9a7:0x4f65db9fe1cfb206!8m2!3d27.2585725!4d33.8257799!9m1!1b1!16s%2Fg%2F11yy_zfvpv?entry=ttu&g_ep=EgoyMDI2MDIxOC4wIKXMDSoASAFQAw%3D%3D",
+                span: "col-span-2 md:col-span-1"
+              },
+              { label: "HOURS", value: "Open daily 9:00 AM – 2:00 AM", span: "col-span-1" },
+              { label: "RESERVATIONS", value: "WhatsApp confirmation", span: "col-span-2 md:col-span-1" }
+            ].map((item) => (
+              <motion.div
+                key={item.label}
+                className={item.span}
+                variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 8 }, visible: { opacity: 1, y: 0 } }}
+                transition={{ duration: 0.14 }}
+              >
+                {item.href ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-full items-center rounded-2xl border border-coffee/10 bg-surface-muted/45 px-4 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-semibold tracking-[0.18em] text-text-muted">{item.label}</p>
+                      <p className="truncate text-sm font-medium text-text-primary">{item.value}</p>
+                    </div>
+                  </a>
+                ) : (
+                  <div className="flex h-full items-center rounded-2xl border border-coffee/10 bg-surface-muted/45 px-4 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-semibold tracking-[0.18em] text-text-muted">{item.label}</p>
+                      <p className="truncate text-sm font-medium text-text-primary">{item.value}</p>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <div className="mt-6 max-w-3xl">
+            <h3 className="text-lg font-semibold text-text-primary">Menu highlights</h3>
+            <motion.div
+              className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-text-secondary"
+              initial={reducedMotion ? false : "hidden"}
+              whileInView={reducedMotion ? {} : "visible"}
+              viewport={{ once: true, amount: 0.2 }}
+              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.04 } } }}
+            >
+              {[
+                "Seafood",
+                "Grill & mains",
+                "Burgers",
+                "Pizza & pasta",
+                "Coffee & hot drinks",
+                "Cocktails",
+                "Desserts",
+                "Fresh juice"
+              ].map((item) => (
+                <motion.p key={item} variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 6 }, visible: { opacity: 1, y: 0 } }}>
+                  {item}
+                </motion.p>
+              ))}
+            </motion.div>
+            <p className="mt-3 text-sm text-text-secondary">Plus starters, salads, and seasonal specials — see the full menu.</p>
           </div>
         </div>
       </Section>
