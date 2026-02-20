@@ -28,16 +28,16 @@ const heroImage = "/assets/planb/home/hero-sea-view.jpg.png";
 
 // Highlight strip items
 const highlights = [
-  { id: 1, icon: "🌊", label: "Sea View", description: "Coastal views & sunset vibes" },
+  { id: 1, icon: "wave", label: "Sea View", description: "Coastal views & sunset vibes" },
   {
     id: 2,
-    icon: "🍰",
+    icon: "dessert",
     label: "Desserts & Coffee",
     description: "Handcrafted desserts & specialty coffee"
   },
-  { id: 3, icon: "🎉", label: "Groups & Birthdays", description: "Celebrations & group seating" },
-  { id: 4, icon: "👶", label: "Kids Area", description: "Comfortable for families" },
-  { id: 5, icon: "🎵", label: "Live Music", description: "Weekend evenings" }
+  { id: 3, icon: "group", label: "Groups & Birthdays", description: "Celebrations & group seating" },
+  { id: 4, icon: "family", label: "Kids Area", description: "Comfortable for families" },
+  { id: 5, icon: "music", label: "Live Music", description: "Weekend evenings" }
 ];
 
 // Signature Food & Desserts images - "Made to Be Enjoyed" section
@@ -46,31 +46,31 @@ const signatureItems = [
     id: 1,
     image: "/assets/planb/home/home-grid-1.jpg.png",
     title: "Signature Cocktails",
-    alt: "Cocktail at Plan B Restaurant & Cafe"
+    alt: "Tropical cocktail served at Plan B Restaurant"
   },
   {
     id: 2,
     image: "/assets/planb/home/home-grid-2.jpg.png",
     title: "Specialty Coffee",
-    alt: "Specialty coffee at Plan B"
+    alt: "Specialty latte coffee at Plan B"
   },
   {
     id: 3,
     image: "/assets/planb/home/home-grid-3.jpg.png",
     title: "Desserts",
-    alt: "Desserts served at Plan B"
+    alt: "Dessert plates served at Plan B"
   },
   {
     id: 4,
     image: "/assets/planb/home/home-grid-4.jpg.png",
     title: "Fresh Salads",
-    alt: "Fresh salad plate at Plan B"
+    alt: "Fresh salad dish at Plan B"
   },
   {
     id: 5,
     image: "/assets/planb/home/home-grid-5.jpg.png",
     title: "Main Dishes",
-    alt: "Chicken main dish served at Plan B"
+    alt: "Grilled chicken main dish at Plan B"
   }
 ];
 
@@ -99,6 +99,65 @@ const faqItems = [
     answer: "Send your request on WhatsApp and we confirm personally."
   }
 ];
+
+const HighlightIcon = ({ type }) => {
+  const iconProps = {
+    className: "h-7 w-7 text-coffee",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg",
+    "aria-hidden": true
+  };
+
+  if (type === "wave") {
+    return (
+      <svg {...iconProps}>
+        <path d="M3 14C5 14 5 10 7 10C9 10 9 14 11 14C13 14 13 10 15 10C17 10 17 14 19 14C20 14 20.5 13 21 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M3 18C5 18 5 14 7 14C9 14 9 18 11 18C13 18 13 14 15 14C17 14 17 18 19 18C20 18 20.5 17 21 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+
+  if (type === "dessert") {
+    return (
+      <svg {...iconProps}>
+        <path d="M5 20H19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M7 20V13.5C7 10.46 9.46 8 12.5 8H16.5V20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M11 8C11 6.9 11.9 6 13 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  if (type === "group") {
+    return (
+      <svg {...iconProps}>
+        <circle cx="8" cy="9" r="2.5" stroke="currentColor" strokeWidth="1.8" />
+        <circle cx="16" cy="9" r="2.5" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M4.5 18C4.5 15.51 6.51 13.5 9 13.5H15C17.49 13.5 19.5 15.51 19.5 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  if (type === "family") {
+    return (
+      <svg {...iconProps}>
+        <circle cx="8" cy="8.5" r="2" stroke="currentColor" strokeWidth="1.8" />
+        <circle cx="16" cy="8.5" r="2" stroke="currentColor" strokeWidth="1.8" />
+        <circle cx="12" cy="12" r="1.75" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M5 19V17.5C5 15.84 6.34 14.5 8 14.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M19 19V17.5C19 15.84 17.66 14.5 16 14.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M9.5 19V17.25C9.5 15.73 10.73 14.5 12.25 14.5H11.75C13.27 14.5 14.5 15.73 14.5 17.25V19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg {...iconProps}>
+      <path d="M8 17V8L16 12.5L8 17Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+      <path d="M18.5 8.5C20.5 10.5 20.5 13.5 18.5 15.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+};
 
 const Home = () => {
   const navigate = useNavigate();
@@ -159,25 +218,58 @@ const Home = () => {
       "Sea view restaurant & cafe on Cornish Street, Hurghada. Seafood, grills, burgers, desserts & coffee. Open daily 9 AM–2 AM. Reserve on WhatsApp."
     );
 
-    const existingSchema = document.getElementById("home-faq-schema");
+    const existingSchema = document.getElementById("home-seo-schema");
     if (existingSchema) {
       existingSchema.remove();
     }
 
     const schemaScript = document.createElement("script");
     schemaScript.type = "application/ld+json";
-    schemaScript.id = "home-faq-schema";
+    schemaScript.id = "home-seo-schema";
     schemaScript.text = JSON.stringify({
       "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: faqItems.map((item) => ({
-        "@type": "Question",
-        name: item.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: item.answer
+      "@graph": [
+        {
+          "@type": ["LocalBusiness", "Restaurant"],
+          name: "Plan B Restaurant & Cafe",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Gold Star Mall, Cornish Street",
+            addressLocality: "Hurghada",
+            addressCountry: "EG"
+          },
+          openingHoursSpecification: [
+            {
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday"
+              ],
+              opens: "09:00",
+              closes: "02:00"
+            }
+          ],
+          servesCuisine: ["Seafood", "Grill", "Burgers", "Desserts"],
+          telephone: "+201005260787",
+          sameAs: ["https://www.google.com/maps?q=Plan+B+Cafe+%26+Restaurant+Hurghada"]
+        },
+        {
+          "@type": "FAQPage",
+          mainEntity: faqItems.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: item.answer
+            }
+          }))
         }
-      }))
+      ]
     });
     document.head.appendChild(schemaScript);
 
@@ -186,7 +278,7 @@ const Home = () => {
       if (descriptionTag) {
         descriptionTag.setAttribute("content", previousDescription);
       }
-      const cleanupSchema = document.getElementById("home-faq-schema");
+      const cleanupSchema = document.getElementById("home-seo-schema");
       if (cleanupSchema) {
         cleanupSchema.remove();
       }
@@ -203,7 +295,7 @@ const Home = () => {
         <div className="absolute inset-0">
           <img
             src={heroImage}
-            alt="Plan B sea view terrace"
+            alt="Sea view restaurant in Hurghada"
             className="h-full w-full object-cover"
           />
           {/* Soft gradient overlay */}
@@ -241,33 +333,6 @@ const Home = () => {
               Sea view dining on Cornish Street — seafood, grills, burgers, desserts &amp; specialty coffee.
             </motion.p>
 
-            <motion.div
-              className="mx-auto max-w-4xl text-center text-sm text-white/85 md:text-base"
-              variants={heroItemVariants}
-            >
-              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 leading-relaxed">
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden="true">🕘</span>
-                  Open Daily 9:00 AM – 2:00 AM
-                </span>
-                <span className="text-white/60" aria-hidden="true">•</span>
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden="true">🌊</span>
-                  Sea View
-                </span>
-                <span className="text-white/60" aria-hidden="true">•</span>
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden="true">🎵</span>
-                  Live Music (Weekends)
-                </span>
-                <span className="text-white/60" aria-hidden="true">•</span>
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden="true">👨‍👩‍👧</span>
-                  Family Friendly
-                </span>
-              </div>
-            </motion.div>
-            
             {/* CTA Buttons */}
             <motion.div 
               className="flex flex-wrap items-center justify-center gap-4 pt-4"
@@ -331,14 +396,16 @@ const Home = () => {
             {highlights.map((item) => (
               <motion.div
                 key={item.id}
-                className="flex flex-shrink-0 items-center gap-3 rounded-2xl border border-coffee/10 bg-surface-primary px-5 py-4"
+                className="flex flex-shrink-0 items-center gap-3 rounded-2xl border border-coffee/10 bg-surface-primary px-5 py-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
                 variants={highlightItemVariants}
                 whileHover="hover"
               >
-                <span className="text-2xl">{item.icon}</span>
+                <span>
+                  <HighlightIcon type={item.icon} />
+                </span>
                 <div>
-                  <p className="text-sm font-semibold text-text-primary">{item.label}</p>
-                  <p className="text-xs text-text-muted">{item.description}</p>
+                  <p className="text-sm font-bold text-text-primary">{item.label}</p>
+                  <p className="text-xs text-text-secondary">{item.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -349,13 +416,15 @@ const Home = () => {
             {highlights.map((item) => (
               <motion.div
                 key={item.id}
-                className="flex flex-col items-center gap-2 rounded-2xl border border-coffee/10 bg-surface-primary px-4 py-5 text-center"
+                className="flex flex-col items-center gap-2 rounded-2xl border border-coffee/10 bg-surface-primary px-4 py-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
                 variants={highlightItemVariants}
                 whileHover="hover"
               >
-                <span className="text-3xl">{item.icon}</span>
-                <p className="text-sm font-semibold text-text-primary">{item.label}</p>
-                <p className="text-xs text-text-muted">{item.description}</p>
+                <span>
+                  <HighlightIcon type={item.icon} />
+                </span>
+                <p className="text-sm font-bold text-text-primary">{item.label}</p>
+                <p className="text-xs text-text-secondary">{item.description}</p>
               </motion.div>
             ))}
           </div>
@@ -457,7 +526,7 @@ const Home = () => {
             >
               <img
                 src={vibeImage}
-                alt="Plan B interior ambiance"
+                alt="Sunset sea view at Plan B Restaurant Hurghada"
                 className="h-full w-full object-cover"
                 loading="lazy"
               />
@@ -499,7 +568,7 @@ const Home = () => {
           <div className="flex h-full flex-col rounded-3xl border border-coffee/10 bg-white p-6 shadow-sm md:p-7">
             <h2 className="text-2xl font-semibold text-text-primary md:text-3xl">Visit Plan B on the Cornish</h2>
             <p className="mt-3 text-text-secondary leading-relaxed">
-              Find us at Gold Star Mall on Cornish Street, Hurghada. Easy to reach, sea view seating, and open daily from 9 AM to 2 AM. For reservations, message us on WhatsApp and we&apos;ll confirm quickly.
+              Find us at Gold Star Mall on Cornish Street, Hurghada. We are a restaurant in Hurghada with sea view, easy to reach, and open daily from 9 AM to 2 AM. For reservations, message us on WhatsApp and we&apos;ll confirm quickly.
             </p>
             <div className="mt-4 space-y-2 text-sm text-text-secondary">
               <p className="inline-flex items-center gap-2"><span aria-hidden="true">📍</span> Gold Star Mall, Cornish Street, Hurghada</p>
@@ -515,23 +584,6 @@ const Home = () => {
               <li><span className="mr-2" aria-hidden="true">🕘</span><span className="font-medium text-text-primary">Hours:</span> Daily 9:00–2:00</li>
               <li><span className="mr-2" aria-hidden="true">💬</span><span className="font-medium text-text-primary">Reservations:</span> WhatsApp confirmation</li>
             </ul>
-          </div>
-        </div>
-      </Section>
-
-      <Section className="pb-8 pt-2">
-        <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-coffee/10 bg-white p-4 shadow-sm">
-            <p className="text-sm font-semibold text-text-primary">⭐ Google Reviews</p>
-            <p className="mt-1 text-sm text-text-secondary">Connected section for review highlights.</p>
-          </div>
-          <div className="rounded-2xl border border-coffee/10 bg-white p-4 shadow-sm">
-            <p className="text-sm font-semibold text-text-primary">🕘 Open Daily</p>
-            <p className="mt-1 text-sm text-text-secondary">From 9:00 AM to 2:00 AM, every day.</p>
-          </div>
-          <div className="rounded-2xl border border-coffee/10 bg-white p-4 shadow-sm">
-            <p className="text-sm font-semibold text-text-primary">💬 Reservations</p>
-            <p className="mt-1 text-sm text-text-secondary">Quick confirmations through WhatsApp.</p>
           </div>
         </div>
       </Section>
@@ -575,7 +627,7 @@ const Home = () => {
                 >
                   <motion.img
                     src={image.image_url}
-                    alt={image.alt_text || image.title || "Plan B gallery"}
+                    alt={image.alt_text || image.title || "Dining atmosphere and dishes at Plan B Restaurant Hurghada"}
                     className="h-48 w-full object-cover lg:h-56"
                     loading="lazy"
                     variants={cardImageVariants}
@@ -709,6 +761,7 @@ const Home = () => {
                 <Button
                   onClick={() => navigate("/booking")}
                   variant="secondary"
+                  size="lg"
                 >
                   Book a Table
                 </Button>
