@@ -748,107 +748,98 @@ const Home = () => {
       </section>
 
       <Section className="pb-8 pt-12 md:pb-10 md:pt-14">
-        <div className="mx-auto max-w-6xl rounded-3xl bg-[linear-gradient(180deg,#f7f3ec_0%,#efe8df_100%)] p-5 md:p-7">
-          <h2 className="text-balance text-3xl font-semibold text-text-primary md:text-4xl">Visit Plan B on the Cornish</h2>
-          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-text-secondary md:text-base">
-            Plan B is a restaurant &amp; café in Hurghada with sea-view seating at Gold Star Mall on Cornish Street.
-          </p>
-
-          <motion.div
-            className="mt-6 rounded-3xl border border-coffee/15 bg-coffee-dark/95 p-5 text-white shadow-[0_16px_32px_rgba(64,44,30,0.18)] md:p-6"
-            initial={reducedMotion ? false : { opacity: 0, y: 12, scale: 0.98 }}
-            whileInView={reducedMotion ? {} : { opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-          >
-            <h3 className="text-2xl font-semibold">Reserve in 30 seconds</h3>
-            <p className="mt-2 text-sm text-white/85 md:text-base">Send your name + guests count — we confirm on WhatsApp.</p>
-            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-              <a
-                href={reserveWhatsAppLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full items-center justify-center rounded-ui-default bg-white px-6 py-3 text-sm font-semibold text-coffee-dark shadow-soft transition-transform duration-200 hover:-translate-y-0.5 sm:w-auto"
+        <div className="mx-auto max-w-6xl border-y border-coffee/10 bg-surface-muted/25 px-1 py-2 md:px-2">
+          <div className="grid gap-8 py-5 md:py-6 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10">
+            <div className="max-w-2xl">
+              <motion.h2
+                className="text-balance text-3xl font-semibold text-text-primary md:text-4xl"
+                initial={reducedMotion ? false : { opacity: 0, y: 10, filter: "blur(4px)" }}
+                whileInView={reducedMotion ? {} : { opacity: 1, y: 0, filter: "blur(0px)" }}
+                viewport={{ once: true, amount: 0.35 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
               >
-                Reserve on WhatsApp
-              </a>
-              <Button
-                onClick={() => navigate("/menu")}
-                variant="ghost-light"
-                className="w-full border-white/60 sm:w-auto"
+                Visit Plan B on the Cornish
+              </motion.h2>
+              <motion.p
+                className="mt-3 text-sm leading-relaxed text-text-secondary md:text-base"
+                initial={reducedMotion ? false : { opacity: 0, y: 8 }}
+                whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ delay: reducedMotion ? 0 : 0.12, duration: 0.22, ease: "easeOut" }}
               >
-                View Menu
-              </Button>
-            </div>
-            <p className="mt-3 text-xs text-white/70">Fast confirmation • No account needed</p>
-          </motion.div>
+                Plan B is a restaurant &amp; café in Hurghada with sea-view seating, located at Gold Star Mall on Cornish Street.
+              </motion.p>
 
-          <motion.div
-            className="mt-5 grid gap-3 md:grid-cols-3"
-            initial={reducedMotion ? false : "hidden"}
-            whileInView={reducedMotion ? {} : "visible"}
-            viewport={{ once: true, amount: 0.2 }}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.1 } }
-            }}
-          >
-            {[
-              {
-                label: "Location",
-                value: "Gold Star Mall, Cornish Street, Hurghada",
-                icon: "📍",
-                href: "https://www.google.com/maps/place/Plan+B+Caf%C3%A9+%26+Restaurant/@27.2585772,33.823205,17z/data=!4m8!3m7!1s0x14528756b4e5a9a7:0x4f65db9fe1cfb206!8m2!3d27.2585725!4d33.8257799!9m1!1b1!16s%2Fg%2F11yy_zfvpv?entry=ttu&g_ep=EgoyMDI2MDIxOC4wIKXMDSoASAFQAw%3D%3D"
-              },
-              { label: "Hours", value: "Open daily 9:00 AM – 2:00 AM", icon: "🕘" },
-              { label: "Sea View Seating", value: "Available", icon: "🌊" }
-            ].map((item) => (
               <motion.div
-                key={item.label}
-                variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 10 }, visible: { opacity: 1, y: 0 } }}
-                transition={{ duration: 0.18 }}
+                className="mt-4 divide-y divide-coffee/10 text-sm text-text-secondary md:text-base"
+                initial={reducedMotion ? false : "hidden"}
+                whileInView={reducedMotion ? {} : "visible"}
+                viewport={{ once: true, amount: 0.2 }}
+                variants={{
+                  hidden: {},
+                  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.16 } }
+                }}
               >
-                {item.href ? (
+                <motion.p variants={{ hidden: { opacity: 0, x: reducedMotion ? 0 : -8 }, visible: { opacity: 1, x: 0 } }} className="py-2">
+                  <span className="font-medium text-text-primary">Location:</span>{" "}
                   <a
-                    href={item.href}
+                    href="https://www.google.com/maps/place/Plan+B+Caf%C3%A9+%26+Restaurant/@27.2585772,33.823205,17z/data=!4m8!3m7!1s0x14528756b4e5a9a7:0x4f65db9fe1cfb206!8m2!3d27.2585725!4d33.8257799!9m1!1b1!16s%2Fg%2F11yy_zfvpv?entry=ttu&g_ep=EgoyMDI2MDIxOC4wIKXMDSoASAFQAw%3D%3D"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-full items-center gap-2 rounded-2xl border border-coffee/10 bg-white/90 px-4 py-3 text-sm text-text-secondary transition-colors hover:bg-white"
+                    className="underline-offset-2 hover:underline"
                   >
-                    <span aria-hidden="true">{item.icon}</span>
-                    <span><span className="font-medium text-text-primary">{item.label}:</span> {item.value}</span>
+                    Gold Star Mall, Cornish Street, Hurghada
                   </a>
-                ) : (
-                  <div className="flex h-full items-center gap-2 rounded-2xl border border-coffee/10 bg-white/90 px-4 py-3 text-sm text-text-secondary transition-colors hover:bg-white">
-                    <span aria-hidden="true">{item.icon}</span>
-                    <span><span className="font-medium text-text-primary">{item.label}:</span> {item.value}</span>
-                  </div>
-                )}
+                </motion.p>
+                <motion.p variants={{ hidden: { opacity: 0, x: reducedMotion ? 0 : -8 }, visible: { opacity: 1, x: 0 } }} className="py-2">
+                  <span className="font-medium text-text-primary">Hours:</span> Open daily 9:00 AM – 2:00 AM
+                </motion.p>
+                <motion.p variants={{ hidden: { opacity: 0, x: reducedMotion ? 0 : -8 }, visible: { opacity: 1, x: 0 } }} className="py-2">
+                  <span className="font-medium text-text-primary">Reservations:</span> WhatsApp confirmation
+                </motion.p>
               </motion.div>
-            ))}
-          </motion.div>
 
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold text-text-primary">What we serve</h3>
-            <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-              {[
-                "Seafood",
-                "Grill & Mains",
-                "Burgers",
-                "Pizza & Pasta",
-                "Coffee & Hot Drinks",
-                "Cocktails",
-                "Desserts"
-              ].map((chip) => (
-                <span
-                  key={chip}
-                  className="whitespace-nowrap rounded-full border border-coffee/15 bg-white px-3 py-1.5 text-sm text-text-primary"
-                >
-                  {chip}
-                </span>
-              ))}
+              <p className="mt-4 max-w-xl text-sm leading-relaxed text-text-secondary md:text-base">
+                Breakfast, coffee, sunset drinks, and dinner — plus a full menu of mains, pizza &amp; pasta, desserts, and more.
+              </p>
+
+              <div className="mt-4 max-w-2xl text-sm leading-relaxed text-text-secondary md:text-base">
+                <p>
+                  <span className="font-medium text-text-primary">Menu highlights:</span> Seafood • Grill &amp; mains • Burgers • Pizza &amp; pasta • Coffee &amp; hot drinks • Cocktails • Desserts
+                </p>
+                <p className="mt-2 text-sm">Plus starters, salads, fresh juice, and seasonal specials.</p>
+              </div>
             </div>
-            <p className="mt-3 text-sm text-text-secondary">Plus starters, salads, and more — see the full menu.</p>
+
+            <motion.div
+              className="lg:border-l lg:border-coffee/10 lg:pl-8"
+              initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+              whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ delay: reducedMotion ? 0 : 0.24, duration: 0.22, ease: "easeOut" }}
+            >
+              <h3 className="text-lg font-semibold text-text-primary">Actions</h3>
+              <div className="mt-4 flex flex-col gap-3">
+                <a
+                  href={reserveWhatsAppLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-full items-center justify-center rounded-ui-default bg-coffee px-5 py-3 text-sm font-semibold text-white shadow-soft transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  Reserve on WhatsApp
+                </a>
+                <Button
+                  onClick={() => navigate("/menu")}
+                  variant="outline"
+                  className="w-full transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-sm"
+                >
+                  View Menu
+                </Button>
+              </div>
+              <p className="mt-3 max-w-sm text-xs leading-relaxed text-text-secondary">
+                We reply fast on WhatsApp — include name, guests, and time.
+              </p>
+            </motion.div>
           </div>
         </div>
       </Section>
