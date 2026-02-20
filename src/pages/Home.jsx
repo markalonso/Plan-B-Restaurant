@@ -748,122 +748,71 @@ const Home = () => {
       </section>
 
       <Section className="pb-8 pt-12 md:pb-10 md:pt-14">
-        <div className="mx-auto max-w-6xl py-6 md:py-8">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
-            <motion.div
-              className="lg:col-span-8"
-              initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-1 md:px-2 lg:grid-cols-[7fr_3fr] lg:gap-12">
+          <div className="max-w-2xl">
+            <motion.h2
+              className="text-balance text-3xl font-semibold text-text-primary md:text-4xl"
+              initial={reducedMotion ? false : { opacity: 0, y: 12 }}
               whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.12, ease: "easeOut" }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
             >
-              <h2 className="text-balance text-3xl font-semibold text-text-primary md:text-4xl">Visit Plan B on the Cornish</h2>
-              <p className="mt-2 max-w-2xl text-sm text-text-secondary md:text-base">
-                Sea-view restaurant &amp; café in Hurghada — Gold Star Mall on Cornish Street.
-              </p>
-            </motion.div>
+              Visit Plan B
+            </motion.h2>
+            <motion.p
+              className="mt-2 text-sm text-text-secondary md:text-base"
+              initial={reducedMotion ? false : { opacity: 0, y: 8 }}
+              whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ delay: reducedMotion ? 0 : 0.1, duration: 0.18, ease: "easeOut" }}
+            >
+              Sea-view restaurant &amp; café in Hurghada.
+            </motion.p>
 
             <motion.div
-              className="lg:col-span-4"
-              initial={reducedMotion ? false : { opacity: 0, y: 10 }}
-              whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ delay: reducedMotion ? 0 : 0.08, duration: 0.16, ease: "easeOut" }}
+              className="mt-8 space-y-6 text-text-secondary"
+              initial={reducedMotion ? false : "hidden"}
+              whileInView={reducedMotion ? {} : "visible"}
+              viewport={{ once: true, amount: 0.25 }}
+              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
             >
-              <div className="flex flex-col gap-2">
-                <a
-                  href={reserveWhatsAppLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex w-full items-center justify-center rounded-ui-default bg-coffee px-5 py-3 text-sm font-semibold text-white shadow-soft transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
-                >
-                  Reserve on WhatsApp
-                </a>
-                <Button
-                  onClick={() => navigate("/menu")}
-                  variant="outline"
-                  className="w-full transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-sm"
-                >
-                  View Menu
-                </Button>
-                <p className="text-xs text-text-secondary">Fast WhatsApp confirmation (name • guests • time).</p>
-              </div>
+              <motion.address variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 8 }, visible: { opacity: 1, y: 0 } }} className="not-italic text-sm leading-relaxed md:text-base">
+                <p className="text-text-primary">Gold Star Mall</p>
+                <p>Cornish Street</p>
+              </motion.address>
+              <motion.p variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 8 }, visible: { opacity: 1, y: 0 } }} className="text-sm md:text-base">
+                Open daily 9:00 AM – 2:00 AM
+              </motion.p>
+              <motion.p variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 8 }, visible: { opacity: 1, y: 0 } }} className="text-sm md:text-base">
+                WhatsApp reservations
+              </motion.p>
             </motion.div>
           </div>
 
           <motion.div
-            className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3"
-            initial={reducedMotion ? false : "hidden"}
-            whileInView={reducedMotion ? {} : "visible"}
-            viewport={{ once: true, amount: 0.2 }}
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06 } } }}
+            className="flex flex-col justify-start"
+            initial={reducedMotion ? false : { opacity: 0, x: 12, y: 8 }}
+            whileInView={reducedMotion ? {} : { opacity: 1, x: 0, y: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ delay: reducedMotion ? 0 : 0.24, duration: 0.2, ease: "easeOut" }}
           >
-            {[
-              {
-                label: "LOCATION",
-                value: "Gold Star Mall, Cornish Street, Hurghada",
-                href: "https://www.google.com/maps/place/Plan+B+Caf%C3%A9+%26+Restaurant/@27.2585772,33.823205,17z/data=!4m8!3m7!1s0x14528756b4e5a9a7:0x4f65db9fe1cfb206!8m2!3d27.2585725!4d33.8257799!9m1!1b1!16s%2Fg%2F11yy_zfvpv?entry=ttu&g_ep=EgoyMDI2MDIxOC4wIKXMDSoASAFQAw%3D%3D",
-                span: "col-span-2 md:col-span-1"
-              },
-              { label: "HOURS", value: "Open daily 9:00 AM – 2:00 AM", span: "col-span-1" },
-              { label: "RESERVATIONS", value: "WhatsApp confirmation", span: "col-span-2 md:col-span-1" }
-            ].map((item) => (
-              <motion.div
-                key={item.label}
-                className={item.span}
-                variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 8 }, visible: { opacity: 1, y: 0 } }}
-                transition={{ duration: 0.14 }}
-              >
-                {item.href ? (
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-full items-center rounded-2xl border border-coffee/10 bg-surface-muted/45 px-4 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm"
-                  >
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-semibold tracking-[0.18em] text-text-muted">{item.label}</p>
-                      <p className="truncate text-sm font-medium text-text-primary">{item.value}</p>
-                    </div>
-                  </a>
-                ) : (
-                  <div className="flex h-full items-center rounded-2xl border border-coffee/10 bg-surface-muted/45 px-4 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm">
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-semibold tracking-[0.18em] text-text-muted">{item.label}</p>
-                      <p className="truncate text-sm font-medium text-text-primary">{item.value}</p>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <div className="mt-6 max-w-3xl">
-            <h3 className="text-lg font-semibold text-text-primary">Menu highlights</h3>
-            <motion.div
-              className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-text-secondary"
-              initial={reducedMotion ? false : "hidden"}
-              whileInView={reducedMotion ? {} : "visible"}
-              viewport={{ once: true, amount: 0.2 }}
-              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.04 } } }}
+            <a
+              href={reserveWhatsAppLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center rounded-ui-default bg-coffee px-5 py-3 text-sm font-semibold text-white shadow-soft transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
             >
-              {[
-                "Seafood",
-                "Grill & mains",
-                "Burgers",
-                "Pizza & pasta",
-                "Coffee & hot drinks",
-                "Cocktails",
-                "Desserts",
-                "Fresh juice"
-              ].map((item) => (
-                <motion.p key={item} variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 6 }, visible: { opacity: 1, y: 0 } }}>
-                  {item}
-                </motion.p>
-              ))}
-            </motion.div>
-            <p className="mt-3 text-sm text-text-secondary">Plus starters, salads, and seasonal specials — see the full menu.</p>
-          </div>
+              Reserve on WhatsApp
+            </a>
+            <button
+              type="button"
+              onClick={() => navigate("/menu")}
+              className="mt-3 w-fit text-sm font-medium text-coffee transition-colors hover:text-coffee-dark"
+            >
+              View full menu →
+            </button>
+            <p className="mt-3 text-xs text-text-secondary">Fast confirmation • No forms • No account</p>
+          </motion.div>
         </div>
       </Section>
 
