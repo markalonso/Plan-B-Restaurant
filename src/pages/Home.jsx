@@ -273,12 +273,20 @@ const Home = () => {
 
     const intervalId = window.setInterval(() => {
       setDesktopReviewIndex((prev) => (prev + 1) % reviewPages);
-    }, 5000);
+    }, 4000);
 
     return () => {
       window.clearInterval(intervalId);
     };
   }, [isReviewsPaused, reviewPages]);
+
+  const nextDesktopReview = () => {
+    setDesktopReviewIndex((prev) => (prev + 1) % reviewPages);
+  };
+
+  const prevDesktopReview = () => {
+    setDesktopReviewIndex((prev) => (prev - 1 + reviewPages) % reviewPages);
+  };
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -645,20 +653,30 @@ const Home = () => {
 
       <section
         id="google-reviews"
-        className="bg-[linear-gradient(180deg,#f8f6f3_0%,#efeae3_100%)] py-16 md:py-20"
+        aria-labelledby="google-reviews-heading"
+        className="relative overflow-hidden bg-[linear-gradient(180deg,#f8f6f3_0%,#f3eee7_40%,#efeae3_100%)] py-12 md:py-14"
       >
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="text-center">
-            <h2 className="text-balance text-3xl font-semibold text-text-primary md:text-4xl">What Guests Say</h2>
-            <p className="mt-2 text-base text-text-secondary">Rated 5/5 on Google</p>
-            <div className="mt-6">
-              <p className="text-4xl font-bold tracking-tight text-text-primary md:text-5xl">5.0 <span className="text-[#d4a017]">★★★★★</span></p>
-              <p className="mt-1 text-sm text-text-secondary">Based on real Google reviews</p>
+        <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background-image:radial-gradient(#8c6b4f_1px,transparent_1px)] [background-size:14px_14px]" />
+        <div className="relative mx-auto max-w-[90rem] px-4 sm:px-6">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 id="google-reviews-heading" className="text-balance text-3xl font-semibold text-text-primary md:text-4xl">Google Reviews</h2>
+              <p className="mt-1 text-sm text-text-secondary">Rated 5/5 on Google</p>
+              <p className="mt-2 text-3xl font-bold tracking-tight text-text-primary md:text-4xl">5.0 <span className="text-[#d4a017] text-2xl md:text-3xl">★★★★★</span></p>
+              <p className="mt-1 text-xs text-text-secondary">Based on real Google reviews</p>
             </div>
+            <a
+              href="https://www.google.com/maps/place/Plan+B+Caf%C3%A9+%26+Restaurant/@27.2585772,33.823205,17z/data=!4m8!3m7!1s0x14528756b4e5a9a7:0x4f65db9fe1cfb206!8m2!3d27.2585725!4d33.8257799!9m1!1b1!16s%2Fg%2F11yy_zfvpv?entry=ttu&g_ep=EgoyMDI2MDIxOC4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center rounded-full border border-coffee/20 bg-white px-4 py-2 text-sm font-medium text-text-primary shadow-soft transition-colors hover:bg-surface-muted"
+            >
+              View on Google Maps
+            </a>
           </div>
 
           <div
-            className="mt-10 overflow-hidden"
+            className="mt-6 overflow-hidden"
             onMouseEnter={() => setIsReviewsPaused(true)}
             onMouseLeave={() => setIsReviewsPaused(false)}
           >
@@ -671,37 +689,23 @@ const Home = () => {
                 const isActive = index === activeIndex;
 
                 return (
-                  <article
-                    key={review.name}
-                    className="flex-shrink-0 px-2"
-                    style={{ width: `${100 / reviewCardsPerView}%` }}
-                  >
-                    <div
-                      className={`relative flex h-[250px] flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white p-5 shadow-[0_10px_25px_rgba(0,0,0,0.08)] transition-transform duration-500 ${isActive ? "scale-[1.03]" : "scale-100"}`}
-                    >
-                      <span className="pointer-events-none absolute -left-1 top-2 text-8xl font-serif text-neutral-900/5">“</span>
+                  <article key={review.name} className="flex-shrink-0 px-2" style={{ width: `${100 / reviewCardsPerView}%` }}>
+                    <div className={`relative flex h-[210px] flex-col overflow-hidden rounded-[26px] border border-neutral-200 bg-white p-4 shadow-[0_8px_20px_rgba(0,0,0,0.07)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(0,0,0,0.1)] ${isActive ? "scale-[1.03] opacity-100" : "scale-100 opacity-90"}`}>
+                      <span className="pointer-events-none absolute -left-1 top-0 text-7xl font-serif text-neutral-900/5">“</span>
                       <div className="relative z-10 flex items-start justify-between gap-2">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 text-sm font-semibold text-neutral-700" aria-label={`${review.name} avatar`}>
-                            {review.name.charAt(0)}
-                          </div>
-                          <div>
-                            <p className="text-sm font-semibold text-neutral-900">{review.name}</p>
-                            <p className="text-xs text-neutral-500">{review.time}</p>
-                          </div>
+                        <div>
+                          <p className="text-sm font-semibold text-neutral-900">{review.name}</p>
+                          <p className="text-xs text-neutral-500">{review.time}</p>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="rounded-md bg-[#e8f0fe] px-2 py-0.5 text-[10px] font-semibold text-[#1967d2]">{review.badge}</span>
-                          <span className="text-sm" aria-label="Google">G</span>
-                        </div>
+                        <span className="text-xs font-semibold text-[#4285F4]" aria-label="Google badge">G</span>
                       </div>
-                      <p className="relative z-10 mt-3 text-base text-[#d4a017]" aria-label={`${review.rating} star rating`}>{"★★★★★"}</p>
-                      <div className="relative z-10 mt-3 flex-1 space-y-1 text-sm text-neutral-700">
+                      <p className="relative z-10 mt-2 text-sm text-[#d4a017]" aria-label={`${review.rating} star rating`}>{"★★★★★"}</p>
+                      <div className="relative z-10 mt-2 flex-1 space-y-1 text-sm text-neutral-700">
                         {review.text && <p className="line-clamp-3">{review.text}</p>}
                         {review.details.map((line) => (
                           <p key={line}>{line}</p>
                         ))}
-                        {review.extra && <p className="text-neutral-800">{review.extra}</p>}
+                        {review.extra && <p className="line-clamp-2 text-neutral-800">{review.extra}</p>}
                       </div>
                     </div>
                   </article>
@@ -709,57 +713,89 @@ const Home = () => {
               })}
             </div>
 
-            <div className="mt-6 flex items-center justify-center gap-2">
+            <div className="mt-4 flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={prevDesktopReview}
+                aria-label="Previous review slide"
+                className="rounded-full border border-coffee/20 bg-white px-2.5 py-1 text-xs text-text-primary"
+              >
+                ←
+              </button>
               {Array.from({ length: reviewPages }).map((_, index) => (
                 <button
                   key={`review-dot-${index}`}
                   type="button"
                   onClick={() => setDesktopReviewIndex(index)}
-                  className={`h-2.5 w-2.5 rounded-full transition-colors ${desktopReviewIndex === index ? "bg-coffee" : "bg-coffee/25"}`}
+                  className={`h-2 w-2 rounded-full transition-colors ${desktopReviewIndex === index ? "bg-coffee" : "bg-coffee/25"}`}
                   aria-label={`Go to review slide ${index + 1}`}
                 />
               ))}
+              <button
+                type="button"
+                onClick={nextDesktopReview}
+                aria-label="Next review slide"
+                className="rounded-full border border-coffee/20 bg-white px-2.5 py-1 text-xs text-text-primary"
+              >
+                →
+              </button>
             </div>
           </div>
 
-          <div className="mt-6 text-center">
-            <a
-              href="https://www.google.com/maps/place/Plan+B+Caf%C3%A9+%26+Restaurant/@27.2585772,33.823205,17z/data=!4m8!3m7!1s0x14528756b4e5a9a7:0x4f65db9fe1cfb206!8m2!3d27.2585725!4d33.8257799!9m1!1b1!16s%2Fg%2F11yy_zfvpv?entry=ttu&g_ep=EgoyMDI2MDIxOC4wIKXMDSoASAFQAw%3D%3D"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center rounded-full border border-coffee/20 bg-white px-4 py-2 text-sm font-medium text-text-primary shadow-soft transition-colors hover:bg-surface-muted"
-            >
-              View on Google Maps
-            </a>
-            <p className="mt-3 text-xs text-text-secondary">Reviews shown are from Google.</p>
-          </div>
+          <p className="mt-3 text-center text-xs text-text-secondary">Reviews shown are from Google.</p>
         </div>
       </section>
 
       <Section className="pb-8 pt-12 md:pb-10 md:pt-14">
         <div className="mx-auto grid max-w-6xl items-stretch gap-6 lg:grid-cols-2">
-          <div className="flex h-full flex-col rounded-3xl border border-coffee/10 bg-white p-6 shadow-sm md:p-7">
-            <h2 className="text-2xl font-semibold text-text-primary md:text-3xl">Visit Plan B on the Cornish</h2>
-            <div className="mt-3 space-y-3 text-text-secondary leading-relaxed">
+          <motion.div
+            className="flex h-full flex-col rounded-3xl border border-coffee/10 bg-white p-6 shadow-sm transition-shadow duration-200 hover:shadow-md md:p-7"
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
+            <h3 className="text-2xl font-semibold text-text-primary md:text-3xl">Visit Plan B on the Cornish</h3>
+            <div className="mt-3 space-y-2 text-text-secondary leading-relaxed">
               <p>Find us at Gold Star Mall on Cornish Street, Hurghada — with relaxed sea view seating and easy access from the main promenade.</p>
               <p>Looking for a restaurant in Hurghada with sea view seating? Plan B offers breakfast, coffee, sunset drinks, and dinner in a comfortable coastal atmosphere.</p>
               <p>Open daily from 9:00 AM to 2:00 AM. Reserve easily via WhatsApp for quick confirmation.</p>
             </div>
             <div className="mt-4 space-y-2 text-sm text-text-secondary">
-              <p className="inline-flex items-center gap-2"><span aria-hidden="true">📍</span> Gold Star Mall, Cornish Street, Hurghada</p>
-              <p className="inline-flex items-center gap-2"><span aria-hidden="true">🕘</span> Open Daily 9:00 AM – 2:00 AM</p>
-              <p className="inline-flex items-center gap-2"><span aria-hidden="true">💬</span> Reservations confirmed on WhatsApp</p>
+              <a href="https://www.google.com/maps/place/Plan+B+Caf%C3%A9+%26+Restaurant/@27.2585772,33.823205,17z/data=!4m8!3m7!1s0x14528756b4e5a9a7:0x4f65db9fe1cfb206!8m2!3d27.2585725!4d33.8257799!9m1!1b1!16s%2Fg%2F11yy_zfvpv?entry=ttu&g_ep=EgoyMDI2MDIxOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-xl px-2 py-1 transition-colors hover:bg-surface-muted/70"><span aria-hidden="true">📍</span> Location: Gold Star Mall, Cornish Street, Hurghada</a>
+              <p className="flex items-center gap-2 rounded-xl px-2 py-1 transition-colors hover:bg-surface-muted/70"><span aria-hidden="true">🕘</span> Hours: Open daily 9:00 AM – 2:00 AM</p>
+              <p className="flex items-center gap-2 rounded-xl px-2 py-1 transition-colors hover:bg-surface-muted/70"><span aria-hidden="true">💬</span> Reservations: WhatsApp confirmation</p>
             </div>
-          </div>
-          <div className="flex h-full flex-col rounded-3xl border border-coffee/10 bg-white p-6 shadow-sm md:p-7">
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Button onClick={() => navigate("/booking")} variant="secondary" size="sm">
+                Reserve on WhatsApp
+              </Button>
+              <Button onClick={() => navigate("/contact")} variant="ghost" size="sm">
+                Contact &amp; Location
+              </Button>
+            </div>
+          </motion.div>
+          <motion.div
+            className="flex h-full flex-col rounded-3xl border border-coffee/10 bg-white p-6 shadow-sm transition-shadow duration-200 hover:shadow-md md:p-7"
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.2, ease: "easeOut", delay: 0.05 }}
+          >
             <h3 className="text-xl font-semibold text-text-primary">Quick Info</h3>
-            <ul className="mt-4 space-y-2.5 text-sm leading-relaxed text-text-secondary md:text-[15px]">
-              <li><span className="mr-2" aria-hidden="true">🍽️</span><span className="font-medium text-text-primary">Cuisine:</span> Seafood • Grill • Burgers • Salads</li>
-              <li><span className="mr-2" aria-hidden="true">🌊</span><span className="font-medium text-text-primary">Best for:</span> Sea view • Families • Groups</li>
-              <li><span className="mr-2" aria-hidden="true">🕘</span><span className="font-medium text-text-primary">Hours:</span> Daily 9:00–2:00</li>
-              <li><span className="mr-2" aria-hidden="true">💬</span><span className="font-medium text-text-primary">Reservations:</span> WhatsApp confirmation</li>
+            <ul className="mt-4 space-y-2 text-sm leading-relaxed text-text-secondary md:text-[15px]">
+              {[
+                ["Cuisine", "Seafood • Grill • Burgers • Salads"],
+                ["Best for", "Sea view • Families • Groups"],
+                ["Hours", "Daily 9:00–2:00"],
+                ["Reservations", "WhatsApp confirmation"]
+              ].map(([label, value]) => (
+                <li key={label} className="rounded-xl px-2 py-1 transition-colors hover:bg-surface-muted/70">
+                  <span className="font-medium text-text-primary">{label}:</span> {value}
+                </li>
+              ))}
             </ul>
-          </div>
+          </motion.div>
         </div>
       </Section>
 
