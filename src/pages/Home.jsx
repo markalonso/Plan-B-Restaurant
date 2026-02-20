@@ -28,11 +28,16 @@ const heroImage = "/assets/planb/home/hero-sea-view.jpg.png";
 
 // Highlight strip items
 const highlights = [
-  { id: 1, icon: "🌊", label: "Sea View", description: "Stunning coastal views" },
-  { id: 2, icon: "🍰", label: "Desserts & Coffee", description: "Handcrafted treats" },
-  { id: 3, icon: "🎉", label: "Groups & Birthdays", description: "Private celebrations" },
-  { id: 4, icon: "👶", label: "Kids Area", description: "Family friendly" },
-  { id: 5, icon: "🎵", label: "Live Music", description: "Weekend vibes" }
+  { id: 1, icon: "🌊", label: "Sea View", description: "Coastal views & sunset vibes" },
+  {
+    id: 2,
+    icon: "🍰",
+    label: "Desserts & Coffee",
+    description: "Handcrafted desserts & specialty coffee"
+  },
+  { id: 3, icon: "🎉", label: "Groups & Birthdays", description: "Celebrations & group seating" },
+  { id: 4, icon: "👶", label: "Kids Area", description: "Comfortable for families" },
+  { id: 5, icon: "🎵", label: "Live Music", description: "Weekend evenings" }
 ];
 
 // Signature Food & Desserts images - "Made to Be Enjoyed" section
@@ -41,36 +46,59 @@ const signatureItems = [
     id: 1,
     image: "/assets/planb/home/home-grid-1.jpg.png",
     title: "Signature Cocktails",
-    alt: "Blue cocktail"
+    alt: "Cocktail at Plan B Restaurant & Cafe"
   },
   {
     id: 2,
     image: "/assets/planb/home/home-grid-2.jpg.png",
     title: "Specialty Coffee",
-    alt: "Artisan latte art"
+    alt: "Specialty coffee at Plan B"
   },
   {
     id: 3,
     image: "/assets/planb/home/home-grid-3.jpg.png",
     title: "Desserts",
-    alt: "Cheesecake plates"
+    alt: "Desserts served at Plan B"
   },
   {
     id: 4,
     image: "/assets/planb/home/home-grid-4.jpg.png",
     title: "Fresh Salads",
-    alt: "Fresh salad"
+    alt: "Fresh salad plate at Plan B"
   },
   {
     id: 5,
     image: "/assets/planb/home/home-grid-5.jpg.png",
     title: "Main Dishes",
-    alt: "Featured main dish"
+    alt: "Chicken main dish served at Plan B"
   }
 ];
 
 // The Atmosphere section image - sunset seating with sea view
 const vibeImage = "/assets/planb/home/home-atmosphere.jpg.png";
+
+const faqItems = [
+  {
+    question: "Where is Plan B Restaurant & Cafe located?",
+    answer: "Gold Star Mall, Cornish Street, Hurghada — with sea view seating."
+  },
+  {
+    question: "What are your opening hours?",
+    answer: "We're open daily from 9:00 AM to 2:00 AM."
+  },
+  {
+    question: "Do you have live music?",
+    answer: "Yes — live music on selected weekend evenings."
+  },
+  {
+    question: "Is Plan B family friendly?",
+    answer: "Yes. We have a comfortable setting for families and a kids-friendly area."
+  },
+  {
+    question: "How do I reserve a table?",
+    answer: "Send your request on WhatsApp and we confirm personally."
+  }
+];
 
 const Home = () => {
   const navigate = useNavigate();
@@ -112,6 +140,58 @@ const Home = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const previousTitle = document.title;
+    const metaDescription = document.querySelector('meta[name="description"]');
+    const previousDescription = metaDescription?.getAttribute("content") || "";
+
+    document.title = "Plan B Restaurant & Cafe | Sea View Dining in Hurghada";
+
+    let descriptionTag = metaDescription;
+    if (!descriptionTag) {
+      descriptionTag = document.createElement("meta");
+      descriptionTag.setAttribute("name", "description");
+      document.head.appendChild(descriptionTag);
+    }
+    descriptionTag.setAttribute(
+      "content",
+      "Sea view restaurant & cafe on Cornish Street, Hurghada. Seafood, grills, burgers, desserts & coffee. Open daily 9 AM–2 AM. Reserve on WhatsApp."
+    );
+
+    const existingSchema = document.getElementById("home-faq-schema");
+    if (existingSchema) {
+      existingSchema.remove();
+    }
+
+    const schemaScript = document.createElement("script");
+    schemaScript.type = "application/ld+json";
+    schemaScript.id = "home-faq-schema";
+    schemaScript.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer
+        }
+      }))
+    });
+    document.head.appendChild(schemaScript);
+
+    return () => {
+      document.title = previousTitle;
+      if (descriptionTag) {
+        descriptionTag.setAttribute("content", previousDescription);
+      }
+      const cleanupSchema = document.getElementById("home-faq-schema");
+      if (cleanupSchema) {
+        cleanupSchema.remove();
+      }
+    };
+  }, []);
+
   return (
     <div className="bg-surface-primary">
       {/* ================================================================
@@ -142,13 +222,13 @@ const Home = () => {
               className="flex flex-col items-center gap-4"
               variants={heroItemVariants}
             >
-              <h1 className="text-balance text-5xl font-bold text-white md:text-6xl lg:text-7xl">
-                PLAN
+              <h1 className="text-balance text-4xl font-bold text-white md:text-6xl lg:text-7xl">
+                Plan B Restaurant &amp; Cafe
               </h1>
               <img 
                 src="/assets/planb/home/logo-planb.png" 
                 alt="Plan B" 
-                className="w-32 md:w-48 lg:w-56"
+                className="w-28 md:w-40 lg:w-48"
               />
             </motion.div>
             
@@ -157,8 +237,27 @@ const Home = () => {
               className="mx-auto max-w-xl text-lg text-white/90 md:text-xl lg:text-2xl"
               variants={heroItemVariants}
             >
-              Sea View • Food • Desserts • Drinks
+              Sea view dining on Cornish Street — seafood, grills, burgers, desserts &amp; specialty coffee.
             </motion.p>
+
+            <motion.div
+              className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-3"
+              variants={heroItemVariants}
+            >
+              {[
+                "Open Daily 9:00 AM – 2:00 AM",
+                "Sea View",
+                "Live Music (Weekends)",
+                "Family Friendly"
+              ].map((chip) => (
+                <span
+                  key={chip}
+                  className="rounded-full border border-white/35 bg-white/15 px-4 py-2 text-xs font-medium text-white backdrop-blur-sm md:text-sm"
+                >
+                  {chip}
+                </span>
+              ))}
+            </motion.div>
             
             {/* CTA Buttons */}
             <motion.div 
@@ -176,6 +275,12 @@ const Home = () => {
                 variant="ghost-light"
               >
                 Gallery
+              </Button>
+              <Button
+                onClick={() => navigate("/booking")}
+                variant="ghost-light"
+              >
+                Reserve on WhatsApp
               </Button>
             </motion.div>
           </div>
@@ -261,8 +366,8 @@ const Home = () => {
         <div className="mx-auto max-w-6xl space-y-10">
           <SectionHeading
             eyebrow="Taste the experience"
-            title="Made to Be Enjoyed"
-            subtitle="Handcrafted desserts, specialty coffee, and fresh cuisine with coastal café charm."
+            title="Food, Coffee & Coastal Favorites"
+            subtitle="Fresh plates, great coffee, and a relaxed sea view atmosphere — from morning to late night."
             align="center"
           />
           
@@ -368,12 +473,10 @@ const Home = () => {
                 The atmosphere
               </span>
               <h2 className="mt-4 text-balance text-3xl font-semibold text-text-primary md:text-4xl lg:text-5xl">
-                A place to relax, meet, and enjoy the moment
+                Sea View Comfort, Day to Night
               </h2>
               <p className="mt-6 text-text-secondary leading-relaxed">
-                Plan B isn't just a place to eat — it's where the coast meets comfort. Low lighting, 
-                good music, and a space designed for connection. Come for breakfast, stay for sunset 
-                drinks. Bring a friend or come alone with a book. There's no rush here.
+                Plan B is where the coast meets comfort — a relaxed spot for breakfast, coffee, sunset drinks, and dinner. Come for fresh seafood, grills, burgers, and desserts, and stay for the warm atmosphere, good music, and friendly service. Perfect for families, couples, and groups looking for a quality place on the Cornish.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Button onClick={() => navigate("/about")} variant="secondary">
@@ -388,6 +491,36 @@ const Home = () => {
         </div>
       </section>
 
+      <Section className="pb-8 pt-12 md:pb-10 md:pt-16">
+        <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
+          <div className="rounded-3xl border border-coffee/10 bg-white p-7 shadow-sm">
+            <h2 className="text-2xl font-semibold text-text-primary md:text-3xl">Visit Plan B on the Cornish</h2>
+            <p className="mt-4 text-text-secondary leading-relaxed">
+              Find us at Gold Star Mall on Cornish Street, Hurghada. Easy to reach, sea view seating, and open daily from 9 AM to 2 AM. For reservations, message us on WhatsApp and we&apos;ll confirm quickly.
+            </p>
+          </div>
+          <div className="rounded-3xl border border-coffee/10 bg-white p-7 shadow-sm">
+            <h3 className="text-xl font-semibold text-text-primary">Quick Info</h3>
+            <ul className="mt-4 space-y-3 text-sm text-text-secondary md:text-base">
+              <li><span className="font-medium text-text-primary">Cuisine:</span> Seafood • Grill • Burgers • Salads</li>
+              <li><span className="font-medium text-text-primary">Best for:</span> Sea view • Families • Groups</li>
+              <li><span className="font-medium text-text-primary">Hours:</span> Daily 9:00–2:00</li>
+              <li><span className="font-medium text-text-primary">Reservations:</span> WhatsApp confirmation</li>
+            </ul>
+          </div>
+        </div>
+      </Section>
+
+      <Section className="pb-4 pt-2">
+        <div className="mx-auto max-w-6xl rounded-2xl border border-coffee/10 bg-surface-muted/40 px-6 py-5">
+          <div className="grid gap-4 text-sm text-text-secondary md:grid-cols-3 md:text-base">
+            <p><span className="font-semibold text-text-primary">Google Reviews:</span> Placeholder for latest rating and review highlights.</p>
+            <p><span className="font-semibold text-text-primary">Hours:</span> Open daily, 9:00 AM to 2:00 AM.</p>
+            <p><span className="font-semibold text-text-primary">Reservations:</span> Fast WhatsApp confirmation from the Plan B team.</p>
+          </div>
+        </div>
+      </Section>
+
       {/* ================================================================
           SECTION 5: GALLERY PREVIEW
           ================================================================ */}
@@ -396,7 +529,7 @@ const Home = () => {
           <SectionHeading
             eyebrow="Gallery"
             title="A Glimpse Inside"
-            subtitle="Coastal vibes, warm moments, and unforgettable experiences."
+            subtitle="A quick look at our space, plates, and moments by the sea."
             align="center"
           />
 
@@ -486,6 +619,30 @@ const Home = () => {
         </div>
       </Section>
 
+      <Section className="pb-6 pt-10 md:pt-12">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading
+            title="Frequently Asked Questions"
+            subtitle="Everything you need before your visit."
+            align="center"
+          />
+
+          <div className="mt-8 space-y-3">
+            {faqItems.map((item) => (
+              <details
+                key={item.question}
+                className="rounded-2xl border border-coffee/10 bg-white p-5 shadow-sm"
+              >
+                <summary className="cursor-pointer list-none pr-6 text-base font-semibold text-text-primary marker:hidden">
+                  {item.question}
+                </summary>
+                <p className="mt-3 text-text-secondary">{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </Section>
+
       {/* ================================================================
           SECTION 6: FINAL CTA
           ================================================================ */}
@@ -504,10 +661,10 @@ const Home = () => {
             
             <div className="relative mx-auto max-w-2xl space-y-6">
               <h2 className="text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
-                Ready to visit Plan B?
+                Reserve Your Table at Plan B
               </h2>
               <p className="text-lg text-white/80">
-                Book your table or stop by — we're open daily from 9 AM to 2 AM.
+                Send a quick request — we confirm on WhatsApp. Open daily 9:00 AM to 2:00 AM.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
                 <Button
