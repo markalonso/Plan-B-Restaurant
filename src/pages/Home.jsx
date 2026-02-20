@@ -104,6 +104,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryLoading, setGalleryLoading] = useState(true);
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
   const { startLoading, stopLoading } = useGlobalLoading();
   const reducedMotion = prefersReducedMotion();
 
@@ -206,7 +207,7 @@ const Home = () => {
             className="h-full w-full object-cover"
           />
           {/* Soft gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-coffee-dark/30 via-coffee-dark/20 to-coffee-dark/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-coffee-dark/45 via-coffee-dark/35 to-coffee-dark/80" />
         </div>
 
         {/* Hero Content - Centered */}
@@ -216,7 +217,7 @@ const Home = () => {
           initial="hidden"
           animate="visible"
         >
-          <div className="max-w-3xl space-y-6">
+          <div className="max-w-3xl space-y-5">
             {/* Title */}
             <motion.div
               className="flex flex-col items-center gap-4"
@@ -241,27 +242,35 @@ const Home = () => {
             </motion.p>
 
             <motion.div
-              className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-3"
+              className="mx-auto max-w-4xl text-center text-sm text-white/85 md:text-base"
               variants={heroItemVariants}
             >
-              {[
-                "Open Daily 9:00 AM – 2:00 AM",
-                "Sea View",
-                "Live Music (Weekends)",
-                "Family Friendly"
-              ].map((chip) => (
-                <span
-                  key={chip}
-                  className="rounded-full border border-white/35 bg-white/15 px-4 py-2 text-xs font-medium text-white backdrop-blur-sm md:text-sm"
-                >
-                  {chip}
+              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 leading-relaxed">
+                <span className="inline-flex items-center gap-2">
+                  <span aria-hidden="true">🕘</span>
+                  Open Daily 9:00 AM – 2:00 AM
                 </span>
-              ))}
+                <span className="text-white/60" aria-hidden="true">•</span>
+                <span className="inline-flex items-center gap-2">
+                  <span aria-hidden="true">🌊</span>
+                  Sea View
+                </span>
+                <span className="text-white/60" aria-hidden="true">•</span>
+                <span className="inline-flex items-center gap-2">
+                  <span aria-hidden="true">🎵</span>
+                  Live Music (Weekends)
+                </span>
+                <span className="text-white/60" aria-hidden="true">•</span>
+                <span className="inline-flex items-center gap-2">
+                  <span aria-hidden="true">👨‍👩‍👧</span>
+                  Family Friendly
+                </span>
+              </div>
             </motion.div>
             
             {/* CTA Buttons */}
             <motion.div 
-              className="flex flex-wrap items-center justify-center gap-4 pt-6"
+              className="flex flex-wrap items-center justify-center gap-4 pt-4"
               variants={heroItemVariants}
             >
               <Button
@@ -275,12 +284,6 @@ const Home = () => {
                 variant="ghost-light"
               >
                 Gallery
-              </Button>
-              <Button
-                onClick={() => navigate("/booking")}
-                variant="ghost-light"
-              >
-                Reserve on WhatsApp
               </Button>
             </motion.div>
           </div>
@@ -491,32 +494,44 @@ const Home = () => {
         </div>
       </section>
 
-      <Section className="pb-8 pt-12 md:pb-10 md:pt-16">
-        <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
-          <div className="rounded-3xl border border-coffee/10 bg-white p-7 shadow-sm">
+      <Section className="pb-8 pt-12 md:pb-10 md:pt-14">
+        <div className="mx-auto grid max-w-6xl items-stretch gap-6 lg:grid-cols-2">
+          <div className="flex h-full flex-col rounded-3xl border border-coffee/10 bg-white p-6 shadow-sm md:p-7">
             <h2 className="text-2xl font-semibold text-text-primary md:text-3xl">Visit Plan B on the Cornish</h2>
-            <p className="mt-4 text-text-secondary leading-relaxed">
+            <p className="mt-3 text-text-secondary leading-relaxed">
               Find us at Gold Star Mall on Cornish Street, Hurghada. Easy to reach, sea view seating, and open daily from 9 AM to 2 AM. For reservations, message us on WhatsApp and we&apos;ll confirm quickly.
             </p>
+            <div className="mt-4 space-y-2 text-sm text-text-secondary">
+              <p className="inline-flex items-center gap-2"><span aria-hidden="true">📍</span> Gold Star Mall, Cornish Street, Hurghada</p>
+              <p className="inline-flex items-center gap-2"><span aria-hidden="true">🕘</span> Open Daily 9:00 AM – 2:00 AM</p>
+              <p className="inline-flex items-center gap-2"><span aria-hidden="true">💬</span> Reservations confirmed on WhatsApp</p>
+            </div>
           </div>
-          <div className="rounded-3xl border border-coffee/10 bg-white p-7 shadow-sm">
+          <div className="flex h-full flex-col rounded-3xl border border-coffee/10 bg-white p-6 shadow-sm md:p-7">
             <h3 className="text-xl font-semibold text-text-primary">Quick Info</h3>
-            <ul className="mt-4 space-y-3 text-sm text-text-secondary md:text-base">
-              <li><span className="font-medium text-text-primary">Cuisine:</span> Seafood • Grill • Burgers • Salads</li>
-              <li><span className="font-medium text-text-primary">Best for:</span> Sea view • Families • Groups</li>
-              <li><span className="font-medium text-text-primary">Hours:</span> Daily 9:00–2:00</li>
-              <li><span className="font-medium text-text-primary">Reservations:</span> WhatsApp confirmation</li>
+            <ul className="mt-4 space-y-2.5 text-sm leading-relaxed text-text-secondary md:text-[15px]">
+              <li><span className="mr-2" aria-hidden="true">🍽️</span><span className="font-medium text-text-primary">Cuisine:</span> Seafood • Grill • Burgers • Salads</li>
+              <li><span className="mr-2" aria-hidden="true">🌊</span><span className="font-medium text-text-primary">Best for:</span> Sea view • Families • Groups</li>
+              <li><span className="mr-2" aria-hidden="true">🕘</span><span className="font-medium text-text-primary">Hours:</span> Daily 9:00–2:00</li>
+              <li><span className="mr-2" aria-hidden="true">💬</span><span className="font-medium text-text-primary">Reservations:</span> WhatsApp confirmation</li>
             </ul>
           </div>
         </div>
       </Section>
 
-      <Section className="pb-4 pt-2">
-        <div className="mx-auto max-w-6xl rounded-2xl border border-coffee/10 bg-surface-muted/40 px-6 py-5">
-          <div className="grid gap-4 text-sm text-text-secondary md:grid-cols-3 md:text-base">
-            <p><span className="font-semibold text-text-primary">Google Reviews:</span> Placeholder for latest rating and review highlights.</p>
-            <p><span className="font-semibold text-text-primary">Hours:</span> Open daily, 9:00 AM to 2:00 AM.</p>
-            <p><span className="font-semibold text-text-primary">Reservations:</span> Fast WhatsApp confirmation from the Plan B team.</p>
+      <Section className="pb-8 pt-2">
+        <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-3">
+          <div className="rounded-2xl border border-coffee/10 bg-white p-4 shadow-sm">
+            <p className="text-sm font-semibold text-text-primary">⭐ Google Reviews</p>
+            <p className="mt-1 text-sm text-text-secondary">Connected section for review highlights.</p>
+          </div>
+          <div className="rounded-2xl border border-coffee/10 bg-white p-4 shadow-sm">
+            <p className="text-sm font-semibold text-text-primary">🕘 Open Daily</p>
+            <p className="mt-1 text-sm text-text-secondary">From 9:00 AM to 2:00 AM, every day.</p>
+          </div>
+          <div className="rounded-2xl border border-coffee/10 bg-white p-4 shadow-sm">
+            <p className="text-sm font-semibold text-text-primary">💬 Reservations</p>
+            <p className="mt-1 text-sm text-text-secondary">Quick confirmations through WhatsApp.</p>
           </div>
         </div>
       </Section>
@@ -628,17 +643,41 @@ const Home = () => {
           />
 
           <div className="mt-8 space-y-3">
-            {faqItems.map((item) => (
-              <details
-                key={item.question}
-                className="rounded-2xl border border-coffee/10 bg-white p-5 shadow-sm"
-              >
-                <summary className="cursor-pointer list-none pr-6 text-base font-semibold text-text-primary marker:hidden">
-                  {item.question}
-                </summary>
-                <p className="mt-3 text-text-secondary">{item.answer}</p>
-              </details>
-            ))}
+            {faqItems.map((item, index) => {
+              const isOpen = openFaqIndex === index;
+
+              return (
+                <div
+                  key={item.question}
+                  className="overflow-hidden rounded-2xl border border-coffee/10 bg-white shadow-sm"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                    className="flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-left"
+                    aria-expanded={isOpen}
+                  >
+                    <span className={`text-base text-text-primary ${isOpen ? "font-semibold" : "font-medium"}`}>
+                      {item.question}
+                    </span>
+                    <span className="text-xl font-medium text-coffee" aria-hidden="true">
+                      {isOpen ? "−" : "+"}
+                    </span>
+                  </button>
+
+                  <motion.div
+                    initial={false}
+                    animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+                    transition={{ duration: 0.22, ease: "easeOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="border-t border-coffee/10 bg-surface-muted/35 px-5 py-4 text-[15px] text-text-primary/90">
+                      {item.answer}
+                    </div>
+                  </motion.div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </Section>
