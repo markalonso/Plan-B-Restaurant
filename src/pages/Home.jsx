@@ -100,6 +100,45 @@ const faqItems = [
   }
 ];
 
+const reviewItems = [
+  {
+    name: "Lee Hayes",
+    rating: 5,
+    time: "2 days ago",
+    badge: "NEW",
+    text: "Good place, to chill and enjoy some food or a drink. Nice view, friendly staff and pleasant atmosphere with a little music too.",
+    details: [],
+    extra: "Food: 5/5 • Service: 5/5 • Atmosphere: 5/5"
+  },
+  {
+    name: "Nermeen",
+    rating: 5,
+    time: "3 days ago",
+    badge: "NEW",
+    text: "",
+    details: ["Breakfast • E£1–200"],
+    extra: "Food: 5/5 • Service: 5/5 • Atmosphere: 5/5"
+  },
+  {
+    name: "Ahmed Zeka",
+    rating: 5,
+    time: "3 days ago",
+    badge: "NEW",
+    text: "",
+    details: [],
+    extra: "Food: 5/5 • Service: 5/5 • Atmosphere: 5/5"
+  },
+  {
+    name: "Labeb Atef",
+    rating: 5,
+    time: "2 weeks ago",
+    badge: "NEW",
+    text: "",
+    details: ["E£1–200", "Group size: 9+ people", "Wait time: No wait"],
+    extra: ""
+  }
+];
+
 const HighlightIcon = ({ type }) => {
   const iconProps = {
     className: "h-7 w-7 text-coffee",
@@ -164,8 +203,10 @@ const Home = () => {
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryLoading, setGalleryLoading] = useState(true);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
+  const [desktopReviewIndex, setDesktopReviewIndex] = useState(0);
   const { startLoading, stopLoading } = useGlobalLoading();
   const reducedMotion = prefersReducedMotion();
+  const desktopPages = Math.max(1, reviewItems.length - 2);
 
   // Load gallery images from Supabase
   useEffect(() => {
@@ -563,12 +604,135 @@ const Home = () => {
         </div>
       </section>
 
+      <Section className="pb-8 pt-12 md:pt-14" id="google-reviews">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 className="text-balance text-3xl font-semibold text-text-primary md:text-4xl">
+                Google Reviews
+              </h2>
+              <p className="mt-2 text-sm text-text-secondary md:text-base">What guests are saying about Plan B.</p>
+              <p className="mt-1 text-sm font-medium text-text-primary/90">Rated 5/5 on Google.</p>
+            </div>
+            <a
+              href="https://www.google.com/maps/place/Plan+B+Caf%C3%A9+%26+Restaurant/@27.2585772,33.823205,17z/data=!4m8!3m7!1s0x14528756b4e5a9a7:0x4f65db9fe1cfb206!8m2!3d27.2585725!4d33.8257799!9m1!1b1!16s%2Fg%2F11yy_zfvpv?entry=ttu&g_ep=EgoyMDI2MDIxOC4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center rounded-full border border-coffee/20 bg-white px-4 py-2 text-sm font-medium text-text-primary shadow-soft transition-colors hover:bg-surface-muted"
+            >
+              View on Google Maps
+            </a>
+          </div>
+
+          <div className="mt-6 hidden md:block">
+            <div className="relative overflow-hidden">
+              <div
+                className="flex transition-transform duration-300 ease-out"
+                style={{ transform: `translateX(-${desktopReviewIndex * (100 / 3)}%)` }}
+              >
+                {reviewItems.map((review) => (
+                  <article key={review.name} className="w-1/3 flex-shrink-0 px-2">
+                    <div className="flex h-[230px] flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-[0_1px_6px_rgba(0,0,0,0.06)]">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 text-sm font-semibold text-neutral-700" aria-label={`${review.name} avatar`}>
+                            {review.name.charAt(0)}
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-neutral-900">{review.name}</p>
+                            <p className="text-xs text-neutral-500">{review.time}</p>
+                          </div>
+                        </div>
+                        <span className="rounded-md bg-[#e8f0fe] px-2 py-0.5 text-[10px] font-semibold text-[#1967d2]">{review.badge}</span>
+                      </div>
+                      <p className="mt-3 text-sm text-[#fbbc04]" aria-label={`${review.rating} star rating`}>{"★★★★★"}</p>
+                      <div className="mt-3 flex-1 space-y-1 text-sm text-neutral-700">
+                        {review.text && <p className="line-clamp-3">{review.text}</p>}
+                        {review.details.map((line) => (
+                          <p key={line}>{line}</p>
+                        ))}
+                        {review.extra && <p className="text-neutral-800">{review.extra}</p>}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-4 flex items-center justify-between">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={prevDesktopReview}
+                  className="rounded-full border border-coffee/20 bg-white px-3 py-1.5 text-sm text-text-primary shadow-soft"
+                  aria-label="Previous reviews"
+                >
+                  ←
+                </button>
+                <button
+                  type="button"
+                  onClick={nextDesktopReview}
+                  className="rounded-full border border-coffee/20 bg-white px-3 py-1.5 text-sm text-text-primary shadow-soft"
+                  aria-label="Next reviews"
+                >
+                  →
+                </button>
+              </div>
+              <div className="flex items-center gap-2">
+                {Array.from({ length: desktopPages }).map((_, index) => (
+                  <button
+                    key={`dot-${index}`}
+                    type="button"
+                    onClick={() => setDesktopReviewIndex(index)}
+                    className={`h-2.5 w-2.5 rounded-full ${desktopReviewIndex === index ? "bg-coffee" : "bg-coffee/25"}`}
+                    aria-label={`Go to review slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 md:hidden">
+            <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2">
+              {reviewItems.map((review) => (
+                <article key={`mobile-${review.name}`} className="w-[86%] flex-shrink-0 snap-start">
+                  <div className="flex h-[230px] flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-[0_1px_6px_rgba(0,0,0,0.06)]">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 text-sm font-semibold text-neutral-700" aria-label={`${review.name} avatar`}>
+                          {review.name.charAt(0)}
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-neutral-900">{review.name}</p>
+                          <p className="text-xs text-neutral-500">{review.time}</p>
+                        </div>
+                      </div>
+                      <span className="rounded-md bg-[#e8f0fe] px-2 py-0.5 text-[10px] font-semibold text-[#1967d2]">{review.badge}</span>
+                    </div>
+                    <p className="mt-3 text-sm text-[#fbbc04]" aria-label={`${review.rating} star rating`}>{"★★★★★"}</p>
+                    <div className="mt-3 flex-1 space-y-1 text-sm text-neutral-700">
+                      {review.text && <p className="line-clamp-3">{review.text}</p>}
+                      {review.details.map((line) => (
+                        <p key={line}>{line}</p>
+                      ))}
+                      {review.extra && <p className="text-neutral-800">{review.extra}</p>}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <p className="mt-4 text-xs text-text-secondary">Reviews shown are from Google.</p>
+        </div>
+      </Section>
+
       <Section className="pb-8 pt-12 md:pb-10 md:pt-14">
         <div className="mx-auto grid max-w-6xl items-stretch gap-6 lg:grid-cols-2">
           <div className="flex h-full flex-col rounded-3xl border border-coffee/10 bg-white p-6 shadow-sm md:p-7">
             <h2 className="text-2xl font-semibold text-text-primary md:text-3xl">Visit Plan B on the Cornish</h2>
             <p className="mt-3 text-text-secondary leading-relaxed">
-              Find us at Gold Star Mall on Cornish Street, Hurghada. We are a restaurant in Hurghada with sea view, easy to reach, and open daily from 9 AM to 2 AM. For reservations, message us on WhatsApp and we&apos;ll confirm quickly.
+              Find us at Gold Star Mall on Cornish Street, Hurghada. Looking for a restaurant in Hurghada with sea view seating? Plan B offers a relaxed spot for breakfast, coffee, sunset drinks, and dinner. Easy to reach and open daily from 9 AM to 2 AM, and for reservations, message us on WhatsApp and we&apos;ll confirm quickly.
             </p>
             <div className="mt-4 space-y-2 text-sm text-text-secondary">
               <p className="inline-flex items-center gap-2"><span aria-hidden="true">📍</span> Gold Star Mall, Cornish Street, Hurghada</p>
@@ -781,3 +945,10 @@ const Home = () => {
 };
 
 export default Home;
+  const nextDesktopReview = () => {
+    setDesktopReviewIndex((prev) => (prev + 1) % desktopPages);
+  };
+
+  const prevDesktopReview = () => {
+    setDesktopReviewIndex((prev) => (prev - 1 + desktopPages) % desktopPages);
+  };
