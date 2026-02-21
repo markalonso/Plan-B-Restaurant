@@ -533,68 +533,44 @@ const Home = () => {
           />
           
           <motion.div
-            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid auto-rows-[180px] gap-4 sm:auto-rows-[220px] md:grid-cols-6 lg:auto-rows-[150px]"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={viewportConfig}
           >
-            {signatureItems.slice(0, 3).map((item) => (
-              <motion.div
-                key={item.id}
-                className="group relative overflow-hidden rounded-2xl"
-                variants={staggerItem}
-                whileHover="hover"
-                initial="initial"
-              >
-                <motion.img
-                  src={item.image}
-                  alt={item.alt}
-                  className="h-72 w-full object-cover lg:h-80"
-                  loading="lazy"
-                  variants={cardImageVariants}
-                />
-                <motion.div 
-                  className="absolute inset-0 flex items-end bg-gradient-to-t from-coffee-dark/80 via-coffee-dark/20 to-transparent p-5"
-                  variants={cardOverlayVariants}
-                >
-                  <span className="text-lg font-semibold text-white">{item.title}</span>
-                </motion.div>
-              </motion.div>
-            ))}
-          </motion.div>
+            {signatureItems.map((item, index) => {
+              const layoutMap = [
+                "md:col-span-4 md:row-span-2 lg:col-span-3 lg:row-span-4",
+                "md:col-span-2 md:row-span-1 lg:col-span-3 lg:row-span-2",
+                "md:col-span-2 md:row-span-1 lg:col-span-3 lg:row-span-2",
+                "md:col-span-3 md:row-span-1 lg:col-span-2 lg:row-span-2",
+                "md:col-span-3 md:row-span-1 lg:col-span-4 lg:row-span-2"
+              ];
 
-          {/* Second row - 2 items centered */}
-          <motion.div
-            className="mx-auto grid max-w-2xl gap-5 sm:grid-cols-2"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportConfig}
-          >
-            {signatureItems.slice(3, 5).map((item) => (
-              <motion.div
-                key={item.id}
-                className="group relative overflow-hidden rounded-2xl"
-                variants={staggerItem}
-                whileHover="hover"
-                initial="initial"
-              >
-                <motion.img
-                  src={item.image}
-                  alt={item.alt}
-                  className="h-64 w-full object-cover"
-                  loading="lazy"
-                  variants={cardImageVariants}
-                />
-                <motion.div 
-                  className="absolute inset-0 flex items-end bg-gradient-to-t from-coffee-dark/80 via-coffee-dark/20 to-transparent p-5"
-                  variants={cardOverlayVariants}
+              return (
+                <motion.article
+                  key={item.id}
+                  className={`group relative overflow-hidden rounded-2xl ${layoutMap[index]}`}
+                  variants={staggerItem}
+                  initial="initial"
                 >
-                  <span className="text-lg font-semibold text-white">{item.title}</span>
-                </motion.div>
-              </motion.div>
-            ))}
+                  <motion.img
+                    src={item.image}
+                    alt={item.alt}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    loading="lazy"
+                    variants={cardImageVariants}
+                  />
+                  <motion.div
+                    className="absolute inset-0 flex items-end bg-gradient-to-t from-coffee-dark/75 via-coffee-dark/20 to-transparent p-4 sm:p-5"
+                    variants={cardOverlayVariants}
+                  >
+                    <span className="text-base font-semibold text-white sm:text-lg">{item.title}</span>
+                  </motion.div>
+                </motion.article>
+              );
+            })}
           </motion.div>
         </div>
       </Section>
