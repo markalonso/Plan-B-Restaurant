@@ -748,70 +748,85 @@ const Home = () => {
       </section>
 
       <Section className="pb-8 pt-12 md:pb-10 md:pt-14">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-1 md:px-2 lg:grid-cols-[7fr_3fr] lg:gap-12">
-          <div className="max-w-2xl">
-            <motion.h2
-              className="text-balance text-3xl font-semibold text-text-primary md:text-4xl"
-              initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-              whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.18, ease: "easeOut" }}
-            >
-              Visit Plan B
-            </motion.h2>
-            <motion.p
-              className="mt-2 text-sm text-text-secondary md:text-base"
-              initial={reducedMotion ? false : { opacity: 0, y: 8 }}
-              whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ delay: reducedMotion ? 0 : 0.1, duration: 0.18, ease: "easeOut" }}
-            >
-              Sea-view restaurant &amp; café in Hurghada.
-            </motion.p>
-
-            <motion.div
-              className="mt-8 space-y-6 text-text-secondary"
-              initial={reducedMotion ? false : "hidden"}
-              whileInView={reducedMotion ? {} : "visible"}
-              viewport={{ once: true, amount: 0.25 }}
-              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
-            >
-              <motion.address variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 8 }, visible: { opacity: 1, y: 0 } }} className="not-italic text-sm leading-relaxed md:text-base">
-                <p className="text-text-primary">Gold Star Mall</p>
-                <p>Cornish Street</p>
-              </motion.address>
-              <motion.p variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 8 }, visible: { opacity: 1, y: 0 } }} className="text-sm md:text-base">
-                Open daily 9:00 AM – 2:00 AM
-              </motion.p>
-              <motion.p variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 8 }, visible: { opacity: 1, y: 0 } }} className="text-sm md:text-base">
-                WhatsApp reservations
-              </motion.p>
-            </motion.div>
-          </div>
-
+        <div className="mx-auto max-w-6xl px-1 md:px-2">
           <motion.div
-            className="flex flex-col justify-start"
-            initial={reducedMotion ? false : { opacity: 0, x: 12, y: 8 }}
-            whileInView={reducedMotion ? {} : { opacity: 1, x: 0, y: 0 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{ delay: reducedMotion ? 0 : 0.24, duration: 0.2, ease: "easeOut" }}
+            className="relative overflow-hidden rounded-3xl border border-coffee/10 bg-[linear-gradient(120deg,rgba(255,255,255,0.6)_0%,rgba(246,238,226,0.75)_45%,rgba(255,255,255,0.85)_100%)] px-6 py-10 md:px-10 md:py-12"
+            initial={reducedMotion ? false : { opacity: 0, y: 16 }}
+            whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
           >
-            <a
-              href={reserveWhatsAppLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex w-full items-center justify-center rounded-ui-default bg-coffee px-5 py-3 text-sm font-semibold text-white shadow-soft transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
-            >
-              Reserve on WhatsApp
-            </a>
-            <button
-              type="button"
-              onClick={() => navigate("/menu")}
-              className="mt-3 w-fit text-sm font-medium text-coffee transition-colors hover:text-coffee-dark"
-            >
-              View full menu →
-            </button>
-            <p className="mt-3 text-xs text-text-secondary">Fast confirmation • No forms • No account</p>
+            <span className="pointer-events-none absolute -left-5 top-4 text-8xl font-semibold tracking-tight text-coffee/10 md:text-[7rem]">
+              Visit
+            </span>
+
+            <div className="relative grid grid-cols-1 gap-10 lg:grid-cols-[1.35fr_0.65fr] lg:items-end">
+              <div className="max-w-2xl space-y-6">
+                <motion.h2
+                  className="text-balance text-4xl font-semibold leading-tight text-text-primary md:text-5xl"
+                  initial={reducedMotion ? false : { opacity: 0, y: 12, filter: "blur(3px)" }}
+                  whileInView={reducedMotion ? {} : { opacity: 1, y: 0, filter: "blur(0px)" }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{ duration: 0.24, ease: "easeOut" }}
+                >
+                  Visit Plan B on the Cornish
+                </motion.h2>
+
+                <motion.p
+                  className="max-w-xl text-base text-text-secondary"
+                  initial={reducedMotion ? false : { opacity: 0, y: 8 }}
+                  whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ delay: reducedMotion ? 0 : 0.1, duration: 0.2, ease: "easeOut" }}
+                >
+                  Sea-view restaurant &amp; café in Hurghada.
+                </motion.p>
+
+                <motion.div
+                  className="space-y-5 border-l border-coffee/20 pl-5"
+                  initial={reducedMotion ? false : "hidden"}
+                  whileInView={reducedMotion ? {} : "visible"}
+                  viewport={{ once: true, amount: 0.25 }}
+                  variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+                >
+                  <motion.address variants={{ hidden: { opacity: 0, x: reducedMotion ? 0 : -8 }, visible: { opacity: 1, x: 0 } }} className="not-italic text-sm text-text-secondary md:text-base">
+                    <p className="font-medium text-text-primary">Gold Star Mall</p>
+                    <p>Cornish Street, Hurghada</p>
+                  </motion.address>
+                  <motion.p variants={{ hidden: { opacity: 0, x: reducedMotion ? 0 : -8 }, visible: { opacity: 1, x: 0 } }} className="text-sm text-text-secondary md:text-base">
+                    Open daily 9:00 AM – 2:00 AM
+                  </motion.p>
+                  <motion.p variants={{ hidden: { opacity: 0, x: reducedMotion ? 0 : -8 }, visible: { opacity: 1, x: 0 } }} className="text-sm text-text-secondary md:text-base">
+                    WhatsApp reservations
+                  </motion.p>
+                </motion.div>
+              </div>
+
+              <motion.div
+                className="flex flex-col items-start gap-3 lg:items-end"
+                initial={reducedMotion ? false : { opacity: 0, x: 14, y: 10 }}
+                whileInView={reducedMotion ? {} : { opacity: 1, x: 0, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ delay: reducedMotion ? 0 : 0.2, duration: 0.22, ease: "easeOut" }}
+              >
+                <a
+                  href={reserveWhatsAppLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-full items-center justify-center rounded-ui-default bg-coffee px-5 py-3 text-sm font-semibold text-white shadow-soft transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md lg:w-auto"
+                >
+                  Reserve on WhatsApp
+                </a>
+                <button
+                  type="button"
+                  onClick={() => navigate("/menu")}
+                  className="text-sm font-medium text-coffee transition-colors hover:text-coffee-dark"
+                >
+                  View full menu →
+                </button>
+                <p className="text-xs text-text-secondary lg:text-right">Fast confirmation • No forms • No account</p>
+              </motion.div>
+            </div>
           </motion.div>
         </div>
       </Section>
