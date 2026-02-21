@@ -546,7 +546,7 @@ const Home = () => {
                 "col-span-1 aspect-[4/5] md:col-span-3 md:row-span-1 md:aspect-auto",
                 "col-span-1 aspect-[4/5] md:col-span-2 md:row-span-1 md:aspect-auto",
                 "col-span-1 aspect-[4/5] md:col-span-2 md:row-span-1 md:aspect-auto",
-                "col-span-2 aspect-[16/9] md:col-span-3 md:row-span-1 md:aspect-auto"
+                "col-span-1 aspect-[4/5] md:col-span-3 md:row-span-1 md:aspect-auto"
               ];
 
               return (
@@ -559,7 +559,7 @@ const Home = () => {
                   <motion.img
                     src={item.image}
                     alt={item.alt}
-                    className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                    className="h-full w-full object-cover transition-transform duration-500 ease-out md:group-hover:scale-[1.04]"
                     loading="lazy"
                     variants={cardImageVariants}
                   />
