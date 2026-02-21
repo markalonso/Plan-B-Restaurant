@@ -46,31 +46,31 @@ const signatureItems = [
     id: 1,
     image: "/assets/planb/home/home-grid-1.jpg.png",
     title: "Signature Cocktails",
-    alt: "Tropical cocktail served at Plan B Restaurant"
+    alt: "Blue signature cocktail with lemon garnish at Plan B Hurghada"
   },
   {
     id: 2,
     image: "/assets/planb/home/home-grid-2.jpg.png",
     title: "Specialty Coffee",
-    alt: "Specialty latte coffee at Plan B"
+    alt: "Latte art coffee served at Plan B café"
   },
   {
     id: 3,
     image: "/assets/planb/home/home-grid-3.jpg.png",
     title: "Desserts",
-    alt: "Dessert plates served at Plan B"
+    alt: "Cheesecake dessert with caramel drizzle"
   },
   {
     id: 4,
     image: "/assets/planb/home/home-grid-4.jpg.png",
     title: "Fresh Salads",
-    alt: "Fresh salad dish at Plan B"
+    alt: "Fresh grilled vegetables and lemon platter"
   },
   {
     id: 5,
     image: "/assets/planb/home/home-grid-5.jpg.png",
     title: "Main Dishes",
-    alt: "Grilled chicken main dish at Plan B"
+    alt: "Creamy herb chicken with rice and fries"
   }
 ];
 
@@ -533,40 +533,43 @@ const Home = () => {
           />
           
           <motion.div
-            className="grid auto-rows-[180px] gap-4 sm:auto-rows-[220px] md:grid-cols-6 lg:auto-rows-[150px]"
+            className="relative grid grid-cols-2 gap-4 md:grid-cols-12 md:grid-rows-[220px_220px] lg:grid-rows-[240px_240px]"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={viewportConfig}
           >
+            <div className="pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-coffee/8 via-transparent to-coffee-dark/5 blur-2xl" />
             {signatureItems.map((item, index) => {
               const layoutMap = [
-                "md:col-span-4 md:row-span-2 lg:col-span-3 lg:row-span-4",
-                "md:col-span-2 md:row-span-1 lg:col-span-3 lg:row-span-2",
-                "md:col-span-2 md:row-span-1 lg:col-span-3 lg:row-span-2",
-                "md:col-span-3 md:row-span-1 lg:col-span-2 lg:row-span-2",
-                "md:col-span-3 md:row-span-1 lg:col-span-4 lg:row-span-2"
+                "col-span-2 aspect-[5/4] md:col-span-7 md:row-span-2 md:aspect-auto",
+                "col-span-1 aspect-[4/5] md:col-span-3 md:row-span-1 md:aspect-auto",
+                "col-span-1 aspect-[4/5] md:col-span-2 md:row-span-1 md:aspect-auto",
+                "col-span-1 aspect-[4/5] md:col-span-2 md:row-span-1 md:aspect-auto",
+                "col-span-2 aspect-[16/9] md:col-span-3 md:row-span-1 md:aspect-auto"
               ];
 
               return (
                 <motion.article
                   key={item.id}
-                  className={`group relative overflow-hidden rounded-2xl ${layoutMap[index]}`}
+                  className={`group relative overflow-hidden rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(0,0,0,0.14)] ${layoutMap[index]}`}
                   variants={staggerItem}
                   initial="initial"
                 >
                   <motion.img
                     src={item.image}
                     alt={item.alt}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                     loading="lazy"
                     variants={cardImageVariants}
                   />
                   <motion.div
-                    className="absolute inset-0 flex items-end bg-gradient-to-t from-coffee-dark/75 via-coffee-dark/20 to-transparent p-4 sm:p-5"
+                    className="absolute inset-0 flex items-end bg-gradient-to-t from-coffee-dark/80 via-coffee-dark/25 to-transparent p-4 sm:p-5"
                     variants={cardOverlayVariants}
                   >
-                    <span className="text-base font-semibold text-white sm:text-lg">{item.title}</span>
+                    <span className="rounded-full bg-black/20 px-3 py-1 text-base font-semibold text-white backdrop-blur-[1px] md:opacity-0 md:transition-opacity md:duration-300 md:group-hover:opacity-100">
+                      {item.title}
+                    </span>
                   </motion.div>
                 </motion.article>
               );
