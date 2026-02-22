@@ -200,57 +200,61 @@ const Menu = () => {
           </section>
         </Reveal>
 
-        <Reveal>
-          <SectionHeading
-            eyebrow="Featured"
-            title="House Comfort Picks"
-            subtitle="Curated favorites for slow evenings and easy mornings."
-          />
-        </Reveal>
+        {activeCategory === "All" && (
+          <>
+            <Reveal>
+              <SectionHeading
+                eyebrow="Featured"
+                title="House Comfort Picks"
+                subtitle="Curated favorites for slow evenings and easy mornings."
+              />
+            </Reveal>
 
-        <Stagger className="grid gap-6 md:grid-cols-2" animateOnView={false}>
-          {comfortPicks.map((item) => (
-            <StaggerItem key={item.id}>
-              <a href={reserveWhatsAppLink} target="_blank" rel="noreferrer" className="block">
-                <Card className="group flex gap-3 p-3 transition duration-200 ease-out hover:-translate-y-1 hover:shadow-layered md:gap-4 md:p-5">
-                  <div className="h-20 w-20 overflow-hidden rounded-xl shadow-sm md:h-24 md:w-24 md:rounded-2xl">
-                    <img
-                      src={item.image_url || item.image || fallbackImage}
-                      alt={item.name}
-                      className="h-full w-full object-cover transition duration-200 ease-out group-hover:scale-[1.03]"
-                    />
-                  </div>
-                  <div className="flex-1 space-y-1.5">
-                    <div className="flex items-start justify-between gap-3">
-                      <h3 className="text-base font-semibold text-text-primary md:text-lg">
-                        {item.name}
-                      </h3>
-                      <span className="whitespace-nowrap text-sm font-bold text-coffee md:text-base">
-                        {formatPrice(item.price)}
-                      </span>
-                    </div>
-                    <p className="text-xs text-text-secondary md:text-sm">{enhanceDescription(item.description)}</p>
-                    <p className="text-xs font-medium text-coffee/80">Reserve this experience →</p>
-                  </div>
-                </Card>
-              </a>
-            </StaggerItem>
-          ))}
-        </Stagger>
+            <Stagger className="grid gap-6 md:grid-cols-2" animateOnView={false}>
+              {comfortPicks.map((item) => (
+                <StaggerItem key={item.id}>
+                  <a href={reserveWhatsAppLink} target="_blank" rel="noreferrer" className="block">
+                    <Card className="group flex gap-3 p-3 transition duration-200 ease-out hover:-translate-y-1 hover:shadow-layered md:gap-4 md:p-5">
+                      <div className="h-20 w-20 overflow-hidden rounded-xl shadow-sm md:h-24 md:w-24 md:rounded-2xl">
+                        <img
+                          src={item.image_url || item.image || fallbackImage}
+                          alt={item.name}
+                          className="h-full w-full object-cover transition duration-200 ease-out group-hover:scale-[1.03]"
+                        />
+                      </div>
+                      <div className="flex-1 space-y-1.5">
+                        <div className="flex items-start justify-between gap-3">
+                          <h3 className="text-base font-semibold text-text-primary md:text-lg">
+                            {item.name}
+                          </h3>
+                          <span className="whitespace-nowrap text-sm font-bold text-coffee md:text-base">
+                            {formatPrice(item.price)}
+                          </span>
+                        </div>
+                        <p className="text-xs text-text-secondary md:text-sm">{enhanceDescription(item.description)}</p>
+                        <p className="text-xs font-medium text-coffee/80">Reserve this experience →</p>
+                      </div>
+                    </Card>
+                  </a>
+                </StaggerItem>
+              ))}
+            </Stagger>
 
-        <Reveal delay={0.1}>
-          <GlassPanel className="space-y-3">
-            <h3 className="text-xl font-semibold text-text-primary">
-              Comfort, made with care.
-            </h3>
-            <p className="text-sm text-text-secondary">
-              Familiar flavors, clean ingredients, and a calm coastal mood — day
-              to night.
-            </p>
-          </GlassPanel>
-        </Reveal>
+            <Reveal delay={0.1}>
+              <GlassPanel className="space-y-3">
+                <h3 className="text-xl font-semibold text-text-primary">
+                  Comfort, made with care.
+                </h3>
+                <p className="text-sm text-text-secondary">
+                  Familiar flavors, clean ingredients, and a calm coastal mood — day
+                  to night.
+                </p>
+              </GlassPanel>
+            </Reveal>
 
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-coffee/20 to-transparent" />
+            <div className="h-px w-full bg-gradient-to-r from-transparent via-coffee/20 to-transparent" />
+          </>
+        )}
 
         <Reveal delay={0.15}>
           <div id="menu-categories" />
