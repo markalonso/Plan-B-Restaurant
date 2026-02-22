@@ -28,6 +28,16 @@ const formatPrice = (price) => {
 const fallbackImage =
   "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=900&q=80";
 
+const reserveWhatsAppLink = `https://wa.me/201005260787?text=${encodeURIComponent(
+  "Hi, I'd like to reserve a table at Plan B."
+)}`;
+
+const enhanceDescription = (description) => {
+  if (!description) return "";
+  const cleanDescription = description.trim().replace(/\.$/, "");
+  return `Thoughtfully prepared with ${cleanDescription.toLowerCase()}.`;
+};
+
 const Menu = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [categories, setCategories] = useState([]);
@@ -168,51 +178,89 @@ const Menu = () => {
     <div className="section-padding">
       <div className="mx-auto max-w-6xl space-y-10">
         <Reveal>
-          <SectionHeading
-            eyebrow="Menu"
-            title="House Comfort Picks"
-            subtitle="Curated favorites for slow evenings and easy mornings."
-          />
-        </Reveal>
-
-        <Stagger className="grid gap-6 md:grid-cols-2" animateOnView={false}>
-          {comfortPicks.map((item) => (
-            <StaggerItem key={item.id}>
-              <Card className="group flex gap-4 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
-                <img
-                  src={item.image_url || item.image || fallbackImage}
-                  alt={item.name}
-                  className="h-24 w-24 rounded-2xl object-cover"
-                />
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-lg font-semibold text-text-primary">
-                      {item.name}
-                    </h3>
-                    <span className="text-sm font-semibold text-coffee">
-                      {formatPrice(item.price)}
-                    </span>
-                  </div>
-                  <p className="text-sm text-text-secondary">{item.description}</p>
-                </div>
-              </Card>
-            </StaggerItem>
-          ))}
-        </Stagger>
-
-        <Reveal delay={0.1}>
-          <GlassPanel className="space-y-3">
-            <h3 className="text-xl font-semibold text-text-primary">
-              Comfort, made with care.
-            </h3>
-            <p className="text-sm text-text-secondary">
-              Familiar flavors, clean ingredients, and a calm coastal mood — day
-              to night.
+          <section className="mx-auto max-w-4xl space-y-4">
+            <p className="text-sm text-text-secondary">Home &gt; <span className="text-text-primary">Menu</span></p>
+            <h1 className="text-4xl font-semibold text-text-primary">Menu</h1>
+            <p className="max-w-3xl text-lg text-text-secondary">
+              Explore our menu at Plan B Restaurant & Cafe in Hurghada — from breakfast and specialty coffee to burgers, seafood, and desserts. Visit us on Cornish Street for relaxed sea-view dining across multiple categories.
             </p>
-          </GlassPanel>
+            <div className="flex flex-wrap items-center gap-4">
+              <a
+                href={reserveWhatsAppLink}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center rounded-full bg-coffee px-6 py-3 text-base font-semibold text-white shadow-soft transition duration-200 hover:bg-coffee-dark"
+              >
+                Reserve on WhatsApp
+              </a>
+              <a href="#menu-categories" className="text-lg text-text-primary underline underline-offset-4">
+                How reservations work
+              </a>
+            </div>
+          </section>
         </Reveal>
+
+        {activeCategory === "All" && (
+          <>
+            <Reveal>
+              <SectionHeading
+                eyebrow="Featured"
+                title="House Comfort Picks"
+                subtitle="Curated favorites for slow evenings and easy mornings."
+              />
+            </Reveal>
+
+            <Stagger className="grid gap-6 md:grid-cols-2" animateOnView={false}>
+              {comfortPicks.map((item) => (
+                <StaggerItem key={item.id}>
+                  <a href={reserveWhatsAppLink} target="_blank" rel="noreferrer" className="block">
+                    <Card className="group flex gap-3 p-3 transition duration-200 ease-out hover:-translate-y-1 hover:shadow-layered md:gap-4 md:p-5">
+                      <div className="h-20 w-20 overflow-hidden rounded-xl shadow-sm md:h-24 md:w-24 md:rounded-2xl">
+                        <img
+                          src={item.image_url || item.image || fallbackImage}
+                          alt={item.name}
+                          className="h-full w-full object-cover transition duration-200 ease-out group-hover:scale-[1.03]"
+                        />
+                      </div>
+                      <div className="flex-1 space-y-1.5">
+                        <div className="flex items-start justify-between gap-3">
+                          <h3 className="text-base font-semibold text-text-primary md:text-lg">
+                            {item.name}
+                          </h3>
+                          <span className="whitespace-nowrap text-sm font-bold text-coffee md:text-base">
+                            {formatPrice(item.price)}
+                          </span>
+                        </div>
+                        <p className="text-xs text-text-secondary md:text-sm">{enhanceDescription(item.description)}</p>
+                        <p className="text-xs font-medium text-coffee/80">Reserve this experience →</p>
+                      </div>
+                    </Card>
+                  </a>
+                </StaggerItem>
+              ))}
+            </Stagger>
+
+            <Reveal delay={0.1}>
+              <GlassPanel className="space-y-3">
+                <h3 className="text-xl font-semibold text-text-primary">
+                  Comfort, made with care.
+                </h3>
+                <p className="text-sm text-text-secondary">
+                  Familiar flavors, clean ingredients, and a calm coastal mood — day
+                  to night.
+                </p>
+              </GlassPanel>
+            </Reveal>
+
+            <div className="h-px w-full bg-gradient-to-r from-transparent via-coffee/20 to-transparent" />
+          </>
+        )}
 
         <Reveal delay={0.15}>
+          <div id="menu-categories" />
+          <p className="text-xs tracking-wide text-text-secondary/80">
+            Over 60 freshly prepared dishes across 11 curated categories.
+          </p>
           <div className="flex flex-wrap gap-2">
             {categoryOptions.map((category) => (
               <Button
@@ -240,25 +288,32 @@ const Menu = () => {
             </Button>
           </Card>
         ) : (
-          <Stagger className="grid gap-6 md:grid-cols-2" animateOnView={false}>
+          <Stagger className="grid gap-3 md:grid-cols-2 md:gap-6" animateOnView={false}>
             {filteredItems.map((item) => (
               <StaggerItem key={item.id}>
-                <Card className="group space-y-3 transition duration-200 hover:-translate-y-1 hover:shadow-layered">
-                  <img
-                    src={item.image_url || item.image || fallbackImage}
-                    alt={item.name}
-                    className="h-44 w-full rounded-2xl object-cover"
-                  />
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-text-primary">
-                      {item.name}
-                    </h3>
-                    <span className="text-sm font-semibold text-coffee">
-                      {formatPrice(item.price)}
-                    </span>
-                  </div>
-                  <p className="text-sm text-text-secondary">{item.description}</p>
-                </Card>
+                <a href={reserveWhatsAppLink} target="_blank" rel="noreferrer" className="block">
+                  <Card className="group flex items-start gap-3 p-3 transition duration-200 ease-out hover:-translate-y-1 hover:shadow-layered md:block md:space-y-3 md:p-5">
+                    <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl shadow-sm md:h-44 md:w-full md:rounded-2xl">
+                      <img
+                        src={item.image_url || item.image || fallbackImage}
+                        alt={item.name}
+                        className="h-full w-full object-cover transition duration-200 ease-out group-hover:scale-[1.03]"
+                      />
+                    </div>
+                    <div className="min-w-0 space-y-1.5 md:space-y-2">
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="text-base font-semibold text-text-primary md:text-lg">
+                          {item.name}
+                        </h3>
+                        <span className="whitespace-nowrap text-sm font-bold text-coffee md:text-base">
+                          {formatPrice(item.price)}
+                        </span>
+                      </div>
+                      <p className="text-xs text-text-secondary md:text-sm">{enhanceDescription(item.description)}</p>
+                      <p className="text-xs font-medium text-coffee/80">Reserve this experience →</p>
+                    </div>
+                  </Card>
+                </a>
               </StaggerItem>
             ))}
           </Stagger>
