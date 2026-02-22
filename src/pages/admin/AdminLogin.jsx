@@ -27,16 +27,25 @@ const AdminLogin = () => {
     }
 
     try {
-      const credentials = {
-        email: formData.email,
-        password: formData.password
-      };
+      // Guard against null supabase client
+      if (!supabase) {
+        setStatus({
+          loading: false,
+          error: "Supabase client is not available. Please check your configuration."
+        });
+        return;
+      }
 
-      const { error } = await (
-        mode === "sign-in"
-          ? supabase.auth.signInWithPassword(credentials)
-          : supabase.auth.signUp(credentials)
-      );
+      // Call auth methods directly to avoid detached function references
+      const { error } = mode === "sign-in"
+        ? await supabase.auth.signInWithPassword({
+            email: formData.email,
+            password: formData.password
+          })
+        : await supabase.auth.signUp({
+            email: formData.email,
+            password: formData.password
+          });
 
       if (error) {
         setStatus({ loading: false, error: error.message });

@@ -12,7 +12,7 @@ const Footer = () => {
     >
       <div className="mx-auto grid max-w-6xl gap-6 px-6 py-10 text-sm text-text-secondary md:grid-cols-3">
         <div>
-          <p className="text-base font-semibold text-text-primary">Plan B</p>
+          <p className="text-base font-semibold text-text-primary">Plan B Restaurant &amp; Cafe</p>
           <p className="mt-2">Premium restaurant & cafe in Hurghada.</p>
         </div>
         <div>
@@ -21,7 +21,7 @@ const Footer = () => {
         </div>
         <div>
           <p className="font-semibold text-text-primary">Location</p>
-          <p className="mt-2">Hurghada, Cornish Street, Gold Star Mall</p>
+          <p className="mt-2">Gold Star Mall, Cornish Street, Hurghada</p>
           <a
             className="mt-3 inline-flex items-center gap-2 text-coffee transition-colors hover:text-coffee-dark"
             href="https://wa.me/201005260787"
