@@ -12,36 +12,18 @@ import { useGlobalLoading } from "../context/LoadingContext.jsx";
 import { resolveFirstExistingTable } from "../lib/adminTableResolver.js";
 
 const normalizeValue = (value) => String(value ?? "").trim().toLowerCase();
+const MOST_POPULAR_CATEGORY = "Most Popular";
 const whatsappNumber = "201005260787";
-
-const formatPrice = (price) => {
-  if (typeof price === "string") {
-    return price.includes("EGP") ? price : `EGP ${price}`;
-  }
-  if (typeof price === "number") {
-    return `EGP ${price}`;
-  }
-  return "EGP";
-};
-
-const extractNumericPrice = (price) => {
-  const numeric = Number.parseFloat(String(price ?? "").replace(/[^\d.]/g, ""));
-  return Number.isFinite(numeric) ? numeric : null;
-};
-
-const toSlug = (value) =>
-  String(value ?? "")
-    .trim()
-    .toLowerCase()
-    .replace(/&/g, " and ")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "") || "menu";
-
 const fallbackImage =
   "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=900&q=80";
-
 const MENU_DESCRIPTION =
   "Explore breakfast, coffee, burgers, seafood and desserts at Plan B Restaurant & Cafe, Hurghada Cornish Street, with sea-view dining and menu categories.";
+
+const formatPrice = (price) => {
+  if (typeof price === "string") return price.includes("EGP") ? price : `EGP ${price}`;
+  if (typeof price === "number") return `EGP ${price}`;
+  return "EGP";
+};
 
 const updateHeadTag = ({ selector, createTag, attributeName, attributeValue, content }) => {
   let element = document.head.querySelector(selector);
@@ -56,68 +38,9 @@ const updateHeadTag = ({ selector, createTag, attributeName, attributeValue, con
   element.setAttribute("content", content);
 };
 
-const buildOptimizedImage = (rawUrl, width, useWebp = false) => {
-  const url = rawUrl || fallbackImage;
-
-  if (!/^https?:\/\//i.test(url)) {
-    return url;
-  }
-
-  try {
-    const parsed = new URL(url);
-    parsed.searchParams.set("q", "78");
-    parsed.searchParams.set("w", String(width));
-    parsed.searchParams.set("fit", "crop");
-    parsed.searchParams.set("auto", "format");
-    if (useWebp) {
-      parsed.searchParams.set("fm", "webp");
-      parsed.searchParams.set("format", "webp");
-    }
-    return parsed.toString();
-  } catch {
-    return url;
-  }
-};
-
-const MenuImage = ({ src, alt, eager = false }) => {
-  const [loaded, setLoaded] = useState(false);
-  const safeSrc = src || fallbackImage;
-
-  return (
-    <div className="relative overflow-hidden rounded-2xl bg-surface-muted" style={{ aspectRatio: "4 / 3" }}>
-      {!loaded && <div className="absolute inset-0 animate-pulse bg-coffee/10" aria-hidden="true" />}
-      <picture>
-        <source
-          type="image/webp"
-          srcSet={[360, 540, 720]
-            .map((size) => `${buildOptimizedImage(safeSrc, size, true)} ${size}w`)
-            .join(", ")}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-        <img
-          src={buildOptimizedImage(safeSrc, 720)}
-          srcSet={[360, 540, 720]
-            .map((size) => `${buildOptimizedImage(safeSrc, size)} ${size}w`)
-            .join(", ")}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          alt={alt}
-          width="720"
-          height="540"
-          loading={eager ? "eager" : "lazy"}
-          decoding="async"
-          onLoad={() => setLoaded(true)}
-          className={`h-full w-full object-cover transition duration-200 ease-out group-hover:scale-[1.03] ${
-            loaded ? "opacity-100" : "opacity-0"
-          }`}
-        />
-      </picture>
-    </div>
-  );
-};
-
 const Menu = () => {
+  const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategorySlug, setActiveCategorySlug] = useState("all");
   const [categories, setCategories] = useState([]);
   const [items, setItems] = useState([]);
   const [comfortPicks, setComfortPicks] = useState([]);
@@ -129,7 +52,6 @@ const Menu = () => {
   const { startLoading, stopLoading } = useGlobalLoading();
 
   const categoryNavRef = useRef(null);
-  const sectionRefs = useRef({});
 
   useEffect(() => {
     let isMounted = true;
@@ -206,7 +128,7 @@ const Menu = () => {
 
   const categoryNameById = useMemo(() => {
     return categories.reduce((acc, category) => {
-      acc[category.id] = category.name;
+      acc[String(category.id)] = category.name;
       return acc;
     }, {});
   }, [categories]);
@@ -226,79 +148,41 @@ const Menu = () => {
     [uniqueItems]
   );
 
-  const categorySections = useMemo(() => {
-    const base = categories
-      .filter((category) => Boolean(category.name))
-      .map((category) => ({
-        id: category.id,
-        name: category.name,
-        slug: toSlug(category.name)
-      }));
+  const categoryOptions = useMemo(() => {
+    const names = categories
+      .map((category) => category.name)
+      .filter(Boolean)
+      .filter((name) => normalizeValue(name) !== normalizeValue(MOST_POPULAR_CATEGORY));
 
-    if (hasPopularItems) {
-      return [{ id: "popular", name: "Most Popular", slug: "most-popular" }, ...base];
-    }
-
-    return base;
+    return ["All", ...(hasPopularItems ? [MOST_POPULAR_CATEGORY] : []), ...names];
   }, [categories, hasPopularItems]);
 
-  const groupedItems = useMemo(() => {
+  const filteredItems = useMemo(() => {
+    const normalizedCategory = normalizeValue(activeCategory);
     const query = normalizeValue(searchQuery);
 
-    return categorySections
-      .map((section) => {
-        const sectionItems = uniqueItems.filter((item) => {
-          const isPopularSection = section.slug === "most-popular";
-          const categoryName = categoryNameById[item.category_id] || item.category_id || "";
-          const belongsToSection = isPopularSection
+    return uniqueItems.filter((item) => {
+      const categoryName = categoryNameById[String(item.category_id)] || item.category_name || item.category_id || "";
+
+      const categoryMatch =
+        normalizedCategory === "all"
+          ? true
+          : normalizedCategory === normalizeValue(MOST_POPULAR_CATEGORY)
             ? Boolean(item.is_popular ?? item.popular)
-            : normalizeValue(categoryName) === normalizeValue(section.name);
+            : normalizeValue(categoryName) === normalizedCategory;
 
-          if (!belongsToSection) return false;
-          if (!query) return true;
+      if (!categoryMatch) return false;
+      if (!query) return true;
 
-          const haystack = `${item.name ?? ""} ${item.description ?? ""}`.toLowerCase();
-          return haystack.includes(query);
-        });
-
-        return { ...section, items: sectionItems };
-      })
-      .filter((section) => section.items.length > 0 || !searchQuery.trim());
-  }, [categoryNameById, categorySections, searchQuery, uniqueItems]);
-
-  const resultsCount = useMemo(
-    () => groupedItems.reduce((sum, section) => sum + section.items.length, 0),
-    [groupedItems]
-  );
-
-  const visibleSections = useMemo(() => {
-    if (activeCategorySlug === "all") {
-      return groupedItems;
-    }
-
-    return groupedItems.filter((section) => section.slug === activeCategorySlug);
-  }, [activeCategorySlug, groupedItems]);
-
-  const menuLastUpdated = useMemo(() => {
-    const timestamps = uniqueItems
-      .map((item) => item.updated_at || item.created_at)
-      .filter(Boolean)
-      .map((value) => new Date(value).getTime())
-      .filter(Number.isFinite);
-
-    if (!timestamps.length) return null;
-    return new Date(Math.max(...timestamps)).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
+      const haystack = `${item.name ?? ""} ${item.description ?? ""}`.toLowerCase();
+      return haystack.includes(query);
     });
-  }, [uniqueItems]);
+  }, [activeCategory, categoryNameById, searchQuery, uniqueItems]);
 
   useEffect(() => {
+    const pageUrl = `${window.location.origin}/menu`;
     const previousTitle = document.title;
     const previousDescription = document.querySelector('meta[name="description"]')?.getAttribute("content") || "";
-    const pageUrl = `${window.location.origin}/menu`;
-    const ogImage = buildOptimizedImage(uniqueItems[0]?.image_url || uniqueItems[0]?.image || fallbackImage, 1200, true);
 
     document.title = "Menu | Plan B Restaurant & Cafe – Hurghada Cornish Street";
 
@@ -310,26 +194,20 @@ const Menu = () => {
       content: MENU_DESCRIPTION
     });
 
-    const socialTags = [
-      ["property", "og:title", "Menu | Plan B Restaurant & Cafe – Hurghada Cornish Street"],
-      ["property", "og:description", MENU_DESCRIPTION],
-      ["property", "og:type", "website"],
-      ["property", "og:url", pageUrl],
-      ["property", "og:image", ogImage],
-      ["name", "twitter:card", "summary_large_image"],
-      ["name", "twitter:title", "Menu | Plan B Restaurant & Cafe – Hurghada Cornish Street"],
-      ["name", "twitter:description", MENU_DESCRIPTION],
-      ["name", "twitter:image", ogImage]
-    ];
+    updateHeadTag({
+      selector: 'meta[property="og:title"]',
+      createTag: "meta",
+      attributeName: "property",
+      attributeValue: "og:title",
+      content: "Menu | Plan B Restaurant & Cafe – Hurghada Cornish Street"
+    });
 
-    socialTags.forEach(([attributeName, attributeValue, content]) => {
-      updateHeadTag({
-        selector: `meta[${attributeName}="${attributeValue}"]`,
-        createTag: "meta",
-        attributeName,
-        attributeValue,
-        content
-      });
+    updateHeadTag({
+      selector: 'meta[property="og:description"]',
+      createTag: "meta",
+      attributeName: "property",
+      attributeValue: "og:description",
+      content: MENU_DESCRIPTION
     });
 
     let canonical = document.querySelector('link[rel="canonical"]');
@@ -341,115 +219,13 @@ const Menu = () => {
     }
     canonical.setAttribute("href", pageUrl);
 
-    const schemaScript = document.createElement("script");
-    schemaScript.type = "application/ld+json";
-    schemaScript.id = "menu-seo-schema";
-
-    const menuSectionsSchema = categorySections.map((section) => {
-      const sectionGroup = groupedItems.find((entry) => entry.slug === section.slug);
-      return {
-        "@type": "MenuSection",
-        name: section.name,
-        hasMenuItem: (sectionGroup?.items || []).map((item) => {
-          const numericPrice = extractNumericPrice(item.price);
-          return {
-            "@type": "MenuItem",
-            name: item.name,
-            description: item.description,
-            ...(numericPrice
-              ? {
-                  offers: {
-                    "@type": "Offer",
-                    priceCurrency: "EGP",
-                    price: numericPrice
-                  }
-                }
-              : {})
-          };
-        })
-      };
-    });
-
-    schemaScript.text = JSON.stringify({
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": ["Restaurant", "LocalBusiness"],
-          name: "Plan B Restaurant & Cafe",
-          url: pageUrl,
-          telephone: "+201005260787",
-          openingHours: "Mo-Su 09:00-02:00",
-          servesCuisine: ["Seafood", "Grill", "Burgers", "Pizza", "Pasta", "Coffee", "Desserts", "Cocktails"],
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Gold Star Mall, Cornish Street",
-            addressLocality: "Hurghada",
-            addressCountry: "EG"
-          },
-          hasMenu: {
-            "@type": "Menu",
-            name: "Plan B Restaurant & Cafe Menu",
-            url: pageUrl,
-            hasMenuSection: menuSectionsSchema
-          }
-        },
-        {
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            {
-              "@type": "ListItem",
-              position: 1,
-              name: "Home",
-              item: window.location.origin
-            },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: "Menu",
-              item: pageUrl
-            }
-          ]
-        }
-      ]
-    });
-
-    const existingSchema = document.getElementById("menu-seo-schema");
-    if (existingSchema) existingSchema.remove();
-    document.head.appendChild(schemaScript);
-
     return () => {
       document.title = previousTitle;
       const descriptionTag = document.querySelector('meta[name="description"]');
-      if (descriptionTag) {
-        descriptionTag.setAttribute("content", previousDescription);
-      }
-      document.querySelectorAll('[data-menu-meta="true"]').forEach((element) => element.remove());
-      const cleanupSchema = document.getElementById("menu-seo-schema");
-      if (cleanupSchema) cleanupSchema.remove();
+      if (descriptionTag) descriptionTag.setAttribute("content", previousDescription);
+      document.querySelectorAll('[data-menu-meta="true"]').forEach((node) => node.remove());
     };
-  }, [categorySections, groupedItems, uniqueItems]);
-
-  useEffect(() => {
-    const handleHashNavigation = () => {
-      const nextHash = window.location.hash.replace("#", "").trim();
-      if (!nextHash) {
-        setActiveCategorySlug("all");
-        return;
-      }
-
-      const sectionExists = categorySections.some((section) => section.slug === nextHash);
-      if (sectionExists) {
-        setActiveCategorySlug(nextHash);
-      }
-    };
-
-    handleHashNavigation();
-    window.addEventListener("hashchange", handleHashNavigation);
-
-    return () => {
-      window.removeEventListener("hashchange", handleHashNavigation);
-    };
-  }, [categorySections]);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -462,50 +238,31 @@ const Menu = () => {
 
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const openDishFromPick = (pick) => {
+    const match = uniqueItems.find((item) => normalizeValue(item.name) === normalizeValue(pick.name));
+    const dish = match || pick;
+    setSelectedDish(dish);
+
+    const dishCategoryName = categoryNameById[String(dish.category_id)] || dish.category || dish.category_name;
+    if (dishCategoryName) {
+      setActiveCategory(dishCategoryName);
+      window.history.replaceState(null, "", `/menu#${encodeURIComponent(String(dishCategoryName))}`);
+    }
+  };
 
   const reserveWhatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     "Hi Plan B, I'd like to reserve a table. Name: __, Guests: __, Time: __"
   )}`;
-
-  const navigateToCategory = (slug) => {
-    setActiveCategorySlug(slug);
-
-    if (slug === "all") {
-      window.history.replaceState(null, "", "/menu");
-      return;
-    }
-
-    window.history.replaceState(null, "", `/menu#${slug}`);
-  };
-
-  const openDishFromPick = (pick) => {
-    const normalizedName = normalizeValue(pick.name);
-    const dish = uniqueItems.find((item) => normalizeValue(item.name) === normalizedName) || pick;
-
-    setSelectedDish(dish);
-
-    const matchedSection = groupedItems.find((section) =>
-      section.items.some((item) => normalizeValue(item.name) === normalizedName)
-    );
-
-    if (matchedSection?.slug) {
-      navigateToCategory(matchedSection.slug);
-    }
-  };
 
   return (
     <div className="section-padding">
       <div className="mx-auto max-w-6xl space-y-8">
         <nav aria-label="Breadcrumb" className="text-sm text-text-muted">
           <ol className="flex items-center gap-2">
-            <li>
-              <Link to="/" className="transition hover:text-text-primary">Home</Link>
-            </li>
+            <li><Link to="/" className="transition hover:text-text-primary">Home</Link></li>
             <li aria-hidden="true">&gt;</li>
             <li className="text-text-primary">Menu</li>
           </ol>
@@ -516,13 +273,10 @@ const Menu = () => {
             <h1 className="text-3xl font-semibold text-text-primary md:text-4xl">Menu</h1>
             <p className="max-w-3xl text-sm text-text-secondary md:text-base">
               Explore our menu at Plan B Restaurant & Cafe in Hurghada — from breakfast and specialty coffee to
-              burgers, seafood, and desserts. Visit us on Cornish Street for relaxed sea-view dining across multiple
-              categories.
+              burgers, seafood, and desserts. Visit us on Cornish Street for relaxed sea-view dining.
             </p>
             <div className="flex flex-wrap items-center gap-3">
-              <Button className="!px-5" onClick={() => window.open(reserveWhatsappLink, "_blank", "noopener,noreferrer")}>
-                Reserve on WhatsApp
-              </Button>
+              <Button onClick={() => window.open(reserveWhatsappLink, "_blank", "noopener,noreferrer")}>Reserve on WhatsApp</Button>
               <button
                 type="button"
                 onClick={() => setShowReserveHelp(true)}
@@ -531,16 +285,11 @@ const Menu = () => {
                 How reservations work
               </button>
             </div>
-            {menuLastUpdated && <p className="text-xs text-text-muted">Menu last updated: {menuLastUpdated}</p>}
           </div>
         </Reveal>
 
         <Reveal>
-          <SectionHeading
-            eyebrow="Menu"
-            title="House Comfort Picks"
-            subtitle="Popular picks guests order most."
-          />
+          <SectionHeading eyebrow="Menu" title="House Comfort Picks" subtitle="Popular picks guests order most." />
         </Reveal>
 
         <Stagger className="grid gap-4 md:grid-cols-2" animateOnView={false}>
@@ -548,12 +297,13 @@ const Menu = () => {
             <StaggerItem key={item.id}>
               <Card className="group flex cursor-pointer gap-4 p-4 transition duration-200 ease-out hover:-translate-y-1 hover:shadow-layered" hoverable={false}>
                 <button type="button" onClick={() => openDishFromPick(item)} className="flex w-full gap-4 text-left">
-                  <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl">
-                    <MenuImage
-                      src={item.image_url || item.image || fallbackImage}
-                      alt={`${item.name} at Plan B Restaurant & Cafe Hurghada`}
-                    />
-                  </div>
+                  <img
+                    src={item.image_url || item.image || fallbackImage}
+                    alt={`${item.name} at Plan B Restaurant & Cafe Hurghada`}
+                    className="h-20 w-20 rounded-2xl object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <div className="flex-1 space-y-1">
                     <div className="flex items-start justify-between gap-3">
                       <h3 className="text-base font-semibold text-text-primary md:text-lg">{item.name}</h3>
@@ -570,10 +320,8 @@ const Menu = () => {
         <Reveal delay={0.1}>
           <div className="space-y-3" ref={categoryNavRef}>
             <div className="flex items-center justify-between gap-3">
-              <label htmlFor="menu-search" className="text-sm font-medium text-text-primary">
-                Search menu
-              </label>
-              <span className="text-xs text-text-muted">{resultsCount} results</span>
+              <label htmlFor="menu-search" className="text-sm font-medium text-text-primary">Search menu</label>
+              <span className="text-xs text-text-muted">{filteredItems.length} results</span>
             </div>
             <div className="relative">
               <input
@@ -601,32 +349,19 @@ const Menu = () => {
                 isCategoryBarSticky ? "bg-white/85 shadow-md backdrop-blur" : "bg-transparent"
               }`}
             >
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-surface-primary to-transparent" />
-                <div className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-surface-primary to-transparent" />
-                <div className="scrollbar-hide flex snap-x snap-mandatory gap-2 overflow-x-auto px-1">
+              <div className="flex flex-wrap gap-2">
+                {categoryOptions.map((category) => (
                   <Button
+                    key={category}
                     type="button"
-                    variant={activeCategorySlug === "all" ? "primary" : "secondary"}
+                    variant={activeCategory === category ? "primary" : "secondary"}
                     size="sm"
-                    onClick={() => navigateToCategory("all")}
-                    className="snap-start whitespace-nowrap"
+                    onClick={() => setActiveCategory(category)}
+                    className="whitespace-nowrap"
                   >
-                    All
+                    {category}
                   </Button>
-                  {categorySections.map((category) => (
-                    <Button
-                      key={category.slug}
-                      type="button"
-                      variant={activeCategorySlug === category.slug ? "primary" : "secondary"}
-                      size="sm"
-                      onClick={() => navigateToCategory(category.slug)}
-                      className="snap-start whitespace-nowrap"
-                    >
-                      {category.name}
-                    </Button>
-                  ))}
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -634,58 +369,34 @@ const Menu = () => {
 
         {loading ? (
           <MenuItemSkeleton count={4} />
-        ) : visibleSections.every((section) => section.items.length === 0) ? (
+        ) : filteredItems.length === 0 ? (
           <Card className="flex flex-col gap-3" hoverable={false}>
-            <p className="text-sm text-text-secondary">No dishes match your search right now.</p>
-            <Button variant="secondary" onClick={() => setSearchQuery("")}>Clear search</Button>
+            <p className="text-sm text-text-secondary">No dishes match your current filters.</p>
+            <Button variant="secondary" onClick={() => { setActiveCategory("All"); setSearchQuery(""); }}>Show all items</Button>
           </Card>
         ) : (
-          <div className="space-y-10">
-            {visibleSections.map((section, sectionIndex) => (
-              <section
-                key={section.slug}
-                id={section.slug}
-                ref={(node) => {
-                  sectionRefs.current[section.slug] = node;
-                }}
-                className="scroll-mt-36 space-y-4"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <h2 className="text-2xl font-semibold text-text-primary">{section.name}</h2>
-                  <span className="text-xs text-text-muted">{section.items.length} items</span>
-                </div>
-
-                <Stagger className="grid gap-4 sm:grid-cols-2" animateOnView={false}>
-                  {section.items.map((item, itemIndex) => (
-                    <StaggerItem key={`${section.slug}-${item.id}`}>
-                      <Card className="group cursor-pointer space-y-3 p-4 transition duration-200 ease-out hover:-translate-y-1 hover:shadow-layered" hoverable={false}>
-                        <button type="button" onClick={() => setSelectedDish(item)} className="w-full space-y-3 text-left">
-                          <MenuImage
-                            src={item.image_url || item.image || fallbackImage}
-                            alt={`${item.name} at Plan B Restaurant & Cafe Hurghada`}
-                            eager={sectionIndex === 0 && itemIndex < 2}
-                          />
-                          <div className="flex items-start justify-between gap-3">
-                            <h3 className="text-base font-semibold text-text-primary md:text-lg">{item.name}</h3>
-                            <span className="shrink-0 text-sm font-semibold text-coffee">{formatPrice(item.price)}</span>
-                          </div>
-                          <p className="text-sm leading-relaxed text-text-secondary">{item.description}</p>
-                        </button>
-                      </Card>
-                    </StaggerItem>
-                  ))}
-                </Stagger>
-
-                <button
-                  type="button"
-                  onClick={() => categoryNavRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
-                  className="text-xs font-medium text-coffee underline decoration-coffee/40 underline-offset-4 transition hover:text-coffee-dark"
-                >
-                  Back to categories
-                </button>
-              </section>
+          <Stagger className="grid gap-4 sm:grid-cols-2" animateOnView={false}>
+            {filteredItems.map((item, index) => (
+              <StaggerItem key={item.id}>
+                <Card className="group cursor-pointer space-y-3 p-4 transition duration-200 ease-out hover:-translate-y-1 hover:shadow-layered" hoverable={false}>
+                  <button type="button" onClick={() => setSelectedDish(item)} className="w-full space-y-3 text-left">
+                    <img
+                      src={item.image_url || item.image || fallbackImage}
+                      alt={`${item.name} at Plan B Restaurant & Cafe Hurghada`}
+                      className="h-44 w-full rounded-2xl object-cover"
+                      loading={index < 2 ? "eager" : "lazy"}
+                      decoding="async"
+                    />
+                    <div className="flex items-start justify-between gap-3">
+                      <h2 className="text-base font-semibold text-text-primary md:text-lg">{item.name}</h2>
+                      <span className="shrink-0 text-sm font-semibold text-coffee">{formatPrice(item.price)}</span>
+                    </div>
+                    <p className="text-sm leading-relaxed text-text-secondary">{item.description}</p>
+                  </button>
+                </Card>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         )}
       </div>
 
@@ -697,14 +408,11 @@ const Menu = () => {
           aria-label={`${selectedDish.name} details`}
           onClick={() => setSelectedDish(null)}
         >
-          <div
-            className="w-full max-w-lg rounded-t-3xl bg-white p-5 shadow-xl md:rounded-3xl"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <MenuImage
+          <div className="w-full max-w-lg rounded-t-3xl bg-white p-5 shadow-xl md:rounded-3xl" onClick={(event) => event.stopPropagation()}>
+            <img
               src={selectedDish.image_url || selectedDish.image || fallbackImage}
               alt={`${selectedDish.name} at Plan B Restaurant & Cafe Hurghada`}
-              eager
+              className="h-56 w-full rounded-2xl object-cover"
             />
             <div className="mt-4 space-y-2">
               <div className="flex items-start justify-between gap-3">
@@ -714,15 +422,8 @@ const Menu = () => {
               <p className="text-sm text-text-secondary">{selectedDish.description}</p>
             </div>
             <div className="mt-5 flex gap-2">
-              <Button
-                className="flex-1"
-                onClick={() => window.open(reserveWhatsappLink, "_blank", "noopener,noreferrer")}
-              >
-                Reserve on WhatsApp
-              </Button>
-              <Button variant="secondary" onClick={() => setSelectedDish(null)}>
-                Close
-              </Button>
+              <Button className="flex-1" onClick={() => window.open(reserveWhatsappLink, "_blank", "noopener,noreferrer")}>Reserve on WhatsApp</Button>
+              <Button variant="secondary" onClick={() => setSelectedDish(null)}>Close</Button>
             </div>
           </div>
         </div>
@@ -738,13 +439,9 @@ const Menu = () => {
         >
           <Card className="max-w-md space-y-3" hoverable={false}>
             <h3 className="text-lg font-semibold text-text-primary">How reservations work</h3>
-            <p className="text-sm text-text-secondary">
-              Send us your name, number of guests, and preferred time on WhatsApp. Our team confirms your table quickly.
-            </p>
+            <p className="text-sm text-text-secondary">Send us your name, number of guests, and preferred time on WhatsApp. Our team confirms your table quickly.</p>
             <div className="flex justify-end">
-              <Button size="sm" onClick={() => setShowReserveHelp(false)}>
-                Got it
-              </Button>
+              <Button size="sm" onClick={() => setShowReserveHelp(false)}>Got it</Button>
             </div>
           </Card>
         </div>
