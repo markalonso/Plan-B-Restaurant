@@ -12,6 +12,13 @@ import { useGlobalLoading } from "../context/LoadingContext.jsx";
 import { resolveFirstExistingTable } from "../lib/adminTableResolver.js";
 
 const normalizeValue = (value) => String(value ?? "").trim().toLowerCase();
+const toSlug = (value) =>
+  String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 const MOST_POPULAR_CATEGORY = "Most Popular";
 const whatsappNumber = "201005260787";
 const fallbackImage =
@@ -157,6 +164,18 @@ const Menu = () => {
     return ["All", ...(hasPopularItems ? [MOST_POPULAR_CATEGORY] : []), ...names];
   }, [categories, hasPopularItems]);
 
+  const categoryBySlug = useMemo(
+    () =>
+      categoryOptions.reduce((acc, category) => {
+        const slug = toSlug(category);
+        if (slug) {
+          acc[slug] = category;
+        }
+        return acc;
+      }, {}),
+    [categoryOptions]
+  );
+
   const filteredItems = useMemo(() => {
     const normalizedCategory = normalizeValue(activeCategory);
     const query = normalizeValue(searchQuery);
@@ -178,6 +197,27 @@ const Menu = () => {
       return haystack.includes(query);
     });
   }, [activeCategory, categoryNameById, searchQuery, uniqueItems]);
+
+  useEffect(() => {
+    const applyCategoryFromHash = () => {
+      const hash = window.location.hash.replace("#", "").trim();
+      if (!hash) {
+        setActiveCategory("All");
+        return;
+      }
+
+      const decoded = decodeURIComponent(hash);
+      const matchedCategory = categoryBySlug[toSlug(decoded)];
+      if (matchedCategory) {
+        setActiveCategory(matchedCategory);
+      }
+    };
+
+    applyCategoryFromHash();
+    window.addEventListener("hashchange", applyCategoryFromHash);
+
+    return () => window.removeEventListener("hashchange", applyCategoryFromHash);
+  }, [categoryBySlug]);
 
   useEffect(() => {
     const pageUrl = `${window.location.origin}/menu`;
@@ -249,8 +289,19 @@ const Menu = () => {
     const dishCategoryName = categoryNameById[String(dish.category_id)] || dish.category || dish.category_name;
     if (dishCategoryName) {
       setActiveCategory(dishCategoryName);
-      window.history.replaceState(null, "", `/menu#${encodeURIComponent(String(dishCategoryName))}`);
+      window.history.replaceState(null, "", `/menu#${toSlug(dishCategoryName)}`);
     }
+  };
+
+  const handleCategorySelect = (category) => {
+    setActiveCategory(category);
+
+    if (normalizeValue(category) === "all") {
+      window.history.replaceState(null, "", "/menu");
+      return;
+    }
+
+    window.history.replaceState(null, "", `/menu#${toSlug(category)}`);
   };
 
   const reserveWhatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
@@ -356,7 +407,7 @@ const Menu = () => {
                     type="button"
                     variant={activeCategory === category ? "primary" : "secondary"}
                     size="sm"
-                    onClick={() => setActiveCategory(category)}
+                    onClick={() => handleCategorySelect(category)}
                     className="whitespace-nowrap"
                   >
                     {category}
