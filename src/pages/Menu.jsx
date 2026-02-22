@@ -271,6 +271,14 @@ const Menu = () => {
     [groupedItems]
   );
 
+  const visibleSections = useMemo(() => {
+    if (activeCategorySlug === "all") {
+      return groupedItems;
+    }
+
+    return groupedItems.filter((section) => section.slug === activeCategorySlug);
+  }, [activeCategorySlug, groupedItems]);
+
   const menuLastUpdated = useMemo(() => {
     const timestamps = uniqueItems
       .map((item) => item.updated_at || item.created_at)
@@ -432,13 +440,6 @@ const Menu = () => {
       const sectionExists = categorySections.some((section) => section.slug === nextHash);
       if (sectionExists) {
         setActiveCategorySlug(nextHash);
-
-        const target = sectionRefs.current[nextHash];
-        if (target) {
-          window.setTimeout(() => {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-          }, 80);
-        }
       }
     };
 
@@ -476,15 +477,10 @@ const Menu = () => {
 
     if (slug === "all") {
       window.history.replaceState(null, "", "/menu");
-      if (categoryNavRef.current) {
-        categoryNavRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
       return;
     }
 
     window.history.replaceState(null, "", `/menu#${slug}`);
-    const section = sectionRefs.current[slug];
-    if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const openDishFromPick = (pick) => {
@@ -638,14 +634,14 @@ const Menu = () => {
 
         {loading ? (
           <MenuItemSkeleton count={4} />
-        ) : groupedItems.every((section) => section.items.length === 0) ? (
+        ) : visibleSections.every((section) => section.items.length === 0) ? (
           <Card className="flex flex-col gap-3" hoverable={false}>
             <p className="text-sm text-text-secondary">No dishes match your search right now.</p>
             <Button variant="secondary" onClick={() => setSearchQuery("")}>Clear search</Button>
           </Card>
         ) : (
           <div className="space-y-10">
-            {groupedItems.map((section, sectionIndex) => (
+            {visibleSections.map((section, sectionIndex) => (
               <section
                 key={section.slug}
                 id={section.slug}
