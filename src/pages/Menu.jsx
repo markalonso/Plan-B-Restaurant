@@ -178,15 +178,34 @@ const Menu = () => {
     <div className="section-padding">
       <div className="mx-auto max-w-6xl space-y-10">
         <Reveal>
+          <section className="mx-auto max-w-4xl space-y-4">
+            <p className="text-sm text-text-secondary">Home &gt; <span className="text-text-primary">Menu</span></p>
+            <h1 className="text-4xl font-semibold text-text-primary">Menu</h1>
+            <p className="max-w-3xl text-lg text-text-secondary">
+              Explore our menu at Plan B Restaurant & Cafe in Hurghada — from breakfast and specialty coffee to burgers, seafood, and desserts. Visit us on Cornish Street for relaxed sea-view dining across multiple categories.
+            </p>
+            <div className="flex flex-wrap items-center gap-4">
+              <a
+                href={reserveWhatsAppLink}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center rounded-full bg-coffee px-6 py-3 text-base font-semibold text-white shadow-soft transition duration-200 hover:bg-coffee-dark"
+              >
+                Reserve on WhatsApp
+              </a>
+              <a href="#menu-categories" className="text-lg text-text-primary underline underline-offset-4">
+                How reservations work
+              </a>
+            </div>
+          </section>
+        </Reveal>
+
+        <Reveal>
           <SectionHeading
-            eyebrow="Menu"
+            eyebrow="Featured"
             title="House Comfort Picks"
-            subtitle="Explore the full menu at Plan B Restaurant & Cafe in Hurghada — from breakfast and specialty coffee to gourmet burgers and fresh seafood."
+            subtitle="Curated favorites for slow evenings and easy mornings."
           />
-          <div className="mt-3 space-y-1 text-sm text-text-secondary">
-            <p>Join us on Cornish Street for relaxed sea-view dining.</p>
-            <p>Crafted for lingering breakfasts, sunset burgers, and fresh coastal plates.</p>
-          </div>
         </Reveal>
 
         <Stagger className="grid gap-6 md:grid-cols-2" animateOnView={false}>
@@ -234,6 +253,7 @@ const Menu = () => {
         <div className="h-px w-full bg-gradient-to-r from-transparent via-coffee/20 to-transparent" />
 
         <Reveal delay={0.15}>
+          <div id="menu-categories" />
           <p className="text-xs tracking-wide text-text-secondary/80">
             Over 60 freshly prepared dishes across 11 curated categories.
           </p>
